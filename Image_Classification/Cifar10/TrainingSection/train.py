@@ -7,11 +7,18 @@ import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 import torchvision
 from tqdm import tqdm
-from hyperparams import *
-from utils import check_accuracy,save_model,load_model
-from models import *
+
+from models.hyperparams import *
+from models.resnets import *
+from models.utils import check_accuracy,save_model,load_model
+
+# Training Params
+learning_rate = 1e-3
+batch_size = 1024
+num_epochs = 100
 
 
+# Model
 model = build_resnet18(num_classes=10)
 model.to(device)
 #print(model)

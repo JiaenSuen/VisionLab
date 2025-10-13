@@ -1,8 +1,8 @@
 import torchvision
 import torch.nn as nn
-from hyperparams import num_classes 
 
-def build_resnet18(num_classes=num_classes):
+
+def build_resnet18(num_classes=10):
     model = torchvision.models.resnet18(weights="IMAGENET1K_V1")
     model.maxpool = nn.Identity()
     model.fc = nn.Sequential(
