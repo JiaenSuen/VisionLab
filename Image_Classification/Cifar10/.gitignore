@@ -1,1 +1,3 @@
 dataset/
+TrainingSection/__pycache__/
+models/__pycache__/
