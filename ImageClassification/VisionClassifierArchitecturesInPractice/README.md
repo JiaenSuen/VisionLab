@@ -15,14 +15,18 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 * ShuffleNet
 * EfficientNet
 * RegNet
-* ConvNeXt
+* Xception
+* HRNet
 
 ### Vision-Transformer
 * ViT
 * Swin
 * MLP-Mixer
 
-### LNN
+### CNN-Transformer
+* ConvNeXt
+
+
 
 ### Mamba-based
 * Vision Mamba / SSM

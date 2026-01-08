@@ -63,7 +63,7 @@ def Train(modelName="", datasetName="",device="cuda"):
 
 
     check_accuracy(train_loader, model)
-    save_model(model, f"trained/{datasetName}_{modelName}.pth")
+    save_model(model, f"trainedRelease/{datasetName}_{modelName}.pth")
     pass
 
 
