@@ -28,6 +28,11 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 * Vision Mamba / SSM
 * Hybrid Conv + SSM
 
+
+## Datasets 
+* STL-10
+* Caltech-101/Caltech-256
+* CIFAR-10 / CIFAR-100
 ### **CIFAR-10 Dataset**
 CIFAR-10: 60,000 32x32 color images in 10 classes (50,000 train, 10,000 test) .
 
