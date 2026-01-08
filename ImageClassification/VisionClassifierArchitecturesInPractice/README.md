@@ -33,7 +33,14 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 * STL-10
 * Caltech-101/Caltech-256
 * CIFAR-10 / CIFAR-100
-### **CIFAR-10 Dataset**
+* Oxford 102 Flowers
+* Stanford Dogs 
+* CUB-200
+* Imagenette
+* Imagewoof
+* MedMNIST
+
+
 CIFAR-10: 60,000 32x32 color images in 10 classes (50,000 train, 10,000 test) .
 
 The following models are included : <br>
