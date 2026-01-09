@@ -2,7 +2,7 @@ import torch
 import os
 
 device = torch.device('cuda')
-def check_accuracy(loader, model):
+def check_accuracy(loader, model): 
     if loader.dataset.train:
         print("Checking accuracy on training data")
     else:
@@ -12,11 +12,27 @@ def check_accuracy(loader, model):
     num_samples = 0
     model.eval()
 
-    with torch.no_grad():
+    flops = 0
+
+
+    try:
+        x, _ = next(iter(loader))  # Get one batch
+        x = x.to(device=device)
+        with torch.profiler.profile(with_flops=True) as prof:
+            with torch.no_grad():
+                model(x)
+        flops = sum(elem.flops for elem in prof.key_averages())
+        gflops = flops / 1e9
+        print(f"Estimated computational complexity: {gflops:.2f} GFLOPs (batch size {x.size(0)})")
+    except Exception as e:
+        print(f"Could not calculate FLOPs: {e}")
+
+
+    with torch.no_grad(): 
         for x, y in loader:
             x = x.to(device=device)
             y = y.to(device=device)
-
+ 
             scores = model(x)
             _, predictions = scores.max(1)
             num_correct += (predictions == y).sum()
