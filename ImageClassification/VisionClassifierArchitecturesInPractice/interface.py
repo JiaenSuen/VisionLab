@@ -10,10 +10,13 @@ if __name__ == "__main__":
     print(f"Available Datasets: {Existing_dataset_names}")
     print("Select Training or Testing by input 1 or 2 respectively.")
     choice = input("Enter 1 for Training, 2 for Testing: ")
-    if choice == '1':
+    if choice == '1': 
+        epochs_input = input("Set Epochs for Training (default is 100):  ")
+        epochs = int(epochs_input) if epochs_input.isdigit() else 100
+
         modelName = input("Enter the model name (e.g., resnet18): ")
         datasetName = input("Enter the dataset name (e.g., cifar10): ")
-        Train(modelName=modelName, datasetName=datasetName)
+        Train(modelName=modelName, datasetName=datasetName,epochs=epochs)
     elif choice == '2':
         modelName = input("Enter the model name (e.g., resnet18): ")
         datasetName = input("Enter the dataset name (e.g., cifar10): ")

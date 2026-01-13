@@ -49,8 +49,10 @@ CIFAR-10: 60,000 32x32 color images in 10 classes (50,000 train, 10,000 test) .
 
 The following models are included : <br>
 
-| Model       | Train Accuracy | Test Accuracy | Epoches   |GFLOPs|  
-| ----------- | -------------  | ------------- | ----------|------------- | 
-| ResNet18(P) | 99.49%         | 86.01%        | 100       |144.25
-| ResNet34(P) | 83.63%         | 79.50%        | 1         |298.87
-| DenseNet121 | XX.XX%         | XX.XX%        | 0         |
+| Model        | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs  |  
+| -----------  | -------------  | ------------- | ----------|------------- | 
+| GoogLeNet    | 95.16%         | 68.29%        | 200       |25.38
+| GoogLeNet(P) | 99.63%         | 82.87%        | 100       |31.31
+| ResNet18(P)  | 99.49%         | 86.01%        | 100       |144.25
+| ResNet34(P)  | 83.63%         | 79.50%        | 1         |298.87
+| DenseNet121  | XX.XX%         | XX.XX%        | 0         |

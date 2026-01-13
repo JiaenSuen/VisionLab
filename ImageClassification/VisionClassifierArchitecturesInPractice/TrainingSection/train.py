@@ -15,7 +15,7 @@ from tqdm import tqdm
 
 
 
-def Train(modelName="", datasetName="",device="cuda"):
+def Train(modelName="", datasetName="",device="cuda",epochs=100):
 
     
 
@@ -31,7 +31,7 @@ def Train(modelName="", datasetName="",device="cuda"):
     # Training Params
     learning_rate = 1e-3
     batch_size = 1024
-    num_epochs = 1
+    num_epochs = epochs
 
     # Model
     model = modelRouter[modelName](num_classes=num_classes_dict[datasetName.lower()]) 
