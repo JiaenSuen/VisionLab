@@ -34,7 +34,7 @@ The experimental results show that the implemented model successfully classifies
 
 ### Model Parameter
 &nbsp;&nbsp;&nbsp;&nbsp; Run Test with Python Script : *ClassifyTask_test.py*   
-The model achieved a test accuracy of 99.02%
+&nbsp;&nbsp;&nbsp;&nbsp; The model achieved a test accuracy of 99.02%
 
 
 ## LeNet 5
