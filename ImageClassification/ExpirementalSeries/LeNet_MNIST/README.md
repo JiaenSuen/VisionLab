@@ -33,7 +33,6 @@ The experimental results show that the implemented model successfully classifies
 ![image](Record/Result_of_LeNet_Training.png)
 
 ### Model Parameter
-&nbsp;&nbsp;&nbsp;&nbsp; Saved in ["model/LeNet5_weights"](model/)   
 &nbsp;&nbsp;&nbsp;&nbsp; Run Test with Python Script : *ClassifyTask_test.py*   
 The model achieved a test accuracy of 99.02%
 
