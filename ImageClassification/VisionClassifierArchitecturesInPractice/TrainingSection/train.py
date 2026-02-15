@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 
 from models.utils import check_accuracy,save_model,load_model
-from models.modelRouter import modelRouter,Existing_model_names
+from models._modelRouter import modelRouter,Existing_model_names
 from TrainingSection.dataset import datasetRouter_dict ,Existing_dataset_names,num_classes_dict
 from tqdm import tqdm
 
@@ -37,8 +37,13 @@ def Train(modelName="", datasetName="",device="cuda",epochs=100):
     model = modelRouter[modelName](num_classes=num_classes_dict[datasetName.lower()]) 
     model.to(device)
 
+    if modelName == 'alexnet':
+        input_size = 224
+    else:
+        input_size = 32
+
     # Data Loader
-    train_loader = datasetRouter_dict[datasetName].GetTrainLoader(batch_size=batch_size)
+    train_loader = datasetRouter_dict[datasetName].GetTrainLoader(batch_size=batch_size ,input_size=input_size)
     
     
     criterion = nn.CrossEntropyLoss()

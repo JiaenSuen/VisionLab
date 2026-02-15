@@ -14,16 +14,17 @@ def check_accuracy(loader, model):
 
     flops = 0
 
-
     try:
         x, _ = next(iter(loader))  # Get one batch
         x = x.to(device=device)
+        batch_size = x.size(0)  
         with torch.profiler.profile(with_flops=True) as prof:
             with torch.no_grad():
                 model(x)
         flops = sum(elem.flops for elem in prof.key_averages())
-        gflops = flops / 1e9
-        print(f"Estimated computational complexity: {gflops:.2f} GFLOPs (batch size {x.size(0)})")
+        total_gflops = flops / 1e9   
+        gflops_per_image = total_gflops / batch_size  
+        print(f"Estimated computational complexity: {gflops_per_image:.4f} GFLOPs per image (total for batch {batch_size}: {total_gflops:.4f})")
     except Exception as e:
         print(f"Could not calculate FLOPs: {e}")
 

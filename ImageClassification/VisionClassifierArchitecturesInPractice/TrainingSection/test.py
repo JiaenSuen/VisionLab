@@ -9,11 +9,11 @@ import torchvision
 from tqdm import tqdm
 import os
 
-from models.resnets import *
+from models.ResNetsV1 import *
 from models.utils import check_accuracy,save_model,load_model
-from models.modelRouter import modelRouter,Existing_model_names
+from models._modelRouter import modelRouter,Existing_model_names
 from TrainingSection.dataset import datasetRouter_dict ,Existing_dataset_names,num_classes_dict
-from models.modelRouter import modelRouter
+from models._modelRouter import modelRouter
 
 def Test(modelName="", datasetName="",device="cuda"):
     if modelName.lower() not in  Existing_model_names:
@@ -33,5 +33,9 @@ def Test(modelName="", datasetName="",device="cuda"):
     model = modelRouter[modelName](num_classes=num_classes_dict[datasetName.lower()]) 
     model = load_model(model, f"trainedRelease/{datasetName}_{modelName}.pth")
 
-    test_loader = datasetRouter_dict[datasetName].GetTestLoader(batch_size=512)
+    if modelName == 'alexnet':
+        input_size = 224
+    else:
+        input_size = 32
+    test_loader = datasetRouter_dict[datasetName].GetTestLoader(batch_size=512, input_size=input_size)
     check_accuracy(test_loader, model)

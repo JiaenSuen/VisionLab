@@ -1,6 +1,6 @@
 from TrainingSection.train import Train
 from TrainingSection.test  import Test
-from models.modelRouter import Existing_model_names
+from models._modelRouter import Existing_model_names
 from TrainingSection.dataset import Existing_dataset_names
 
 if __name__ == "__main__":
