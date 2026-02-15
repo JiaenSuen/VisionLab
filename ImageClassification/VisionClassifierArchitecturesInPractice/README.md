@@ -8,28 +8,30 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 ## **Classifier Models**
 ### CNN
 
-| ~2014 | 2015 |2016 |2017 |2018 |2019|2020|2021|
-| ---| ---  | --- | --- |--- |--- |--- |--- |
-| AlexNet|InceptionV1|.|DenseNet|MobileNetV2|EfficientNet|.|RegNet|
-|VGG| ResNet|.|ShuffleNet|.|HRNet|.|.|
-|.|.|Xception|.|.|.|.|.|
-|.|.|.|.|.|.|.|.|
-|.|.|.|.|.|.|.|.|
-|.|.|.|.|.|.|.|.|
+| 2014 | 2015 |2016 |2017 |2018 |2019|2020|
+| ---| ---  | --- | --- |--- |--- |--- |
+|VGG|Highway|Xception|DenseNet|MobileNetV2|EfficientNet|RegNet|
+|NIN|ResNet|SqueezeNet |ShuffleNet|ShuffleNetV2|HRNet|.|
+|All-ConvNet|InceptionV2|Wide ResNet|MobileNet|MnasNet|.|.|
+|InceptionV1|InceptionV3|ResNeXt|NASNet|.|.|.|
+|.|.|ResNetV2|SENet |.|.|.|
+|.|.|InceptionV4|.|.|.|.|
 
-### Vision-Transformer
-* ViT
-* Swin
-* MLP-Mixer
+### Vision-Transformer /  CNN-Transformer
+| 2020 | 2021 |2022 |2023 |2024 |2025|
+| ---| ---  | --- | --- |--- |--- |
+|ViT|Swin|ConvNeXt|ConvNeXt V2|MobileViT|Hybrid ViT-CNN|
+|MLP-Mixer|EfficientNetV2|DaViT|DINOv2|EfficientViT|DINOv3
+ 
 
-### CNN-Transformer
-* ConvNeXt
-
-
+ 
 
 ### Mamba-based
 * Vision Mamba / SSM
+* MambaVision
 * Hybrid Conv + SSM
+* Res-VMamba
+* C-RADIOv4
 
 
 ## Datasets 
@@ -50,10 +52,10 @@ Record Accuracy , Epochs , *GFLOPs Per Image*  <br><br>
 The following models are included : <br>
 
 | Model          | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs  |  
-| -----------  | -------------  | ------------- | ----------|------------- | 
+| -------------  | -------------  | ------------- | ----------|------------- | 
 | AlexNet (P)  | 00.00%         | 00.00%        | 100       |1.4203
 | GoogLeNet    | 95.16%         | 68.29%        | 200       |0.0496
-| GoogLeNet(P) | 99.63%         | 82.87%        | 100       |0.0611
+| GoogLeNet (P) | 99.63%         | 82.87%        | 100       |0.0611
 | ResNet18(P)  | 99.49%         | 86.01%        | 100       |0.2817
 | ResNet34(P)  | 83.63%         | 79.50%        | 1         |0.5837
 | DenseNet121  | XX.XX%         | XX.XX%        | 0         |
