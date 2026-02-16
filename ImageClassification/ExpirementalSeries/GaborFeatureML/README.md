@@ -13,6 +13,21 @@ The Sobel filter is a discrete difference operator commonly used in image proces
 
 
 ## Feature Numerical Transformation
+### Mean Average
+It represents the central tendency of representative data, reflecting the overall level or typical value. In characteristic engineering, it is often used to summarize the overall performance over a period of time or an interval.
+
+### Standard Deviation
+This measure of data dispersion indicates greater volatility; a higher value signifies more significant fluctuations. It can be used to describe stability or variability and is an important indicator for assessing the degree of data dispersion.
+
+### Energy
+This typically refers to the sum of squares or average of squares of a signal, reflecting the signal strength or overall amplitude. It is often used in timing or signal processing characteristics to identify activity intensity or pattern differences.
+
+### Skewness
+It measures whether the data distribution is symmetrical; positive or negative skewness indicates that the tails are skewed in different directions. It helps the model understand the asymmetric characteristics of the data distribution.
+
+### Kurtosis
+Describes the peak strength and tail thickness of the distribution. Peak strength indicates that the data may have more extreme values, which is particularly helpful for detecting anomalies or risk analysis.
+
 
 
 ## Result
