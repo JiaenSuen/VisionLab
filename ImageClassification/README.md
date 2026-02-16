@@ -1,2 +1,2 @@
 # Catalog
-* **Vision Classifier Architectures In Practice**
+* [**Vision Classifier Architectures In Practice**](VisionClassifierArchitecturesInPractice/)
