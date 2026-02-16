@@ -1,5 +1,5 @@
 # Feature Extraction with Gabor filters & ML Image Classification
-## Feature Extraction
+## Image Feature Extraction
 ### Gabor Feature Filtering
 The Gabor filter, named after Dennis Gabor, was originally a signal processing and analysis method. Later, Gösta Granlund extended it to two dimensions by adding a reference orientation, and it is used for image processing applications such as texture analysis and mid-level feature extraction. Compared with the edge detection and corner detection mentioned earlier, Gabor extracts more complex patterns, such as texture, local shape or directional features.
 
@@ -11,6 +11,8 @@ A Gabor filter is a convolutional filter that combines a Gaussian function eleme
 
 The Sobel filter is a discrete difference operator commonly used in image processing and computer vision, primarily for edge detection. It highlights frequently changing edge regions by calculating the gradient approximation of the image's brightness function and convolving the image with horizontal and vertical kernels (masks).
 
+
+## Feature Numerical Transformation
 
 
 ## Result
