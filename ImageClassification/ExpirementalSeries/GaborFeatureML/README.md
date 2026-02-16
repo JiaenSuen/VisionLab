@@ -1,4 +1,14 @@
 # Feature Extraction with Gabor filters & ML Image Classification
+
+## Introduction
+This project implements a traditional machine learning pipeline for image classification based on handcrafted texture features. Instead of relying on deep learning, it focuses on extracting discriminative statistical descriptors from images using Gabor filters and Sobel edge detection, followed by training multiple ensemble-based classifiers for performance comparison.
+
+
+The workflow begins with image preprocessing, including resizing, grayscale conversion, and histogram equalization for contrast enhancement. A bank of Gabor filters with multiple orientations, scales, and wavelengths is applied to capture rich texture information. From each filtered response, statistical features such as mean, standard deviation, energy, skewness, and kurtosis are computed. Additional edge-based features are extracted using the Sobel operator. To improve efficiency, feature extraction is parallelized with multiprocessing.
+
+The extracted feature vectors are then used to train and evaluate several machine learning models, including LightGBM, XGBoost, and Random Forest.Demonstrates how classical computer vision techniques combined with modern gradient boosting and ensemble methods can achieve effective image classification performance without deep neural networks.
+
+
 ## Image Feature Extraction
 ### Gabor Feature Filtering
 The Gabor filter, named after Dennis Gabor, was originally a signal processing and analysis method. Later, Gösta Granlund extended it to two dimensions by adding a reference orientation, and it is used for image processing applications such as texture analysis and mid-level feature extraction. Compared with the edge detection and corner detection mentioned earlier, Gabor extracts more complex patterns, such as texture, local shape or directional features.
