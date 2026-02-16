@@ -1,0 +1,18 @@
+Accuracy: 0.7544
+
+              precision    recall  f1-score   support
+
+ Agriculture       0.79      0.72      0.76       160
+       Beach       0.79      0.88      0.83       160
+        City       0.70      0.69      0.69       160
+      Desert       0.62      0.65      0.64       160
+      Forest       0.83      0.89      0.86       160
+   Grassland       0.76      0.71      0.74       160
+    Mountain       0.68      0.76      0.72       160
+     Parking       0.83      0.82      0.83       160
+        Port       0.82      0.64      0.72       160
+ Residential       0.73      0.79      0.76       160
+
+    accuracy                           0.75      1600
+   macro avg       0.76      0.75      0.75      1600
+weighted avg       0.76      0.75      0.75      1600
