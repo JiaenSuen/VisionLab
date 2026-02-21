@@ -53,10 +53,14 @@ The following models are included : <br>
 
 | Model          | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs  |  
 | -------------  | -------------  | ------------- | ----------|------------- | 
-| GoogLeNet     | 95.16%          | 68.29%        | 200       |0.0496
-| GoogLeNet (P) | 99.63%          | 82.87%        | 100       |0.0611
-| HighwayNet 23 | 100.00%         | 76.96%        | 100       |0.0969
-| ResNet18      |                 |               | 100       |
-| ResNet18 (P)  | 99.49%          | 86.01%        | 100       |0.2817
-| ResNet34 (P)  | 83.63%          | 79.50%        | 1         |0.5837
-| DenseNet121   | XX.XX%          | XX.XX%        | 0         |
+| GoogLeNet      | 95.16%         | 68.29%        | 200       |0.0496
+| GoogLeNet (P)  | 99.63%         | 82.87%        | 100       |0.0611
+| HighwayNet 23  | 100.00%        | 76.96%        | 100       |0.0969
+| ResNet18       |                |               | 100       |
+| ResNet18 (P)   | 99.49%         | 86.01%        | 100       |0.2817
+| ResNet34 (P)   | 83.63%         | 79.50%        | 1         |0.5837
+| InceptionV2    | XX.XX%         | XX.XX%        | 100       |
+| InceptionV3    | XX.XX%         | XX.XX%        | 100       |
+| Xception       | XX.XX%         | XX.XX%        | 100       |
+| SqueezeNet     | XX.XX%         | XX.XX%        | 100       |
+| DenseNet121    | XX.XX%         | XX.XX%        | 0         |
