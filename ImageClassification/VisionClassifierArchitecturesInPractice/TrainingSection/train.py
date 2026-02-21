@@ -17,7 +17,7 @@ from tqdm import tqdm
 
 def Train(modelName="", datasetName="",device="cuda",epochs=100):
 
-    
+    torch.cuda.empty_cache()
 
     if modelName.lower() not in  Existing_model_names:
         print(f"Model {modelName} not recognized. Available models are: {Existing_model_names}")
@@ -30,20 +30,16 @@ def Train(modelName="", datasetName="",device="cuda",epochs=100):
 
     # Training Params
     learning_rate = 1e-3
-    batch_size = 1024
+    batch_size = 256
     num_epochs = epochs
 
     # Model
     model = modelRouter[modelName](num_classes=num_classes_dict[datasetName.lower()]) 
     model.to(device)
 
-    if modelName == 'alexnet':
-        input_size = 224
-    else:
-        input_size = 32
 
     # Data Loader
-    train_loader = datasetRouter_dict[datasetName].GetTrainLoader(batch_size=batch_size ,input_size=input_size)
+    train_loader = datasetRouter_dict[datasetName].GetTrainLoader(batch_size=batch_size)
     
     
     criterion = nn.CrossEntropyLoss()

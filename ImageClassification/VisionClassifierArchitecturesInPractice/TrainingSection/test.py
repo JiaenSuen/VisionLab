@@ -33,9 +33,6 @@ def Test(modelName="", datasetName="",device="cuda"):
     model = modelRouter[modelName](num_classes=num_classes_dict[datasetName.lower()]) 
     model = load_model(model, f"trainedRelease/{datasetName}_{modelName}.pth")
 
-    if modelName == 'alexnet':
-        input_size = 224
-    else:
-        input_size = 32
-    test_loader = datasetRouter_dict[datasetName].GetTestLoader(batch_size=512, input_size=input_size)
+
+    test_loader = datasetRouter_dict[datasetName].GetTestLoader(batch_size=256)
     check_accuracy(test_loader, model)

@@ -8,11 +8,11 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 ## **Classifier Models**
 ### CNN
 
-| 2014 | 2015 |2016 |2017 |2018 |2019|2020|
+| 2014 | 2015 |2016 |2017 |2018 |2019|2021|
 | ---| ---  | --- | --- |--- |--- |--- |
 |VGG|Highway|Xception|DenseNet|MobileNetV2|EfficientNet|RegNet|
 |NIN|ResNet|SqueezeNet |ShuffleNet|ShuffleNetV2|HRNet|.|
-|All-ConvNet|InceptionV2|Wide ResNet|MobileNet|MnasNet|.|.|
+|All-ConvNet|InceptionV2|Wide ResNet|MobileNet|MnasNet|CSPNet|.|
 |InceptionV1|InceptionV3|ResNeXt|NASNet|.|.|.|
 |.|.|ResNetV2|SENet |.|.|.|
 |.|.|InceptionV4|.|.|.|.|
@@ -53,9 +53,10 @@ The following models are included : <br>
 
 | Model          | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs  |  
 | -------------  | -------------  | ------------- | ----------|------------- | 
-| AlexNet (P)  | 00.00%         | 00.00%        | 100       |1.4203
-| GoogLeNet    | 95.16%         | 68.29%        | 200       |0.0496
-| GoogLeNet (P) | 99.63%         | 82.87%        | 100       |0.0611
-| ResNet18(P)  | 99.49%         | 86.01%        | 100       |0.2817
-| ResNet34(P)  | 83.63%         | 79.50%        | 1         |0.5837
-| DenseNet121  | XX.XX%         | XX.XX%        | 0         |
+| GoogLeNet     | 95.16%          | 68.29%        | 200       |0.0496
+| GoogLeNet (P) | 99.63%          | 82.87%        | 100       |0.0611
+| HighwayNet 23 | 100.00%         | 76.96%        | 100       |0.0969
+| ResNet18      |                 |               | 100       |
+| ResNet18 (P)  | 99.49%          | 86.01%        | 100       |0.2817
+| ResNet34 (P)  | 83.63%          | 79.50%        | 1         |0.5837
+| DenseNet121   | XX.XX%          | XX.XX%        | 0         |
