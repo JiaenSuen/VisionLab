@@ -34,8 +34,11 @@ CRNNs are typically paired with CTC (Connectionist Temporal Classification) as t
 * Automatically handles inputs and outputs of different lengths
 * Solving time alignment issues
 
-### Research Paper
+### Research Paper Reference , 2015
 CRNN (Convolutional Recurrent Neural Network) was originally proposed by Baoguang Shi et al. and published in the paper "An End-to-End Trainable Neural Network for Image-based Sequence Recognition and Its Application to Scene Text Recognition". This research aims to solve the problem of recognizing sequential data in images, especially scene text recognition, and proposes a deep neural network architecture that can be trained end-to-end and does not require segmentation.
+
+The core contribution of this paper lies in integrating Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNNs) into a single, unified framework. The CNN is responsible for extracting discriminative high-order visual features from the input image; subsequently, the feature maps are converted into sequence form, and their temporal dependencies are modeled by a Bidirectional Long Short-Term Memory (BiLSTM) network; finally, Connectionist Temporal Classification (CTC) is used as the transcription layer and loss function, enabling the model to complete training without requiring character-by-character alignment annotation. This design effectively overcomes the limitations of traditional OCR systems that rely on character segmentation and manual feature engineering.
+
 
 Experimental results show that CRNN achieved state-of-the-art performance on multiple public scene text datasets at the time (2015), while also possessing advantages such as relatively simple parameter count, ability to handle variable-length inputs, and generalizability to other image sequence recognition tasks.
 
@@ -53,17 +56,23 @@ Dataset Structure - Each image file is named based on the text it represents (fo
 
 ## Training Method
 ### Loss Function :  CTC loss
-Connectionist Temporal Classification Loss (CTC Loss)
+Connectionist Temporal Classification (CTC) is a loss function specifically designed for variable-length sequence recognition, commonly used in tasks such as speech recognition and scene text recognition. Its core purpose is to address the problem of "lack of explicit alignment between the input sequence and the target label," enabling end-to-end training of the model without progressive alignment annotations. The key mechanism of CTC is the introduction of a special blank symbol, allowing for repetition and blanking in the temporal dimension, forming multiple possible alignment paths. Finally, the model sums the probabilities of all valid paths that can be mapped to the target sequence, using this as the conditional probability of the target sequence. This probability and gradient can be efficiently calculated using dynamic programming (forward-backward algorithm). This method avoids the dependence of traditional sequence models on precise temporal alignment, significantly reducing annotation costs while improving the model's resilience and generalization ability in practical applications.
+
 ### Optimizer   :   Adam Optimizer
-Adam retains Momentume's gradient rate adjust based on the direction of past gradients and Adam's learning rate adjustment based on the squared value of past gradients. In addition, Adam performs parameter "Deviation Correction", ensuring that the learning rate has a defined range for each iteration, resulting in more stable parameter updates.
+Adam retains Momentume's gradient rate adjust based on the direction of past gradients and Adam's learning rate adjustment based on the squared value of past gradients. In addition, Adam performs parameter "Deviation Correction", ensuring that the learning rate has a defined range for each iteration, resulting in more stable parameter updates.   
+Learning Rate : 1e-4
 ### Reduce LR On Plateau
+In this project, I used PyTorch's ReduceLROnPlateau as a learning rate scheduling strategy to dynamically adjust the learning rate during model training. This method monitors a specified validation metric (set to mode='min', typically corresponding to validation loss). When this metric does not significantly decrease within 8 consecutive epochs of patience, the current learning rate is multiplied by factor=0.5, effectively reducing it to half its original value. This mechanism automatically reduces the step size when the model enters a convergence plateau, allowing for more precise parameter updates and preventing oscillations or missing better local minima. Simultaneously, verbose=True outputs prompts during learning rate adjustments, facilitating tracking of the training status. This strategy improves model stability and final convergence quality.
 
 ## Validation Metrics
 
 
 ### Character Error Rate / Character Accuracy
+In this project, I used the character-level edit distance (Levenshtein distance) as the evaluation basis to measure the model's recognition ability at a fine-grained level. For each predicted character string and the true character string, the minimum edit distance between them (including the number of insertions, deletions, and replacements) was calculated, and the total edit distance of all samples was divided by the total number of characters to obtain the Character Error Rate (CER). This metric reflects the proportion of errors the model makes at the overall character level; the lower the value, the better the recognition quality. Furthermore, I defined Character Accuracy as 1 − CER and converted it to a percentage form to make the accuracy rate more intuitive. CER is particularly suitable for analyzing cases of partial recognition errors, such as predictions that are only wrong by one or two characters, and can reflect the actual performance of the model at the character recognition level in detail, rather than being completely zeroed out by errors in the entire sentence.
 
 ### OCR Full Accuracy
+OCR Full Accuracy employs a strict sentence-by-sentence comparison standard, considering a recognition as correct only when the model's predicted string completely matches the actual string. This metric is calculated by dividing the number of correct samples by the total number of samples to obtain the overall sequence accuracy. Unlike CER, Sequence Accuracy does not allow any character errors, thus better reflecting the model's reliability in practical applications. In real-world OCR systems, even a single character error can lead to semantic errors or information distortion; therefore, this metric can be considered a key measure of system usability. By simultaneously observing CER and OCR Full Accuracy, I can comprehensively evaluate model performance from two perspectives: "fine-grained character quality" and "overall recognition success rate."
+
 
 ## Result
 ### Training Curve
