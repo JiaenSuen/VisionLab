@@ -30,7 +30,7 @@ class NiN(nn.Module):
         x = self.features2(x)
         x = F.max_pool2d(x, kernel_size=3, stride=2)
         x = self.features3(x)
-        x = F.adaptive_avg_pool2d(x, (1, 1))
+        x = F.adaptive_avg_pool2d(x, (1, 1)) # Global Average Pooling ( Implement by adaptive average pooling )
         x = torch.flatten(x, start_dim=1)
 
         return x
