@@ -53,9 +53,9 @@ Dataset Structure - Each image file is named based on the text it represents (fo
 
 ## Training Method
 ### Loss Function :  CTC loss
-
-### Optimizer : Adam
-
+Connectionist Temporal Classification Loss (CTC Loss)
+### Optimizer   :   Adam Optimizer
+Adam retains Momentume's gradient rate adjust based on the direction of past gradients and Adam's learning rate adjustment based on the squared value of past gradients. In addition, Adam performs parameter "Deviation Correction", ensuring that the learning rate has a defined range for each iteration, resulting in more stable parameter updates.
 ### Reduce LR On Plateau
 
 ## Validation Metrics
