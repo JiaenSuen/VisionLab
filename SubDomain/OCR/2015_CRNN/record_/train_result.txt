@@ -1,0 +1,8 @@
+{'loss': 0.0030789876485520853, 'cer': 0.0, 'char_accuracy': 100.0, 'sequence_accuracy': 100.0}
+
+======= Evaluation Result =======
+Loss                   : 0.0031
+Character Error Rate   : 0.0000
+Character Accuracy     : 100.00%
+OCR Full Accuracy      : 100.00%
+=================================
