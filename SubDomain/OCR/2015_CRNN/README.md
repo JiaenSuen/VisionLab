@@ -71,7 +71,7 @@ Adam retains Momentume's gradient rate adjust based on the direction of past gra
 ### Demo Test
 ![image](record_/crnn_test.png)
 ### Final Accuracy
-|Dataset|Loss|Character Error Rate |Character Accuracy|OCR Full Accuracy |
+|Dataset|CTC Loss|Character Error Rate |Character Accuracy|OCR Full Accuracy |
 |-|-|-|-|-| 
 |Train|0.0031 |0.0000 | 100.00% |100.00%  |
 |Test |0.0425 |0.0100 |  99.00% | 95.02%  |
