@@ -1,8 +1,6 @@
 # Applying CRNN to CAPTCHA Recognition
 ## Introduction
-CRNN (Convolutional Recurrent Neural Network) is a deep learning architecture that combines convolutional neural networks (CNN) and recurrent neural networks (RNN) to specifically process data that has spatial structure and sequential characteristics.
-
-In computer vision and text recognition tasks, images themselves have spatial features, while text has time series or language sequence properties. Therefore, CRNN provides an end-to-end modeling approach.
+CRNN (Convolutional Recurrent Neural Network) is a deep learning architecture that combines convolutional neural networks (CNN) and recurrent neural networks (RNN) to specifically process data that has spatial structure and sequential characteristics. In computer vision and text recognition tasks, images themselves have spatial features, while text has time series or language sequence properties. Therefore, CRNN provides an end-to-end modeling approach.
 
 Typical application scenarios of CRNN include :
 * Scene Text Recognition
@@ -14,7 +12,8 @@ In this project I implemented and demonstrating its application in OCR and CAPTC
 
 
 ## Architecture and Technical Details
-![image_of_CRNN_Architecture](record_/CRNN_architecture.png)
+![image_of_CRNN_Architecture](record_/CRNN_architecture.png)  
+
 CRNN typically contains three main modules  :
 ### CNN Feature Extractor
 This part typically employs convolutional backbone networks such as LeNet, VGG, or others, with the aim of :
