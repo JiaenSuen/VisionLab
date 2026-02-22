@@ -8,14 +8,14 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 ## **Classifier Models**
 ### CNN
 
-| 2014 | 2015 |2016 |2017 |2018 |2019|2021|
-| ---| ---  | --- | --- |--- |--- |--- |
-|VGG|Highway|Xception|DenseNet|MobileNetV2|EfficientNet|RegNet|
-|NIN|ResNet|SqueezeNet |ShuffleNet|ShuffleNetV2|HRNet|.|
-|All-ConvNet|InceptionV2|Wide ResNet|MobileNet|MnasNet|CSPNet|.|
-|InceptionV1|InceptionV3|ResNeXt|NASNet|.|.|.|
-|.|.|ResNetV2|SENet |.|.|.|
-|.|.|InceptionV4|.|.|.|.|
+| 2014      | 2015          |2016        |2017      |2018           |2019          |2021    |
+| ---       | ---           | ---        | ---      |---            |---           |---     |
+|NIN        |InceptionV2    |InceptionV4 |DenseNet  |MobileNetV2    |EfficientNet  |RegNet  |
+|VGG        |InceptionV3    |SqueezeNet  |ShuffleNet|ShuffleNetV2   |HRNet         |.       |
+|InceptionV1|Highway        |Wide ResNet |MobileNet |MnasNet        |CSPNet        |.       |
+|All-ConvNet|ResNet         |ResNetV2    |NASNet    |.              |.             |.       |
+|.          |.              |Xception    |SENet     |.              |.             |.       |
+|.          |.              |ResNeXt     |.         |.              |.             |.       |
 
 ### Vision-Transformer /  CNN-Transformer
 | 2020 | 2021 |2022 |2023 |2024 |2025|
@@ -46,21 +46,37 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 * MedMNIST
  
 
-### CIFAR-10
+### CIFAR-10 (with no Data Augmentation)
 CIFAR-10: 60,000 32x32 color images in 10 classes (50,000 train, 10,000 test) .
 Record Accuracy , Epochs , *GFLOPs Per Image*  <br><br>
-The following models are included : <br>
+(P)   :   PyTorch Pretrained Model API<br>
+The following models are included : <br>  
 
-| Model          | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs  |  
+| Model          | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      |  
 | -------------  | -------------  | ------------- | ----------|------------- | 
 | GoogLeNet      | 95.16%         | 68.29%        | 200       |0.0496
 | GoogLeNet (P)  | 99.63%         | 82.87%        | 100       |0.0611
+| InceptionV2    | 99.01%         | 72.91%        | 100       |0.0809
+| InceptionV3    | XX.XX%         | XX.XX%        | 100       |
 | HighwayNet 23  | 100.00%        | 76.96%        | 100       |0.0969
 | ResNet18       |                |               | 100       |
 | ResNet18 (P)   | 99.49%         | 86.01%        | 100       |0.2817
-| ResNet34 (P)   | 83.63%         | 79.50%        | 1         |0.5837
-| InceptionV2    | XX.XX%         | XX.XX%        | 100       |
-| InceptionV3    | XX.XX%         | XX.XX%        | 100       |
+| ResNet34 (P)   | 99.30%         | 84.54%        | 100       |0.5837
 | Xception       | XX.XX%         | XX.XX%        | 100       |
 | SqueezeNet     | XX.XX%         | XX.XX%        | 100       |
 | DenseNet121    | XX.XX%         | XX.XX%        | 0         |
+
+
+
+
+
+
+## Addendum : Models Research
+* NIN : Network In Network [Dec 2013]
+* VGG : Very Deep Convolutional Networks for Large-Scale Image Recognition [Sep 2014]
+* GoogLeNet (Inception-V1) : Going Deeper with Convolutions [Sep 2014]
+* All-ConvNet : Striving for Simplicity: The All Convolutional Net [Dec 2014]
+* Inception-V2 : Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift [Feb 2015]
+* Inception-V3 : Rethinking the Inception Architecture for Computer Vision [Dec 2015]
+* Highway Network : Highway Networks [May 2015]
+* ResNet : Deep Residual Learning for Image Recognition [Dec 2015]

@@ -11,7 +11,7 @@ if __name__ == "__main__":
     print("Select Training or Testing by input 1 or 2 respectively.")
     choice = input("Enter 1 for Training, 2 for Testing : ")
     if choice == '1': 
-        epochs_input = input("Set Epochs for Training (default is 100):  ")
+        epochs_input = input("Set Epochs for Training (default is 100) : ")
         epochs = int(epochs_input) if epochs_input.isdigit() else 100
 
         modelName = input("Enter the model name (e.g., resnet18) : ")
