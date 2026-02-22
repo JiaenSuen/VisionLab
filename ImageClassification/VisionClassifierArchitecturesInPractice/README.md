@@ -11,11 +11,11 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 | 2014      | 2015          |2016        |2017      |2018           |2019          |2021    |
 | ---       | ---           | ---        | ---      |---            |---           |---     |
 |NIN        |InceptionV2    |InceptionV4 |DenseNet  |MobileNetV2    |EfficientNet  |RegNet  |
-|VGG        |InceptionV3    |SqueezeNet  |ShuffleNet|ShuffleNetV2   |HRNet         |.       |
+|VGG        |InceptionV3    |ResNetV2    |ShuffleNet|ShuffleNetV2   |HRNet         |.       |
 |InceptionV1|Highway        |Wide ResNet |MobileNet |MnasNet        |CSPNet        |.       |
-|All-ConvNet|ResNet         |ResNetV2    |NASNet    |.              |.             |.       |
-|.          |.              |Xception    |SENet     |.              |.             |.       |
-|.          |.              |ResNeXt     |.         |.              |.             |.       |
+|All-ConvNet|ResNet         |Xception    |NASNet    |.              |.             |.       |
+|.          |.              |ResNeXt     |SENet     |.              |.             |.       |
+|.          |.              |SqueezeNet  |.         |.              |.             |.       |
 
 ### Vision-Transformer /  CNN-Transformer
 | 2020 | 2021 |2022 |2023 |2024 |2025|
@@ -76,7 +76,13 @@ The following models are included : <br>
 * VGG : Very Deep Convolutional Networks for Large-Scale Image Recognition [Sep 2014]
 * GoogLeNet (Inception-V1) : Going Deeper with Convolutions [Sep 2014]
 * All-ConvNet : Striving for Simplicity: The All Convolutional Net [Dec 2014]
-* Inception-V2 : Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift [Feb 2015]
-* Inception-V3 : Rethinking the Inception Architecture for Computer Vision [Dec 2015]
+* InceptionV2 : Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift [Feb 2015]
+* InceptionV3 : Rethinking the Inception Architecture for Computer Vision [Dec 2015]
 * Highway Network : Highway Networks [May 2015]
 * ResNet : Deep Residual Learning for Image Recognition [Dec 2015]
+* InceptionV4 : Inception-v4, Inception-ResNet and the Impact of Residual Connections on Learning [Feb 2016]
+* ResNet-v2 : Identity Mappings in Deep Residual Networks [Mar 2016]
+* Wide ResNet : Wide Residual Networks [May 2016]
+* Xception : Xception: Deep Learning with Depthwise Separable Convolutions [Oct 2016]
+* ResNeXt : Aggregated Residual Transformations for Deep Neural Networks [Nov 2016]
+* SqueezeNet : AlexNet-level accuracy with 50x fewer parameters and <0.5MB model size [Feb 2016]

@@ -9,7 +9,7 @@ import torchvision
 from tqdm import tqdm
 import os
 
-from models.ResNetsV1 import *
+from models.ResNetV1 import *
 from models.utils import check_accuracy,save_model,load_model
 from models._modelRouter import modelRouter,Existing_model_names
 from TrainingSection.dataset import datasetRouter_dict ,Existing_dataset_names,num_classes_dict
