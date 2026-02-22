@@ -8,14 +8,14 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 ## **Classifier Models**
 ### CNN
 
-| 2014      | 2015          |2016        |2017      |2018           |2019          |2021    |
-| ---       | ---           | ---        | ---      |---            |---           |---     |
-|NIN        |InceptionV2    |InceptionV4 |DenseNet  |MobileNetV2    |EfficientNet  |RegNet  |
-|VGG        |InceptionV3    |ResNetV2    |ShuffleNet|ShuffleNetV2   |HRNet         |.       |
-|InceptionV1|Highway        |Wide ResNet |MobileNet |MnasNet        |CSPNet        |.       |
-|All-ConvNet|ResNet         |Xception    |NASNet    |.              |.             |.       |
-|.          |.              |ResNeXt     |SENet     |.              |.             |.       |
-|.          |.              |SqueezeNet  |.         |.              |.             |.       |
+| 2014      | 2015          |2016        |2017      |2018           |2019          |2021            |
+| ---       | ---           | ---        | ---      |---            |---           |---             |
+|NIN        |InceptionV2    |InceptionV4 |MobileNet |MobileNetV2    |EfficientNet  |EfficientNetV2  |
+|VGG        |InceptionV3    |ResNetV2    |ShuffleNet|ShuffleNetV2   |HRNet         |RegNet          |
+|InceptionV1|Highway        |Wide ResNet |DenseNet  |MnasNet        |CSPNet        |.               |
+|All-ConvNet|ResNet         |Xception    |NASNet    |.              |.             |.               |
+|.          |.              |ResNeXt     |SENet     |.              |.             |.               |
+|.          |.              |SqueezeNet  |.         |.              |.             |.               |
 
 ### Vision-Transformer /  CNN-Transformer
 | 2020 | 2021 |2022 |2023 |2024 |2025|
@@ -72,6 +72,7 @@ The following models are included : <br>
 
 
 ## Addendum : Models Research
+### Part 1
 * NIN : Network In Network [Dec 2013]
 * VGG : Very Deep Convolutional Networks for Large-Scale Image Recognition [Sep 2014]
 * GoogLeNet (Inception-V1) : Going Deeper with Convolutions [Sep 2014]
@@ -85,4 +86,18 @@ The following models are included : <br>
 * Wide ResNet : Wide Residual Networks [May 2016]
 * Xception : Xception: Deep Learning with Depthwise Separable Convolutions [Oct 2016]
 * ResNeXt : Aggregated Residual Transformations for Deep Neural Networks [Nov 2016]
+### Part 2
 * SqueezeNet : AlexNet-level accuracy with 50x fewer parameters and <0.5MB model size [Feb 2016]
+* MobileNets : Efficient Convolutional Neural Networks for Mobile Vision Applications [Apr 2017]
+* ShuffleNet : An Extremely Efficient Convolutional Neural Network for Mobile Devices [Jul 2017]
+* DenseNet : Densely Connected Convolutional Networks [Aug 2016]
+* NASNet :Learning Transferable Architectures for Scalable Image Recognition [Jul 2017]
+* SENet : Squeeze-and-Excitation Networks [Sep 2017]
+* MobileNetV2 : Inverted Residuals and Linear Bottlenecks [Jan 2018]
+* ShuffleNetV2 : Practical Guidelines for Efficient CNN Architecture Design [Jul 2018]
+* MnasNet : Platform-Aware Neural Architecture Search for Mobile [Jul 2018]
+* EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks [May 2019]
+* HRNet : Deep High-Resolution Representation Learning for Visual Recognition [Aug 2019]
+* CSPNet : A New Backbone that can Enhance Learning Capability of CNN [Nov 2019]
+* EfficientNetV2 : Smaller Models and Faster Training [Apr 2021]
+* RegNet : Self-Regulated Network for Image Classification [Jan 2021]
