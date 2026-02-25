@@ -6,12 +6,12 @@ Ranging from traditional vision techniques to modern neural architectures, such 
 
 ## Image Classification
 [Image Classification Projects](ImageClassification/)   
-* Vision Classifier Architectures In Practice
+* Vision Classifier Architectures In Practice [link](ImageClassification/VisionClassifierArchitecturesInPractice/)
 
 
 
 ## OCR 
 [OCR Project](SubDomain/OCR)   
-*  Applying CRNN to CAPTCHA Recognition
+*  Applying CRNN to CAPTCHA Recognition [link](SubDomain/OCR/2015_CRNN/)   
 
 
