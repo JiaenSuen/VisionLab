@@ -1,5 +1,12 @@
-import torch
+import torchvision
 import torch.nn as nn
+
+
+
+
+
+
+
 
 
 class Bottleneck(nn.Module): # 50+
@@ -122,17 +129,76 @@ class ResNet(nn.Module):
 
 
 
-def ResNet18(num_classes,img_channels=3):
+def build_ResNet18(num_classes,img_channels=3):
     return ResNet(BasicBlock, [2,2,2,2], img_channels, num_classes)
 
-def ResNet34(num_classes,img_channels=3):
+def build_ResNet34(num_classes,img_channels=3):
     return ResNet(BasicBlock, [3,4,6,3], img_channels, num_classes)
 
-def ResNet50(num_classes,img_channels=3):
+def build_ResNet50(num_classes,img_channels=3):
     return ResNet(Bottleneck, [3,4,6,3], img_channels, num_classes)
 
-def ResNet101(num_classes,img_channels=3):
+def build_ResNet101(num_classes,img_channels=3):
     return ResNet(Bottleneck, [3,4,23,3], img_channels, num_classes)
 
-def ResNet152(num_classes,img_channels=3):
+def build_ResNet152(num_classes,img_channels=3):
     return ResNet(Bottleneck, [3,8,36,3], img_channels, num_classes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def build_resnet18pt(num_classes=10):
+    model = torchvision.models.resnet18(weights="IMAGENET1K_V1")
+    model.maxpool = nn.Identity()
+    model.fc = nn.Sequential(
+        nn.Linear(512, 100),
+        nn.ReLU(),
+        nn.Linear(100, num_classes)
+    )
+    return model
+
+def build_resnet34pt(num_classes=10):
+    model = torchvision.models.resnet34(weights="IMAGENET1K_V1")
+    model.maxpool = nn.Identity()
+    model.fc = nn.Sequential(
+        nn.Linear(512, 100),
+        nn.ReLU(),
+        nn.Linear(100, num_classes)
+    )
+    return model
