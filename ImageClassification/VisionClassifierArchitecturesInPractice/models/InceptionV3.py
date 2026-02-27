@@ -13,16 +13,23 @@ def build_inception3_tiny(num_classes):
 
 # Basic Convolutional Layer
 class BasicConv2d(nn.Module):
-    def __init__(self, in_channels, out_channels, **kwargs):
+    def __init__(self, in_channels, out_channels,
+                 kernel_size, stride=1, padding=0):
         super().__init__()
-        self.conv = nn.Conv2d(in_channels, out_channels, bias=False, **kwargs)
-        self.bn = nn.BatchNorm2d(out_channels, eps=0.001)
+
+        self.conv = nn.Conv2d(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride,
+            padding,
+            bias=False
+        )
+        self.bn = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
-        x = self.conv(x)
-        x = self.bn(x)
-        return self.relu(x)
+        return self.relu(self.bn(self.conv(x)))
     
 
 # Inception A Module : ( 35 × 35 )
@@ -235,7 +242,7 @@ class InceptionV3(nn.Module):
         return self.fc(x)
     
 
-
+# Inception V3 Tiny Version
 
 class TinyStem(nn.Module):
     def __init__(self):
@@ -362,7 +369,7 @@ class InceptionV3Tiny(nn.Module):
 
         self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.dropout = nn.Dropout(0.3)
-        self.fc = nn.Linear(320, num_classes)
+        self.fc = nn.Linear(448, num_classes)
 
     def forward(self, x):
         x = self.stem(x)
