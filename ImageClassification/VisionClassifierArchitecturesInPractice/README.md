@@ -52,20 +52,19 @@ Record Accuracy , Epochs , *GFLOPs Per Image*  <br><br>
 (P)   :   PyTorch Pretrained Model API<br>
 The following models are included : <br>  
 
-| Model          | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      |  
-| -------------  | -------------  | ------------- | ----------|------------- | 
-| GoogLeNet      | 95.16%         | 68.29%        | 200       |0.0496
-| GoogLeNet (P)  | 99.63%         | 82.87%        | 100       |0.0611
-| InceptionV2    | 99.62%         | 79.27%        | 100       |0.0771
-| InceptionV3    | XX.XX%         | XX.XX%        | 100       |
-| InceptionV3tiny| XX.XX%         | XX.XX%        | 100       |
-| HighwayNet 23  | 100.00%        | 76.96%        | 100       |0.0969
-| ResNet18       | 99.37%         | 76.42%        | 100       |0.0740
-| ResNet18 (P)   | 99.49%         | 86.01%        | 100       |0.2817
-| ResNet34 (P)   | 99.30%         | 84.54%        | 100       |0.5837
-| Xception       | XX.XX%         | XX.XX%        | 100       |
-| SqueezeNet     | XX.XX%         | XX.XX%        | 100       |
-| DenseNet121    | XX.XX%         | XX.XX%        | 0         |
+| Model           | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      |  
+| -------------   | -------------  | ------------- | ----------|------------- | 
+| GoogLeNet       | 95.16%         | 68.29%        | 200       |0.0496
+| GoogLeNet (P)   | 99.63%         | 82.87%        | 100       |0.0611
+| InceptionV2     | 99.62%         | 79.27%        | 100       |0.0771
+| InceptionV3-tiny| XX.XX%         | XX.XX%        | 100       |
+| HighwayNet 23   | 100.00%        | 76.96%        | 100       |0.0969
+| ResNet18        | 99.37%         | 76.42%        | 100       |0.0740
+| ResNet18 (P)    | 99.49%         | 86.01%        | 100       |0.2817
+| ResNet34 (P)    | 99.30%         | 84.54%        | 100       |0.5837
+| Xception        | XX.XX%         | XX.XX%        | 100       |
+| SqueezeNet      | XX.XX%         | XX.XX%        | 100       |
+| DenseNet121     | XX.XX%         | XX.XX%        | 0         |
 
 
 
