@@ -241,9 +241,9 @@ class TinyStem(nn.Module):
     def __init__(self):
         super().__init__()
         self.stem = nn.Sequential(
-            BasicConv2d(3, 32, 3, 1, 1),
-            BasicConv2d(32, 32, 3, 1, 1),
-            BasicConv2d(32, 64, 3, 2, 1),  # 32→16
+            BasicConv2d(3, 32, kernel_size=3, stride=1, padding=1),
+            BasicConv2d(32, 32, kernel_size=3, stride=1, padding=1),
+            BasicConv2d(32, 64, kernel_size=3, stride=2, padding=1),
         )
 
     def forward(self, x):
