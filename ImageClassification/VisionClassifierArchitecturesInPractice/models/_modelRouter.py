@@ -1,6 +1,7 @@
-from .ResNet    import build_resnet18pt,build_resnet34pt,build_ResNet18
+from .ResNet       import build_resnet18pt,build_resnet34pt,build_ResNet18
 from .GoogLeNet    import build_googlenet,build_googlenet_pt
 from .InceptionV2  import build_inception2
+from .InceptionV3  import build_inception3
 from .HighwayNet   import build_HighwayNet
  
 modelRouter = {
@@ -8,6 +9,7 @@ modelRouter = {
     "googlenetpt" : build_googlenet_pt,
 
     "inceptionv2" : build_inception2,
+    "inceptionv3" : build_inception3,
 
     "highwaynet23" : build_HighwayNet,
 
