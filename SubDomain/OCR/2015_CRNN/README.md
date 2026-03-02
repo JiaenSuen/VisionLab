@@ -85,4 +85,8 @@ OCR Full Accuracy employs a strict sentence-by-sentence comparison standard, con
 |Train|0.0031 |0.0000 | 100.00% |100.00%  |
 |Test |0.0425 |0.0100 |  99.00% | 95.02%  |
 
- 
+
+
+
+## Reference
+Shi, Baoguang, et al. “An End-To-End Trainable Neural Network for Image-Based Sequence Recognition and Its Application to Scene Text Recognition.” ArXiv:1507.05717 [Cs], 21 July 2015, arxiv.org/abs/1507.05717.
