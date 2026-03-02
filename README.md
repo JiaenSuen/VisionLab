@@ -10,9 +10,9 @@ Ranging from traditional vision techniques to modern neural architectures, such 
 
 
 
-## OCR 
-[OCR Project](SubDomain/OCR)   
-*  Applying CRNN to CAPTCHA Recognition [link](SubDomain/OCR/2015_CRNN/)   
+## Specialized
+[OCR Project](Specialized/OCR/)   
+*  Applying CRNN to CAPTCHA Recognition [link](Specialized/OCR/2015_CRNN/)   
 
 
 ## **Projects** 
