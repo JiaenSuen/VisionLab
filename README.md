@@ -6,14 +6,14 @@ Ranging from traditional vision techniques to modern neural architectures, such 
 
 ## Image Classification
 
-[Image Classification Projects](ImageClassification/)   
+**Image Classification Projects**
 * Vision Classifier Architectures In Practice [link](ImageClassification/VisionClassifierArchitecturesInPractice/)
 * Experiment Series : Gabor Feature Machine Learning [link](ImageClassification/ExperimentalSeries/GaborFeatureML/)
 
 [Models](ImageClassification/@Models/)   
 
 ## Specialized
-[OCR Project](Specialized/OCR/)   
+**OCR Project** 
 *  Applying CRNN to CAPTCHA Recognition [link](Specialized/OCR/2015_CRNN/)   
 
 
