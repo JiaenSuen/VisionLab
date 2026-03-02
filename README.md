@@ -17,10 +17,10 @@ Ranging from traditional vision techniques to modern neural architectures, such 
 
 ## **Projects** 
 
-**Medium Projects**
+**Tiny Projects**
 *  Simulated application of CNN in Amazon's product image search engine [link](VisionProjects_Tiny/ImageSearchEngine/)   
 
 
-**Tiny Projects**
+**Medium Projects**
 *  (High School Project 2th) [link](VisionProjects_Med/SmartHelmetDetector[second%20iteration]/)   
 
