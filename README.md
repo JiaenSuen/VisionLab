@@ -5,10 +5,12 @@ Ranging from traditional vision techniques to modern neural architectures, such 
 
 
 ## Image Classification
+
 [Image Classification Projects](ImageClassification/)   
 * Vision Classifier Architectures In Practice [link](ImageClassification/VisionClassifierArchitecturesInPractice/)
+* Experiment Series : Gabor Feature Machine Learning [link](ImageClassification/ExperimentalSeries/GaborFeatureML/)
 
-
+[Models](ImageClassification/@Models/)   
 
 ## Specialized
 [OCR Project](Specialized/OCR/)   
@@ -16,7 +18,6 @@ Ranging from traditional vision techniques to modern neural architectures, such 
 
 
 ## **Projects** 
-
 
 
 **Medium Projects**
