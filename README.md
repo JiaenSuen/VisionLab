@@ -15,11 +15,12 @@ Ranging from traditional vision techniques to modern neural architectures, such 
 *  Applying CRNN to CAPTCHA Recognition [link](SubDomain/OCR/2015_CRNN/)   
 
 
+## Projects 
 
-## Medium Projects
+### Medium Projects
 *  Simulated application of CNN in Amazon's product image search engine [link](VisionProjects_Tiny/ImageSearchEngine/)   
 
 
-## Tiny Projects
+### Tiny Projects
 *  (High School Project 2th) [link](VisionProjects_Med/SmartHelmetDetector[second%20iteration]/)   
 
