@@ -88,7 +88,7 @@ class ReductionA(nn.Module):
     
 
 
-# Inception A Module : ( 17 × 17 ) { Spatial Factorization into Asymmetric Convolutions }
+# Inception B Module : ( 17 × 17 ) { Spatial Factorization into Asymmetric Convolutions }
 class InceptionB(nn.Module):
     def __init__(self, in_channels):
         super().__init__()
@@ -123,7 +123,7 @@ class InceptionB(nn.Module):
         ], 1)
     
 
-# Efficient Grid Size Reduction Module ( 17 -> 8 ) { Spatial Factorization into Asymmetric Convolutions }
+# Efficient Grid Size Reduction Module B ( 17 -> 8 ) { Spatial Factorization into Asymmetric Convolutions }
 class ReductionB(nn.Module):
     def __init__(self, in_channels):
         super().__init__()
@@ -150,7 +150,7 @@ class ReductionB(nn.Module):
         ], 1)
     
 
-# Inception A Module : ( 8 × 8 ) { Spatial Factorization into Asymmetric Convolutions }
+# Inception C Module : ( 8 × 8 ) { Spatial Factorization into Asymmetric Convolutions }
 class InceptionC(nn.Module):
     def __init__(self, in_channels):
         super().__init__()
