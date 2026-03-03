@@ -217,6 +217,8 @@ class InceptionV3(nn.Module):
             InceptionA(192, pool_features=32),
             InceptionA(256, pool_features=64),
             InceptionA(288, pool_features=64),
+            InceptionA(288, pool_features=64),
+            InceptionA(288, pool_features=64),
         )
 
         # 35×35×288 → 17×17×768
