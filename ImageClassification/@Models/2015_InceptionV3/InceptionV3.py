@@ -8,8 +8,8 @@ def build_inception3(num_classes):
 def build_inception3_tiny(num_classes):
     return InceptionV3Tiny(num_classes)
 
-# Inception-v3 Network Architecture [192 → 256 → 288 → 768 → 1280 → 2048]
-# Inception-v3 TinyNet Architecture [64 → 96 → 128 → 256 → 384 → 512] with Tiny Version Modules
+# Inception-v3 Network Architecture 
+# Inception-v3 TinyNet Architecture with Tiny Version Modules
 
 # Basic Convolutional Layer
 class BasicConv2d(nn.Module):
@@ -155,43 +155,53 @@ class InceptionC(nn.Module):
     def __init__(self, in_channels):
         super().__init__()
 
-        self.branch1x1 = BasicConv2d(in_channels, 320, kernel_size=1)
+        # Branch 1 
+        self.branch1 = BasicConv2d(in_channels, 320, kernel_size=1)
 
-        self.branch3x3 = nn.Sequential(
-            BasicConv2d(in_channels, 384, kernel_size=1),
-        )
+        # Branch 2: 1×1 →  (1×3 + 3×1) ， 768
+        self.branch2_1x1 = BasicConv2d(in_channels, 384, kernel_size=1)
+        self.branch2_1x3 = BasicConv2d(384, 384, kernel_size=(1, 3), padding=(0, 1))
+        self.branch2_3x1 = BasicConv2d(384, 384, kernel_size=(3, 1), padding=(1, 0))
 
-        self.branch3x3_1 = BasicConv2d(384, 384, kernel_size=(1,3), padding=(0,1))
-        self.branch3x3_2 = BasicConv2d(384, 384, kernel_size=(3,1), padding=(1,0))
+        # Branch 3: 
+        self.branch3_1x1 = BasicConv2d(in_channels, 384, kernel_size=1) 
+        self.branch3_3x3 = BasicConv2d(384, 384, kernel_size=3, padding=1)     
+        self.branch3_1x3 = BasicConv2d(384, 384, kernel_size=(1, 3), padding=(0, 1))
+        self.branch3_3x1 = BasicConv2d(384, 384, kernel_size=(3, 1), padding=(1, 0))
 
+        # Branch 4: pool + 1×1
         self.branch_pool = nn.Sequential(
-            nn.AvgPool2d(3, stride=1, padding=1),
+            nn.AvgPool2d(kernel_size=3, stride=1, padding=1),
             BasicConv2d(in_channels, 192, kernel_size=1)
         )
 
     def forward(self, x):
-        branch3x3 = self.branch3x3(x)
-        branch3x3 = torch.cat([
-            self.branch3x3_1(branch3x3),
-            self.branch3x3_2(branch3x3)
-        ], 1)
+        # Branch 1
+        b1 = self.branch1(x)
 
-        return torch.cat([
-            self.branch1x1(x),
-            branch3x3,
-            self.branch_pool(x)
-        ], 1)
-    
+        # Branch 2
+        tmp2 = self.branch2_1x1(x)
+        b2 = torch.cat([self.branch2_1x3(tmp2), self.branch2_3x1(tmp2)], dim=1)
+
+        # Branch 3
+        tmp3 = self.branch3_1x1(x)
+        b3 = torch.cat([self.branch3_1x3(tmp3), self.branch3_3x1(tmp3)], dim=1)
+
+        # Branch pool
+        b4 = self.branch_pool(x)
+
+ 
+        return torch.cat([b1, b2, b3, b4], dim=1)
 
 
 
 
-
-# Inception-v3 Network Architecture [192 → 256 → 288 → 768 → 1280 → 2048]
+# Inception-v3 Network Architecture 
 class InceptionV3(nn.Module):
     def __init__(self, num_classes=1000):
         super().__init__()
 
+        # Stem: 299×299×3 → 35×35×192
         self.stem = nn.Sequential(
             BasicConv2d(3, 32, kernel_size=3, stride=2),
             BasicConv2d(32, 32, kernel_size=3),
@@ -202,14 +212,17 @@ class InceptionV3(nn.Module):
             nn.MaxPool2d(3, stride=2),
         )
 
+        # 35×35×192 → 35×35×288
         self.inception_a = nn.Sequential(
-            InceptionA(192, 32),
-            InceptionA(256, 64),
-            InceptionA(288, 64),
+            InceptionA(192, pool_features=32),
+            InceptionA(256, pool_features=64),
+            InceptionA(288, pool_features=64),
         )
 
+        # 35×35×288 → 17×17×768
         self.reduction_a = ReductionA(288)
 
+        # 17×17×768 → 17×17×768 
         self.inception_b = nn.Sequential(
             InceptionB(768),
             InceptionB(768),
@@ -217,15 +230,17 @@ class InceptionV3(nn.Module):
             InceptionB(768),
         )
 
+        # 17×17×768 → 8×8×1280
         self.reduction_b = ReductionB(768)
 
+        # 8×8×1280 → 8×8×2048
         self.inception_c = nn.Sequential(
             InceptionC(1280),
             InceptionC(2048),
         )
 
-        self.avgpool = nn.AdaptiveAvgPool2d((1,1))
-        self.dropout = nn.Dropout(0.5)
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.dropout = nn.Dropout(p=0.2)  
         self.fc = nn.Linear(2048, num_classes)
 
     def forward(self, x):
@@ -235,14 +250,11 @@ class InceptionV3(nn.Module):
         x = self.inception_b(x)
         x = self.reduction_b(x)
         x = self.inception_c(x)
-
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
         x = self.dropout(x)
-        return self.fc(x)
-    
-
-
+        x = self.fc(x)
+        return x
 
 
 
@@ -401,3 +413,19 @@ class InceptionV3Tiny(nn.Module):
         x = torch.flatten(x, 1)
         x = self.dropout(x)
         return self.fc(x)
+    
+
+
+ 
+
+if __name__ == "__main__":
+    model = InceptionV3(num_classes=1000)
+    model.eval()            
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+
+    dummy_input = torch.randn(2, 3, 299, 299).to(device) 
+    with torch.no_grad():
+        output = model(dummy_input)
+        print(f"out shape: {output.shape}") 
+        print(f"Output [5] :\n{output[0, :5]}")
