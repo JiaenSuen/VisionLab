@@ -9,6 +9,9 @@ from .InceptionV4tiny   import build_inception4_tiny
 from .HighwayNet        import build_HighwayNet
 from .ResNet            import build_ResNet18
 
+from .InceptionResNetV2 import build_inception_resnet_v2
+from .InceptionResNetV2tiny import build_inception_resnet_v2_tiny
+
 from .zTorchAPI import (
     build_googlenet_pt,
     build_resnet18pt,
@@ -30,6 +33,8 @@ modelRouter = {
     "resnet18": build_ResNet18,
     "resnet18pt": build_resnet18pt,
     "resnet34pt": build_resnet34pt,
-    
+
+    "inception-resnet-v2" : build_inception_resnet_v2,
+    "inception-resnet-v2-tiny" : build_inception_resnet_v2_tiny,
 }
 Existing_model_names =   list(modelRouter.keys())

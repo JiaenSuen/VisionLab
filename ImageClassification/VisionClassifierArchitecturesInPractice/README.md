@@ -52,20 +52,21 @@ Record Accuracy , Epochs , *GFLOPs Per Image*  <br><br>
 (P)   :   PyTorch Pretrained Model API<br>
 The following models are included : <br>  
 
-| Model           | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time (ms) |  
-| -------------   | -------------  | ------------- | ----------|------------- | -------------- | 
-| GoogLeNet       | 95.16%         | 68.29%        | 200       |0.0496        | 0.3103
-| GoogLeNet (P)   | 99.63%         | 82.87%        | 100       |0.0611        |
-| InceptionV2     | 99.62%         | 79.27%        | 100       |0.0771        |
-| InceptionV3-tiny| 99.76%         | 84.33%        | 100       |0.1762        |
-| InceptionV4-tiny| 99.76%         | 84.33%        | 1         |0.1774        |
-| HighwayNet 23   | 100.00%        | 76.96%        | 100       |0.0969        | 0.1789
-| ResNet18        | 99.37%         | 76.42%        | 100       |0.0740        | 
-| ResNet18 (P)    | 99.49%         | 86.01%        | 100       |0.2817        | 0.3535
-| ResNet34 (P)    | 99.30%         | 84.54%        | 100       |0.5837        |
-| Xception        | XX.XX%         | XX.XX%        | 100       |
-| SqueezeNet      | XX.XX%         | XX.XX%        | 100       |
-| DenseNet121     | XX.XX%         | XX.XX%        | 0         |
+| Model                     | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time (ms) |  
+| ------------------------- | -------------  | ------------- | ----------|------------- | -------------- | 
+| GoogLeNet                 | 95.16%         | 68.29%        | 200       |0.0496        | 0.3103
+| GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        |
+| InceptionV2               | 99.62%         | 79.27%        | 100       |0.0771        |
+| InceptionV3-tiny          | 99.76%         | 84.33%        | 100       |0.1762        |
+| InceptionV4-tiny          | 00.00%         | 00.00%        | 100       |0.1774        |
+| HighwayNet 23             | 100.00%        | 76.96%        | 100       |0.0969        | 0.1789
+| ResNet18                  | 99.37%         | 76.42%        | 100       |0.0740        | 
+| ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.3535
+| ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        |
+| InceptionResNetV2-tiny    | 00.00%         | 00.00%        | 100       |0.2255        | 0.5792
+| Xception                  | XX.XX%         | XX.XX%        | 100       |
+| SqueezeNet                | XX.XX%         | XX.XX%        | 100       |
+| DenseNet121               | XX.XX%         | XX.XX%        | 0         |
 
 
 

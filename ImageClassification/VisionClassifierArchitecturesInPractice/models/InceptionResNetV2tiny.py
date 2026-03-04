@@ -1,6 +1,12 @@
 import torch
 import torch.nn as nn
 
+
+def build_inception_resnet_v2_tiny(num_classes=1000):
+    return InceptionResNetV2Tiny(num_classes=num_classes)
+
+
+
 class BasicConv2d(nn.Module):
     def __init__(self, in_channels, out_channels, **kwargs):
         super().__init__()
