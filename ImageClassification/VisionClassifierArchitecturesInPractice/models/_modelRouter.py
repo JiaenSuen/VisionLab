@@ -1,8 +1,17 @@
-from .ResNet       import build_resnet18pt,build_resnet34pt,build_ResNet18
-from .GoogLeNet    import build_googlenet,build_googlenet_pt
-from .InceptionV2  import build_inception2
-from .InceptionV3  import build_inception3,build_inception3_tiny
-from .HighwayNet   import build_HighwayNet
+
+from .GoogLeNet         import build_googlenet
+from .InceptionV2       import build_inception2
+from .InceptionV3       import build_inception3
+from .InceptionV3tiny   import build_inception3_tiny
+
+from .HighwayNet        import build_HighwayNet
+from .ResNet            import build_ResNet18
+
+from .zTorchAPI import (
+    build_googlenet_pt,
+    build_resnet18pt,
+    build_resnet34pt,
+)
  
 modelRouter = {
     "googlenet"   : build_googlenet,

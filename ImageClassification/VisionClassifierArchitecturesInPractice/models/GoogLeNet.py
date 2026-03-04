@@ -1,17 +1,14 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torchvision.models import googlenet
+
 
 
 def build_googlenet(num_classes=1000):
     return GoogLeNet(num_classes=num_classes)
 
 
-def build_googlenet_pt(num_classes=1000):
-    model = googlenet(pretrained=True)
-    model.fc = nn.Linear(model.fc.in_features, num_classes)
-    return model
+
 
 
 class GoogLeNet(nn.Module):
