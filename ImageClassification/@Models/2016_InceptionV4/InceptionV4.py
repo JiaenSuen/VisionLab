@@ -35,11 +35,11 @@ class InceptionStem(nn.Module):
         self.conv2 = BasicConv2d(32, 32, kernel_size=3)            # 147
         self.conv3 = BasicConv2d(32, 64, kernel_size=3, padding=1) # 147
 
-        # 147 → 73
+        # 147 -> 73
         self.branch1_conv = BasicConv2d(64, 96, kernel_size=3, stride=2)
         self.branch1_pool = nn.MaxPool2d(3, stride=2)
 
-        # 73 → 71
+        # 73 -> 71
         self.branch2 = nn.Sequential(
             BasicConv2d(160, 64, kernel_size=1),
             BasicConv2d(64, 64, kernel_size=(7,1), padding=(3,0)),
@@ -52,7 +52,7 @@ class InceptionStem(nn.Module):
             BasicConv2d(64, 96, kernel_size=3)
         )
 
-        # 71 → 35
+        # 71 -> 35
         self.branch3_conv = BasicConv2d(192, 192, kernel_size=3, stride=2)
         self.branch3_pool = nn.MaxPool2d(3, stride=2)
 
@@ -62,19 +62,19 @@ class InceptionStem(nn.Module):
         x = self.conv2(x)
         x = self.conv3(x)
 
-        # 147 → 73
+        # 147 -> 73
         x = torch.cat([
             self.branch1_conv(x),
             self.branch1_pool(x)
         ], dim=1)
 
-        # 73 → 71
+        # 73 -> 71
         x = torch.cat([
             self.branch2(x),
             self.branch2_2(x)
         ], dim=1)
 
-        # 71 → 35
+        # 71 -> 35
         x = torch.cat([
             self.branch3_conv(x),
             self.branch3_pool(x)
