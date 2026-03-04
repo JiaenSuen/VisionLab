@@ -52,12 +52,13 @@ Record Accuracy , Epochs , *GFLOPs Per Image*  <br><br>
 (P)   :   PyTorch Pretrained Model API<br>
 The following models are included : <br>  
 
-| Model           | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      |  
-| -------------   | -------------  | ------------- | ----------|------------- | 
-| GoogLeNet       | 95.16%         | 68.29%        | 200       |0.0496
-| GoogLeNet (P)   | 99.63%         | 82.87%        | 100       |0.0611
+| Model           | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time |  
+| -------------   | -------------  | ------------- | ----------|------------- | -------------- | 
+| GoogLeNet       | 95.16%         | 68.29%        | 200       |0.0496        |
+| GoogLeNet (P)   | 99.63%         | 82.87%        | 100       |0.0611        |
 | InceptionV2     | 99.62%         | 79.27%        | 100       |0.0771
 | InceptionV3-tiny| 99.76%         | 84.33%        | 100       |0.1762
+| InceptionV4-tiny| 99.76%         | 84.33%        | 1         |0.1774
 | HighwayNet 23   | 100.00%        | 76.96%        | 100       |0.0969
 | ResNet18        | 99.37%         | 76.42%        | 100       |0.0740
 | ResNet18 (P)    | 99.49%         | 86.01%        | 100       |0.2817
