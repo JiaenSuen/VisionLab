@@ -32,7 +32,6 @@ class InceptionStemTiny(nn.Module):
         # Reduction 1: 32x32 -> 16x16  
         self.branch1_conv = BasicConv2d(64, 48, kernel_size=3, stride=2, padding=1)
         self.branch1_pool = nn.MaxPool2d(3, stride=2, padding=1)
-
         # Branch2 at 16x16 
         self.branch2 = nn.Sequential(
             BasicConv2d(112, 32, kernel_size=1),
@@ -44,7 +43,6 @@ class InceptionStemTiny(nn.Module):
             BasicConv2d(112, 32, kernel_size=1),
             BasicConv2d(32, 48, kernel_size=3, padding=1)
         )
-
         # Reduction 2: 16x16 -> 8x8
         self.branch3_conv = BasicConv2d(96, 96, kernel_size=3, stride=2, padding=1)
         self.branch3_pool = nn.MaxPool2d(3, stride=2, padding=1)

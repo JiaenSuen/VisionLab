@@ -57,7 +57,7 @@ The following models are included : <br>
 | GoogLeNet                 | 95.16%         | 68.29%        | 200       |0.0496        | 0.3103
 | GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        |
 | InceptionV2               | 99.62%         | 79.27%        | 100       |0.0771        |
-| InceptionV3-tiny          | 99.76%         | 84.33%        | 100       |0.1762        |
+| InceptionV3-tiny          | 99.76%         | 84.33%        | 100       |0.1762        | 0.4410
 | InceptionV4-tiny          | 00.00%         | 00.00%        | 100       |0.1774        |
 | HighwayNet 23             | 100.00%        | 76.96%        | 100       |0.0969        | 0.1789
 | ResNet18                  | 99.37%         | 76.42%        | 100       |0.0740        | 
