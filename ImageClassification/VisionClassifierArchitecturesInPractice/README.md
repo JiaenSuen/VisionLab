@@ -12,7 +12,7 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 | ---       | ---           | ---        | ---      |---            |---           |---             |
 |NIN        |InceptionV2    |InceptionV4 |MobileNet |MobileNetV2    |EfficientNet  |EfficientNetV2  |
 |VGG        |InceptionV3    |ResNetV2    |ShuffleNet|ShuffleNetV2   |HRNet         |RegNet          |
-|InceptionV1|Highway        |Wide ResNet |DenseNet  |MnasNet        |CSPNet        |.               |
+|InceptionV1|Highway        |Wide ResNet |DenseNet  |MnasNet        |CSPNet        |MobileNetV3     |
 |All-ConvNet|ResNet         |Xception    |NASNet    |.              |.             |.               |
 |.          |.              |ResNeXt     |SENet     |.              |.             |.               |
 |.          |.              |SqueezeNet  |.         |.              |.             |.               |
@@ -105,3 +105,4 @@ Current Best (with no pretrained) :  InceptionV3-tiny, InceptionV2, HighwayNet 2
 * CSPNet : A New Backbone that can Enhance Learning Capability of CNN [Nov 2019]
 * EfficientNetV2 : Smaller Models and Faster Training [Apr 2021]
 * RegNet : Self-Regulated Network for Image Classification [Jan 2021]
+* MobileNetV3 : Searching for MobileNetV3 [May 2019]
