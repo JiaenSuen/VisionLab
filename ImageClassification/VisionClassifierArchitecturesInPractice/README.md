@@ -64,11 +64,11 @@ The following models are included : <br>
 | ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.3535
 | ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        |
 | InceptionResNetV2-tiny    | 00.00%         | 00.00%        | 100       |0.2255        | 0.5792
-| Xception                  | XX.XX%         | XX.XX%        | 100       |
-| SqueezeNet                | XX.XX%         | XX.XX%        | 100       |
-| DenseNet121               | XX.XX%         | XX.XX%        | 0         |
+| Xception                  | XX.XX%         | XX.XX%        | 100       |0.0000        |
+| SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
+| DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
 
-
+Current Best (with no pretrained) :  InceptionV3-tiny, InceptionV2, HighwayNet 23
 
 
 
