@@ -2,7 +2,6 @@ import torch
 import torch.nn as nn
  
 
-
 def build_inception4(num_classes):
     return InceptionV4(num_classes)
 
@@ -20,33 +19,74 @@ class BasicConv2d(nn.Module):
         x = self.relu(x)
         return x
 
+class BasicConv2d(nn.Module):
+    def __init__(self, in_channels, out_channels, **kwargs):
+        super().__init__()
+        self.conv = nn.Conv2d(in_channels, out_channels, bias=False, **kwargs)
+        self.bn = nn.BatchNorm2d(out_channels)
+        self.relu = nn.ReLU(inplace=True)
+
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.bn(x)
+        x = self.relu(x)
+        return x
 
 class InceptionStem(nn.Module):
     def __init__(self):
         super().__init__()
 
-        self.conv1 = BasicConv2d(3, 32, kernel_size=3, stride=2)  # 149
-        self.conv2 = BasicConv2d(32, 32, kernel_size=3)           # 147
-        self.conv3 = BasicConv2d(32, 64, kernel_size=3, padding=1)
+        self.conv1 = BasicConv2d(3, 32, kernel_size=3, stride=2)   # 149
+        self.conv2 = BasicConv2d(32, 32, kernel_size=3)            # 147
+        self.conv3 = BasicConv2d(32, 64, kernel_size=3, padding=1) # 147
 
-        self.maxpool1 = nn.MaxPool2d(3, stride=2)  # 73
+        # 147 -> 73
+        self.branch1_conv = BasicConv2d(64, 96, kernel_size=3, stride=2)
+        self.branch1_pool = nn.MaxPool2d(3, stride=2)
 
-        self.conv4 = BasicConv2d(64, 80, kernel_size=1)
-        self.conv5 = BasicConv2d(80, 192, kernel_size=3)
+        # 73 -> 71
+        self.branch2 = nn.Sequential(
+            BasicConv2d(160, 64, kernel_size=1),
+            BasicConv2d(64, 64, kernel_size=(7,1), padding=(3,0)),
+            BasicConv2d(64, 64, kernel_size=(1,7), padding=(0,3)),
+            BasicConv2d(64, 96, kernel_size=3)
+        )
 
-        self.maxpool2 = nn.MaxPool2d(3, stride=2)  # 35
+        self.branch2_2 = nn.Sequential(
+            BasicConv2d(160, 64, kernel_size=1),
+            BasicConv2d(64, 96, kernel_size=3)
+        )
+
+        # 71 -> 35
+        self.branch3_conv = BasicConv2d(192, 192, kernel_size=3, stride=2)
+        self.branch3_pool = nn.MaxPool2d(3, stride=2)
 
     def forward(self, x):
+
         x = self.conv1(x)
         x = self.conv2(x)
         x = self.conv3(x)
-        x = self.maxpool1(x)
 
-        x = self.conv4(x)
-        x = self.conv5(x)
-        x = self.maxpool2(x)
+        # 147 -> 73
+        x = torch.cat([
+            self.branch1_conv(x),
+            self.branch1_pool(x)
+        ], dim=1)
+
+        # 73 -> 71
+        x = torch.cat([
+            self.branch2(x),
+            self.branch2_2(x)
+        ], dim=1)
+
+        # 71 -> 35
+        x = torch.cat([
+            self.branch3_conv(x),
+            self.branch3_pool(x)
+        ], dim=1)
 
         return x
+
 
 # Inception A
 class InceptionA(nn.Module):
@@ -89,12 +129,10 @@ class InceptionA(nn.Module):
 class InceptionAStack(nn.Module):
     def __init__(self):
         super().__init__()
-        self.stack = nn.Sequential(
-            InceptionA(192),
-            InceptionA(384),
-            InceptionA(384),
-            InceptionA(384),
-        )
+        self.stack = nn.Sequential(*[
+            InceptionA(384) for _ in range(4)
+        ])
+ 
     def forward(self, x):
         x = self.stack(x)
         return x

@@ -4,7 +4,7 @@ from .InceptionV2       import build_inception2
 from .InceptionV3       import build_inception3
 from .InceptionV3tiny   import build_inception3_tiny
 from .InceptionV4       import build_inception4
-from .InceptionV3tiny   import build_inception4_tiny
+from .InceptionV4tiny   import build_inception4_tiny
 
 from .HighwayNet        import build_HighwayNet
 from .ResNet            import build_ResNet18
