@@ -59,9 +59,9 @@ The following models are included : <br>
 | InceptionV2     | 99.62%         | 79.27%        | 100       |0.0771        |
 | InceptionV3-tiny| 99.76%         | 84.33%        | 100       |0.1762        |
 | InceptionV4-tiny| 99.76%         | 84.33%        | 1         |0.1774        |
-| HighwayNet 23   | 100.00%        | 76.96%        | 100       |0.0969        |
-| ResNet18        | 99.37%         | 76.42%        | 100       |0.0740        | 0.3535
-| ResNet18 (P)    | 99.49%         | 86.01%        | 100       |0.2817        |
+| HighwayNet 23   | 100.00%        | 76.96%        | 100       |0.0969        | 0.1789
+| ResNet18        | 99.37%         | 76.42%        | 100       |0.0740        | 
+| ResNet18 (P)    | 99.49%         | 86.01%        | 100       |0.2817        | 0.3535
 | ResNet34 (P)    | 99.30%         | 84.54%        | 100       |0.5837        |
 | Xception        | XX.XX%         | XX.XX%        | 100       |
 | SqueezeNet      | XX.XX%         | XX.XX%        | 100       |
