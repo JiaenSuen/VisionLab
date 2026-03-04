@@ -54,22 +54,22 @@ The following models are included : <br>
 
 | Model                     | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time (ms) |  
 | ------------------------- | -------------  | ------------- | ----------|------------- | -------------- | 
-| GoogLeNet                 | 95.16%         | 68.29%        | 200       |0.0496        | 0.3103
-| GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 0.3475
-| InceptionV2               | 99.62%         | 79.27%        | 100       |0.0771        | 0.3075
-| InceptionV3-tiny          | 99.76%         | 84.33%        | 100       |0.1762        | 0.4410
-| InceptionV4-tiny          | 00.00%         | 00.00%        | 100       |0.1774        | 0.6314
-| HighwayNet 23             | 100.00%        | 76.96%        | 100       |0.0969        | 0.1789
-| ResNet18                  | 99.37%         | 76.42%        | 100       |0.0740        | 0.1755
+| GoogLeNet                 | 95.16%         | 68.29%        | 200       |0.0496        | 
+| GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 
+| InceptionV2               | 99.62%         | 79.27%        | 100       |0.0771        | 
+| InceptionV3-tiny          | 99.76%         | 84.33%        | 100       |0.1762        | 
+| InceptionV4-tiny          | 99.56%         | 80.50%        | 100       |0.1774        | 0.1018
+| HighwayNet 23             | 100.00%        | 76.96%        | 100       |0.0969        | 
+| ResNet18                  | 99.37%         | 76.42%        | 100       |0.0740        | 
 | ResNet34                  | 00.00%         | 00.00%        | 100       |0.0000        | 
-| ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.3535
-| ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        | 0.6884
-| InceptionResNetV2-tiny    | 00.00%         | 00.00%        | 100       |0.2255        | 0.5792
+| ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 
+| ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        | 
+| InceptionResNetV2-tiny    | 99.91%         | 85.34%        | 100       |0.2255        | 0.1426
 | Xception                  | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
 
-Current Best (with no pretrained) :  InceptionV3-tiny, InceptionV2, HighwayNet 23
+Current Best (with no pretrained) :  InceptionV3-tiny, InceptionV4-tiny
 
 
 
