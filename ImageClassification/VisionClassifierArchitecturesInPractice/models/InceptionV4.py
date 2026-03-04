@@ -1,6 +1,12 @@
 import torch
 import torch.nn as nn
  
+
+
+def build_inception4(num_classes):
+    return InceptionV4(num_classes)
+
+
 class BasicConv2d(nn.Module):
     def __init__(self, in_channels, out_channels, **kwargs):
         super().__init__()

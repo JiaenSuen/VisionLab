@@ -2,6 +2,10 @@ import torch
 import torch.nn as nn
 
 
+def build_inception4_tiny(num_classes):
+    return InceptionV4tiny(num_classes)
+
+
 class BasicConv2d(nn.Module):
     def __init__(self, in_channels, out_channels, **kwargs):
         super().__init__()
@@ -190,7 +194,7 @@ class InceptionCTiny(nn.Module):
 
 
 
-class InceptionV4Tiny(nn.Module):
+class InceptionV4tiny(nn.Module):
     def __init__(self, num_classes=10):
         super().__init__()
 
@@ -244,7 +248,7 @@ class InceptionV4Tiny(nn.Module):
 
 if __name__ == "__main__":
 
-    model = InceptionV4Tiny()
+    model = InceptionV4tiny()
     x = torch.randn(1, 3, 32, 32)
     out = model(x)
 
