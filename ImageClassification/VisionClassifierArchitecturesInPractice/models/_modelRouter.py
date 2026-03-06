@@ -7,7 +7,7 @@ from .InceptionV4       import build_inception4
 from .InceptionV4tiny   import build_inception4_tiny
 
 from .HighwayNet        import build_HighwayNet
-from .ResNet            import build_ResNet18
+from .ResNet            import build_ResNet18,build_ResNet34
 
 from .InceptionResNetV2 import build_inception_resnet_v2
 from .InceptionResNetV2tiny import build_inception_resnet_v2_tiny
@@ -31,6 +31,7 @@ modelRouter = {
     "highwaynet23" : build_HighwayNet,
 
     "resnet18": build_ResNet18,
+    "resnet34": build_ResNet34,
     "resnet18pt": build_resnet18pt,
     "resnet34pt": build_resnet34pt,
 
