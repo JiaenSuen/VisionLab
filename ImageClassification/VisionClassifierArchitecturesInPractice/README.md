@@ -58,18 +58,18 @@ The following models are included : <br>
 | GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 0.0379
 | InceptionV2               | 99.62%         | 79.27%        | 100       |0.0771        | 0.0332
 | InceptionV3-tiny          | 99.76%         | 84.33%        | 100       |0.1762        | 0.0591
-| InceptionV4-tiny          | 99.56%         | 80.50%        | 100       |0.1774        | 0.1018
+| InceptionV4-tiny          | 99.54%         | 86.02%        | 100       |0.1933        | 0.0676
 | HighwayNet 23             | 100.00%        | 76.96%        | 100       |0.0969        | 0.0211
 | ResNet18                  | 99.37%         | 76.42%        | 100       |0.0740        | 0.0200
 | ResNet34                  | 00.00%         | 00.00%        | 100       |0.0000        | 
 | ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.0391
 | ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        | 0.0734
-| InceptionResNetV2-tiny    | 99.91%         | 85.34%        | 100       |0.2255        | 0.1426
+| InceptionResNetV2-tiny    | 99.13%         | 80.57%        | 100       |0.0801        | 0.0304
 | Xception                  | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
 
-Current Best (with no pretrained) :  InceptionV3-tiny, InceptionV4-tiny
+Current Best (with no pretrained) :  InceptionV4-tiny, InceptionV3-tiny 
 
 
 

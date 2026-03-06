@@ -1,241 +1,238 @@
+# Inception-ResNet-v2tiny.py
 import torch
 import torch.nn as nn
 
+
+def build_inception_resnet_v2_tiny(num_classes):
+    return InceptionResNetV2Tiny(num_classes)
+
+
+# Basic Convolutional Layer
 class BasicConv2d(nn.Module):
-    def __init__(self, in_channels, out_channels, **kwargs):
+    def __init__(self, in_channels, out_channels,
+                 kernel_size, stride=1, padding=0):
         super().__init__()
-        self.conv = nn.Conv2d(in_channels, out_channels, bias=False, **kwargs)
+
+        self.conv = nn.Conv2d(
+            in_channels,
+            out_channels,
+            kernel_size,
+            stride,
+            padding,
+            bias=False
+        )
         self.bn = nn.BatchNorm2d(out_channels)
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x):
-        x = self.conv(x)
-        x = self.bn(x)
-        x = self.relu(x)
-        return x
+        return self.relu(self.bn(self.conv(x)))
 
 
-class InceptionStemTiny(nn.Module):
-    def __init__(self):
+# Linear Convolutional Layer (no BN or ReLU, for residual projection)
+class LinearConv2d(nn.Module):
+    def __init__(self, in_channels, out_channels):
         super().__init__()
-        # 32x32 -> 32x32
-        self.conv1 = BasicConv2d(3, 32, kernel_size=3, stride=1, padding=1)
-        self.conv2 = BasicConv2d(32, 32, kernel_size=3, stride=1, padding=1)
-        self.conv3 = BasicConv2d(32, 64, kernel_size=3, stride=1, padding=1)
-
-        # Reduction 1: 32x32 -> 16x16  
-        self.branch1_conv = BasicConv2d(64, 48, kernel_size=3, stride=2, padding=1)
-        self.branch1_pool = nn.MaxPool2d(3, stride=2, padding=1)
-
-        # Branch2 at 16x16 
-        self.branch2 = nn.Sequential(
-            BasicConv2d(112, 32, kernel_size=1),
-            BasicConv2d(32, 32, kernel_size=(7,1), padding=(3,0)),
-            BasicConv2d(32, 32, kernel_size=(1,7), padding=(0,3)),
-            BasicConv2d(32, 48, kernel_size=3, padding=1)
-        )
-        self.branch2_2 = nn.Sequential(
-            BasicConv2d(112, 32, kernel_size=1),
-            BasicConv2d(32, 48, kernel_size=3, padding=1)
-        )
-
-        # Reduction 2: 16x16 -> 8x8
-        self.branch3_conv = BasicConv2d(96, 96, kernel_size=3, stride=2, padding=1)
-        self.branch3_pool = nn.MaxPool2d(3, stride=2, padding=1)
+        self.conv = nn.Conv2d(in_channels, out_channels, 1, bias=False)
 
     def forward(self, x):
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = self.conv3(x)
-
-        # Red1
-        x = torch.cat([self.branch1_conv(x), self.branch1_pool(x)], dim=1)  # 112ch
-
-        # Branch2  
-        x = torch.cat([self.branch2(x), self.branch2_2(x)], dim=1)  # 96ch
-
-        # Red2
-        x = torch.cat([self.branch3_conv(x), self.branch3_pool(x)], dim=1)  # 192ch @ 8x8
-        return x
+        return self.conv(x)
 
 
- 
-class ResInceptionATiny(nn.Module):
-    def __init__(self, in_channels=192, scale=0.1):
+# Inception-ResNet Stem tiny (simplified sequential with maxpool, following original philosophy)
+class TinyStemResNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.stem = nn.Sequential(
+            BasicConv2d(3, 32, 3, 1, 1),
+            BasicConv2d(32, 32, 3, 1, 1),
+            BasicConv2d(32, 64, 3, 2, 1),
+            nn.MaxPool2d(3, 2, 1)
+        )
+
+    def forward(self, x):
+        return self.stem(x)  # Out: 8x8x64 for 32x32 input
+
+
+# Inception-ResNet-A tiny (branches + linear projection + scaled residual add + post-add ReLU)
+class TinyInceptionResA(nn.Module):
+    def __init__(self, in_ch, scale=0.17):
         super().__init__()
         self.scale = scale
-        self.branch1 = BasicConv2d(in_channels, 16, kernel_size=1)
-        self.branch2 = nn.Sequential(
-            BasicConv2d(in_channels, 16, kernel_size=1),
-            BasicConv2d(16, 16, kernel_size=3, padding=1)
-        )
-        self.branch3 = nn.Sequential(
-            BasicConv2d(in_channels, 16, kernel_size=1),
-            BasicConv2d(16, 24, kernel_size=3, padding=1),
-            BasicConv2d(24, 32, kernel_size=3, padding=1)
-        )
-        self.conv = nn.Conv2d(64, in_channels, kernel_size=1)
         self.relu = nn.ReLU(inplace=True)
 
+        self.b1 = BasicConv2d(in_ch, 32, 1)
+
+        self.b2 = nn.Sequential(
+            BasicConv2d(in_ch, 32, 1),
+            BasicConv2d(32, 32, 3, 1, 1)
+        )
+
+        self.b3 = nn.Sequential(
+            BasicConv2d(in_ch, 32, 1),
+            BasicConv2d(32, 48, 3, 1, 1),
+            BasicConv2d(48, 48, 3, 1, 1)
+        )
+
+        cat_ch = 32 + 32 + 48
+        self.lin = LinearConv2d(cat_ch, in_ch)
+
     def forward(self, x):
-        residual = x
-        b1 = self.branch1(x)
-        b2 = self.branch2(x)
-        b3 = self.branch3(x)
-        out = torch.cat([b1, b2, b3], dim=1)
-        out = self.conv(out)
-        out = residual + self.scale * out
-        out = self.relu(out)
-        return out
+        branches = torch.cat([self.b1(x), self.b2(x), self.b3(x)], 1)
+        branches = self.lin(branches)
+        return self.relu(x + branches * self.scale)
 
 
-class ResInceptionBTiny(nn.Module):
-    def __init__(self, in_channels=576, scale=0.1):
+# Reduction-A for Res tiny (concat branches with s2, no residual)
+class TinyReductionA_Res(nn.Module):
+    def __init__(self, in_ch):
+        super().__init__()
+
+        self.b1 = nn.MaxPool2d(3, 2, 1)
+
+        self.b2 = BasicConv2d(in_ch, 96, 3, 2, 1)
+
+        self.b3 = nn.Sequential(
+            BasicConv2d(in_ch, 64, 1),
+            BasicConv2d(64, 96, 3, 1, 1),
+            BasicConv2d(96, 96, 3, 2, 1)
+        )
+
+    def forward(self, x):
+        return torch.cat([self.b1(x), self.b2(x), self.b3(x)], 1)
+
+
+# Inception-ResNet-B tiny (asymmetric branches + linear + scaled residual + post-add ReLU)
+class TinyInceptionResB(nn.Module):
+    def __init__(self, in_ch, scale=0.10):
         super().__init__()
         self.scale = scale
-        self.branch1 = BasicConv2d(in_channels, 96, kernel_size=1)
-        self.branch2 = nn.Sequential(
-            BasicConv2d(in_channels, 64, kernel_size=1),
-            BasicConv2d(64, 80, kernel_size=(1,7), padding=(0,3)),
-            BasicConv2d(80, 96, kernel_size=(7,1), padding=(3,0))
-        )
-        self.conv = nn.Conv2d(192, in_channels, kernel_size=1)
         self.relu = nn.ReLU(inplace=True)
 
+        self.b1 = BasicConv2d(in_ch, 64, 1)
+
+        self.b2 = nn.Sequential(
+            BasicConv2d(in_ch, 64, 1),
+            BasicConv2d(64, 64, (1, 3), 1, (0, 1)),
+            BasicConv2d(64, 96, (3, 1), 1, (1, 0))
+        )
+
+        cat_ch = 64 + 96
+        self.lin = LinearConv2d(cat_ch, in_ch)
+
     def forward(self, x):
-        residual = x
-        b1 = self.branch1(x)
-        b2 = self.branch2(x)
-        out = torch.cat([b1, b2], dim=1)
-        out = self.conv(out)
-        out = residual + self.scale * out
-        out = self.relu(out)
-        return out
+        branches = torch.cat([self.b1(x), self.b2(x)], 1)
+        branches = self.lin(branches)
+        return self.relu(x + branches * self.scale)
 
 
-class ResInceptionCTiny(nn.Module):
-    def __init__(self, in_channels=1072, scale=0.1):
+# Reduction-B for Res tiny (multiple s2 branches with asymmetry and extra conv path)
+class TinyReductionB_Res(nn.Module):
+    def __init__(self, in_ch):
+        super().__init__()
+
+        self.b1 = nn.MaxPool2d(3, 2, 1)
+
+        self.b2 = nn.Sequential(
+            BasicConv2d(in_ch, 96, 1),
+            BasicConv2d(96, 128, 3, 2, 1)
+        )
+
+        self.b3 = nn.Sequential(
+            BasicConv2d(in_ch, 96, 1),
+            BasicConv2d(96, 96, (1, 3), 1, (0, 1)),
+            BasicConv2d(96, 128, (3, 1), 2, (1, 0))
+        )
+
+        self.b4 = nn.Sequential(
+            BasicConv2d(in_ch, 96, 1),
+            BasicConv2d(96, 96, 3, 1, 1),
+            BasicConv2d(96, 128, 3, 2, 1)
+        )
+
+    def forward(self, x):
+        return torch.cat([self.b1(x), self.b2(x), self.b3(x), self.b4(x)], 1)
+
+
+# Inception-ResNet-C tiny (asymmetric chain + linear + scaled residual + post-add ReLU)
+class TinyInceptionResC(nn.Module):
+    def __init__(self, in_ch, scale=0.20):
         super().__init__()
         self.scale = scale
-        self.branch1 = BasicConv2d(in_channels, 96, kernel_size=1)
-        self.branch2 = nn.Sequential(
-            BasicConv2d(in_channels, 96, kernel_size=1),
-            BasicConv2d(96, 112, kernel_size=(1,3), padding=(0,1)),
-            BasicConv2d(112, 128, kernel_size=(3,1), padding=(1,0))
-        )
-        self.conv = nn.Conv2d(224, in_channels, kernel_size=1)
         self.relu = nn.ReLU(inplace=True)
 
-    def forward(self, x):
-        residual = x
-        b1 = self.branch1(x)
-        b2 = self.branch2(x)
-        out = torch.cat([b1, b2], dim=1)
-        out = self.conv(out)
-        out = residual + self.scale * out
-        out = self.relu(out)
-        return out
+        self.b1 = BasicConv2d(in_ch, 96, 1)
 
-
- 
-class InceptionAStackTiny(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.stack = nn.Sequential(*[ResInceptionATiny(192) for _ in range(3)])
-
-    def forward(self, x):
-        return self.stack(x)
-
-
-class ReductionATiny(nn.Module):
-    def __init__(self, in_channels=192):
-        super().__init__()
-        self.branch1 = BasicConv2d(in_channels, 192, kernel_size=3, stride=2, padding=1)
-        self.branch2 = nn.Sequential(
-            BasicConv2d(in_channels, 96, kernel_size=1),
-            BasicConv2d(96, 112, kernel_size=3, padding=1),
-            BasicConv2d(112, 192, kernel_size=3, stride=2, padding=1)
+        self.b2 = nn.Sequential(
+            BasicConv2d(in_ch, 96, 1),
+            BasicConv2d(96, 96, (1, 3), 1, (0, 1)),
+            BasicConv2d(96, 128, (3, 1), 1, (1, 0))
         )
-        self.branch3 = nn.MaxPool2d(3, stride=2, padding=1)
+
+        cat_ch = 96 + 128
+        self.lin = LinearConv2d(cat_ch, in_ch)
 
     def forward(self, x):
-        return torch.cat([self.branch1(x), self.branch2(x), self.branch3(x)], dim=1)
+        branches = torch.cat([self.b1(x), self.b2(x)], 1)
+        branches = self.lin(branches)
+        return self.relu(x + branches * self.scale)
 
 
-class InceptionBStackTiny(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.blocks = nn.Sequential(*[ResInceptionBTiny(576) for _ in range(5)])
-
-    def forward(self, x):
-        return self.blocks(x)
-
-
-class ReductionBTiny(nn.Module):
-    def __init__(self, in_channels=576):
-        super().__init__()
-        self.branch1 = nn.Sequential(
-            BasicConv2d(in_channels, 128, kernel_size=1),
-            BasicConv2d(128, 192, kernel_size=3, stride=2, padding=1)
-        )
-        self.branch2 = nn.Sequential(
-            BasicConv2d(in_channels, 128, kernel_size=1),
-            BasicConv2d(128, 144, kernel_size=3, stride=2, padding=1)
-        )
-        self.branch3 = nn.Sequential(
-            BasicConv2d(in_channels, 128, kernel_size=1),
-            BasicConv2d(128, 144, kernel_size=3, padding=1),
-            BasicConv2d(144, 160, kernel_size=3, stride=2, padding=1)
-        )
-        self.branch4 = nn.MaxPool2d(3, stride=2, padding=1)
-
-    def forward(self, x):
-        return torch.cat([self.branch1(x), self.branch2(x), self.branch3(x), self.branch4(x)], dim=1)
-
-
-class InceptionCStackTiny(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.blocks = nn.Sequential(*[ResInceptionCTiny(1072) for _ in range(2)])
-
-    def forward(self, x):
-        return self.blocks(x)
-
-
- 
+# InceptionResNetV2Tiny (residuals with scaling, reduced blocks/channels for CIFAR; follows v2 structure with post-add activations)
 class InceptionResNetV2Tiny(nn.Module):
-    def __init__(self, num_classes=10):  
+    def __init__(self, num_classes=10):
         super().__init__()
-        self.stem = InceptionStemTiny()
-        self.inceptionA = InceptionAStackTiny()
-        self.reductionA = ReductionATiny(192)
-        self.inceptionB = InceptionBStackTiny()
-        self.reductionB = ReductionBTiny(576)
-        self.inceptionC = InceptionCStackTiny()
 
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.dropout = nn.Dropout(0.2)
-        self.fc = nn.Linear(1072, num_classes)
+        self.stem = TinyStemResNet()  # Out: 64 channels at 8x8
+
+        self.a1 = TinyInceptionResA(64, 0.17)
+        self.a2 = TinyInceptionResA(64, 0.17)
+
+        self.redA = TinyReductionA_Res(64)  # Out: 256 at 4x4
+
+        self.b1 = TinyInceptionResB(256, 0.10)
+        self.b2 = TinyInceptionResB(256, 0.10)
+        self.b3 = TinyInceptionResB(256, 0.10)
+
+        self.redB = TinyReductionB_Res(256)  # Out: 640 at 2x2
+
+        self.c1 = TinyInceptionResC(640, 0.20)
+        self.c2 = TinyInceptionResC(640, 0.20)
+
+        self.avgpool = nn.AdaptiveAvgPool2d(1)
+        self.dropout = nn.Dropout(0.3)
+        self.fc = nn.Linear(640, num_classes)
 
     def forward(self, x):
         x = self.stem(x)
-        x = self.inceptionA(x)
-        x = self.reductionA(x)
-        x = self.inceptionB(x)
-        x = self.reductionB(x)
-        x = self.inceptionC(x)
+
+        x = self.a1(x)
+        x = self.a2(x)
+
+        x = self.redA(x)
+
+        x = self.b1(x)
+        x = self.b2(x)
+        x = self.b3(x)
+
+        x = self.redB(x)
+
+        x = self.c1(x)
+        x = self.c2(x)
 
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
         x = self.dropout(x)
-        x = self.fc(x)
-        return x
+        return self.fc(x)
 
 
- 
 if __name__ == "__main__":
     model = InceptionResNetV2Tiny(num_classes=10)
-    x = torch.randn(1, 3, 32, 32)
-    out = model(x)
-    print("Out Shape:", out.shape)          # torch.Size([1, 10])
-    print("Parameters:", sum(p.numel() for p in model.parameters()) / 1e6, "M")  # ≈4.8M
+    model.eval()
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.to(device)
+
+    dummy_input = torch.randn(1, 3, 32, 32).to(device)  # CIFAR-sized input
+    with torch.no_grad():
+        output = model(dummy_input)
+        print(f"out shape: {output.shape}")
+        print(f"Output [5] :\n{output[0, :5]}")
