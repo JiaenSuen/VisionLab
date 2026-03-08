@@ -1,15 +1,9 @@
+# InceptionV4Tiny.py
 import torch
 import torch.nn as nn
 def build_inception4_tiny(num_classes):
     return InceptionV4Tiny(num_classes)
 
- 
-# InceptionV4Tiny.py
-import torch
-import torch.nn as nn
-
-
- 
 
 
 # Basic Convolutional Layer
