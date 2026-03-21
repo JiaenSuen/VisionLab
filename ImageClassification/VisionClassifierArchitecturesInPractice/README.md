@@ -73,7 +73,7 @@ The following models are included : <br>
 | SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
 
-Current Best (with no pretrained) :  InceptionV4-tiny, InceptionV3-tiny 
+Current Best (with no pretrained) :  InceptionV4-tiny, ResNeXt18
 
 
 
