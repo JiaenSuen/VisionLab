@@ -3,10 +3,10 @@ import torch.nn as nn
 
 
 '''
-Key Changes (Compare to ResNet)
+Key Changes (Compare to WideResNet)
 
 Distinguish between BasicBlock (full-channel widening) and Bottleneck (internal 3x3 widening only, consistent with the ImageNet WRN-50-2 experiments in the paper).
-Update the ResNet categories and build functions to ensure consistency in channels/parameters with the original paper. Widening results in faster training and higher accuracy.
+Update the WideResNet categories and build functions to ensure consistency in channels/parameters with the original paper. Widening results in faster training and higher accuracy.
 Retain the original architecture; these three adjustments are sufficient for reproduction.
 
 '''
@@ -22,19 +22,19 @@ class Bottleneck(nn.Module):
         self.bn2 = nn.BatchNorm2d(middle_channels)
         self.conv3 = nn.Conv2d(middle_channels, middle_channels * Bottleneck.expansion, kernel_size=1, stride=1, padding=0)
         self.bn3 = nn.BatchNorm2d(middle_channels * Bottleneck.expansion)
-        self.relu = nn.ReLU()
+        self.relu = nn.ReLU(inplace=True)
         self.identity_downsample = identity_downsample
 
     def forward(self, x):
         identity = x
-        x = self.conv1(x)
-        x = self.bn1(x)
-        x = self.conv2(x)
-        x = self.bn2(x)
-        x = self.conv3(x)
-        x = self.bn3(x)
+
+        x = self.relu(self.bn1(self.conv1(x)))
+        x = self.relu(self.bn2(self.conv2(x)))
+        x = self.bn3(self.conv3(x))
+
         if self.identity_downsample is not None:
             identity = self.identity_downsample(identity)
+
         x += identity
         x = self.relu(x)
         return x
@@ -48,7 +48,7 @@ class BasicBlock(nn.Module):
         self.bn1 = nn.BatchNorm2d(out_channels)
         self.conv2 = nn.Conv2d(out_channels, out_channels, 3, 1, 1)
         self.bn2 = nn.BatchNorm2d(out_channels)
-        self.relu = nn.ReLU()
+        self.relu = nn.ReLU(inplace=True)
         self.identity_downsample = identity_downsample
 
     def forward(self, x):
@@ -62,7 +62,7 @@ class BasicBlock(nn.Module):
         return x
 
 
-class ResNet(nn.Module):
+class WideResNet(nn.Module):
     def __init__(self, block, layers, image_channels, num_classes, widen_factor=1):
         super().__init__()
         self.block = block  
@@ -70,7 +70,7 @@ class ResNet(nn.Module):
         conv1_out = 64 * widen_factor if not issubclass(block, Bottleneck) else 64
         self.conv1 = nn.Conv2d(image_channels, conv1_out, kernel_size=7, stride=2, padding=3)
         self.bn1 = nn.BatchNorm2d(conv1_out)
-        self.relu = nn.ReLU()
+        self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         self.in_channels = conv1_out  
 
@@ -133,18 +133,18 @@ class ResNet(nn.Module):
 
 
 
-def WideResNet18(num_classes=1000, img_channels=3, widen_factor=1):
-    return ResNet(BasicBlock, [2, 2, 2, 2], img_channels, num_classes, widen_factor)
+def build_WideResNet18(num_classes=1000, img_channels=3, widen_factor=1):
+    return WideResNet(BasicBlock, [2, 2, 2, 2], img_channels, num_classes, widen_factor)
 
-def WideResNet34(num_classes=1000, img_channels=3, widen_factor=1):
-    return ResNet(BasicBlock, [3, 4, 6, 3], img_channels, num_classes, widen_factor)
+def build_WideResNet34(num_classes=1000, img_channels=3, widen_factor=1):
+    return WideResNet(BasicBlock, [3, 4, 6, 3], img_channels, num_classes, widen_factor)
 
-def WideResNet50(num_classes=1000, img_channels=3, widen_factor=1):
-    return ResNet(Bottleneck, [3, 4, 6, 3], img_channels, num_classes, widen_factor)
+def build_WideResNet50(num_classes=1000, img_channels=3, widen_factor=1):
+    return WideResNet(Bottleneck, [3, 4, 6, 3], img_channels, num_classes, widen_factor)
 
-def WideResNet101(num_classes=1000, img_channels=3, widen_factor=1):
-    return ResNet(Bottleneck, [3, 4, 23, 3], img_channels, num_classes, widen_factor)
+def build_WideResNet101(num_classes=1000, img_channels=3, widen_factor=1):
+    return WideResNet(Bottleneck, [3, 4, 23, 3], img_channels, num_classes, widen_factor)
 
-def WideResNet152(num_classes=1000, img_channels=3, widen_factor=1):
-    return ResNet(Bottleneck, [3, 8, 36, 3], img_channels, num_classes, widen_factor)
+def build_WideResNet152(num_classes=1000, img_channels=3, widen_factor=1):
+    return WideResNet(Bottleneck, [3, 8, 36, 3], img_channels, num_classes, widen_factor)
 

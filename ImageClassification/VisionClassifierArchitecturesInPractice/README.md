@@ -10,14 +10,15 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 ## **Classifier Models**
 ### CNN
 
-| 2014      | 2015          |2016        |2017      |2018           |2019          |2021            |
-| ---       | ---           | ---        | ---      |---            |---           |---             |
-|NIN        |InceptionV2    |InceptionV4 |MobileNet |MobileNetV2    |EfficientNet  |EfficientNetV2  |
-|VGG        |InceptionV3    |ResNetV2    |ShuffleNet|ShuffleNetV2   |HRNet         |RegNet          |
-|InceptionV1|Highway        |Wide ResNet |DenseNet  |MnasNet        |CSPNet        |MobileNetV3     |
-|All-ConvNet|ResNet         |Xception    |NASNet    |.              |.             |.               |
-|.          |.              |ResNeXt     |SENet     |.              |.             |.               |
-|.          |.              |SqueezeNet  |.         |.              |.             |.               |
+| 2014      | 2015          |2016           |2017      |2018           |2019          |2021            |
+| ---       | ---           | ---           | ---      |---            |---           |---             |
+|NIN        |InceptionV2    |InceptionV4    |MobileNet |MobileNetV2    |EfficientNet  |EfficientNetV2  |
+|VGG        |InceptionV3    |InceptionResNet|ShuffleNet|ShuffleNetV2   |HRNet         |RegNet          |
+|InceptionV1|Highway        |ResNetV2       |DenseNet  |MnasNet        |CSPNet        |MobileNetV3     |
+|All-ConvNet|ResNet         |Wide ResNet    |NASNet    |.              |.             |.               |
+|.          |.              |Xception       |SENet     |.              |.             |.               |
+|.          |.              |ResNeXt        |.         |.              |.             |.               |
+|.          |.              |SqueezeNet     |.         |.              |.             |.               |
 
 ### Vision-Transformer /  CNN-Transformer
 | 2020 | 2021 |2022 |2023 |2024 |2025|
@@ -55,24 +56,25 @@ Record Accuracy , Epochs , *GFLOPs Per Image*  <br><br>
 The following models are included : <br>  
 
 | Model                     | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time (ms) |  
-| ------------------------- | -------------  | ------------- | ----------|------------- | -------------- | 
+| ------------------------- | -------------  | ------------- | --------- |------------- | ------------------- | 
 | GoogLeNet                 | 95.16%         | 68.29%        | 200       |0.0496        | 0.0358
-| GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 0.0379
 | InceptionV2               | 99.62%         | 79.27%        | 100       |0.0771        | 0.0332
 | InceptionV3-tiny          | 99.76%         | 84.33%        | 100       |0.1762        | 0.0591
-| InceptionV4-tiny          | 99.54%         | 86.02%        | 100       |0.1933        | 0.0676
 | HighwayNet 23             | 100.0%         | 76.96%        | 100       |0.0969        | 0.0211
 | ResNet18                  | 99.37%         | 76.42%        | 100       |0.0740        | 0.0200
 | ResNet34                  | 99.38%         | 76.17%        | 100       |0.1495        | 0.0332
-| ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.0391
-| ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        | 0.0734
+| InceptionV4-tiny          | 99.54%         | 86.02%        | 100       |0.1933        | 0.0676
 | InceptionResNetV2-tiny    | 99.13%         | 80.57%        | 100       |0.0801        | 0.0304
-| WideResNet18              | 99.57%         | 77.10%        | 100       |0.0740        | 0.0853
+| ResNet18-V2               | 00.00%         | 00.00%        | 100       |0.0000        | 0.0000
+| WideResNet18              | 99.57%         | 77.10%        | 100       |0.0740        | 0.0179
 | ResNeXt18                 | 100.0%         | 85.67%        | 100       |0.5824        | 0.1331
 | Xception                  | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
-
+| -                         | -              | -             | -         |-             | -
+| GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 0.0379
+| ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.0391
+| ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        | 0.0734
 Current Best (with no pretrained) :  InceptionV4-tiny, ResNeXt18
 
 
