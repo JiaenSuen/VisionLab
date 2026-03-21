@@ -1,29 +1,30 @@
+<div align="center">
+
 # VisionLab
-VisionLab is a research-driven repository dedicated to exploring cutting-edge topics in computer vision. It includes implementations and experiments in areas such as image recognition, 3D spatial perception, and deep learning-based vision models. Projects are primarily developed using PyTorch, with a focus on practical applications and academic experimentation.
+### Research-driven Computer Vision Projects with PyTorch
 
-Ranging from traditional vision techniques to modern neural architectures, such as CNNs, transformers, and multi-view geometry-based approaches. It aims to bridge the gap between theory and real-world implementation.
+[![PyTorch](https://img.shields.io/badge/PyTorch-DeepLearning-red)]
+[![Python](https://img.shields.io/badge/Python-3.9+-blue)]
+[![License](https://img.shields.io/badge/License-MIT-green)]
 
+</div>
 
-## Image Classification
+---
 
-**Image Classification Projects**
-* Vision Classifier Architectures In Practice [link](ImageClassification/VisionClassifierArchitecturesInPractice/)
-* Experiment Series : Gabor Feature Machine Learning [link](ImageClassification/ExperimentalSeries/GaborFeatureML/)
+## About VisionLab
 
-[Models](ImageClassification/@Models/)   
+**VisionLab** is a research-driven repository dedicated to exploring advanced topics in **computer vision**, focusing on both academic research and real-world system implementation.  
+The repository contains multiple projects implemented primarily using **PyTorch**, covering areas such as:
 
-## Specialized
-**OCR Project** 
-*  Applying CRNN to CAPTCHA Recognition [link](Specialized/OCR/2015_CRNN/)   
+- Image Classification
+- OCR
+- 3D Vision
+- Multi-view Geometry
+- CNN / Vision Transformers
+- Applied Vision Systems
 
+The goal of this repository is to **bridge the gap between theoretical research and practical engineering implementation**.
 
-## **Projects** 
+---
 
-
-**Medium Projects**
-*  Taiwan Buffet Automated Checkout System [link](VisionProjects_Med/)   
-*  (High School Project 2th) [link](VisionProjects_Med/SmartHelmetDetector[second%20iteration]/)   
-
-
-**Tiny Projects**
-*  Simulated application of CNN in Amazon's product image search engine [link](VisionProjects_Tiny/ImageSearchEngine/)   
+## Repository Structure
