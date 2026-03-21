@@ -44,8 +44,8 @@ modelRouter = {
     "wide-resnet18": build_WideResNet18,
     "wide-resnet34": build_WideResNet34,
 
-    "ResNeXt-29" : resnext29_8x64d_cifar,
-    "ResNeXt-50" : resnext50_32x4d,
+    "resnext-29" : resnext29_8x64d_cifar,
+    "resnext-50" : resnext50_32x4d,
 
 }
 Existing_model_names =   list(modelRouter.keys())
