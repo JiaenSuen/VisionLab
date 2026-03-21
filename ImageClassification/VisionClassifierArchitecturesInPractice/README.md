@@ -5,6 +5,8 @@ This project is a systematic empirical study of image classification architectur
 Rather than aiming for state-of-the-art performance, the goal is to understand architectural evolution, inductive biases, and training behaviors through from-scratch PyTorch implementations and controlled experiments across multiple datasets.
 
 
+*Device : NVIDIA GeForce RTX 4060 Laptop GPU(CUDA)* : Inference Time (ms) is for reference.
+
 ## **Classifier Models**
 ### CNN
 
@@ -65,7 +67,7 @@ The following models are included : <br>
 | ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.0391
 | ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        | 0.0734
 | InceptionResNetV2-tiny    | 99.13%         | 80.57%        | 100       |0.0801        | 0.0304
-| WideResNet18              | 99.57%         | 77.10%        | 100       |0.0740        | 0.0793
+| WideResNet18              | 99.57%         | 77.10%        | 100       |0.0740        | 0.0853
 | Xception                  | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
