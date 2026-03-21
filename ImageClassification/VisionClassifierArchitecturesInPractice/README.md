@@ -75,6 +75,7 @@ The following models are included : <br>
 | GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 0.0379
 | ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.0391
 | ResNet34 (P)              | 99.30%         | 84.54%        | 100       |0.5837        | 0.0734
+
 Current Best (with no pretrained) :  InceptionV4-tiny, ResNeXt18
 
 
