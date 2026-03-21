@@ -8,6 +8,7 @@ from .InceptionV4tiny   import build_inception4_tiny
 
 from .HighwayNet        import build_HighwayNet
 from .ResNet            import build_ResNet18,build_ResNet34
+from .ResNetV2          import ResNetV2_18,ResNetV2_34
 from .WideResNet        import build_WideResNet18,build_WideResNet34
 from .ResNeXt           import resnext50_32x4d,resnext18_tiny
 
@@ -46,6 +47,9 @@ modelRouter = {
 
     "resnext-18" : resnext18_tiny,
     "resnext-50" : resnext50_32x4d,
+
+    "resnet18v2" : ResNetV2_18,
+    "resnet34v2" : ResNetV2_34,
 
 }
 Existing_model_names =   list(modelRouter.keys())
