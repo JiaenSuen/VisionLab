@@ -1,0 +1,92 @@
+import torch.nn as nn
+
+
+class ResNeXtBasicBlock(nn.Module):
+    expansion = 1
+
+    def __init__(self, in_planes, out_planes, stride=1, cardinality=8):
+        super().__init__()
+        
+        self.conv1 = nn.Conv2d(in_planes, out_planes, kernel_size=3,
+                               stride=stride, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(out_planes)
+        
+        # Grouped conv (ResNeXt Core)
+        self.conv2 = nn.Conv2d(out_planes, out_planes, kernel_size=3,
+                               stride=1, padding=1, groups=cardinality, bias=False)
+        self.bn2 = nn.BatchNorm2d(out_planes)
+        
+        self.relu = nn.ReLU(inplace=True)
+
+        self.shortcut = nn.Sequential()
+        if stride != 1 or in_planes != out_planes:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False),
+                nn.BatchNorm2d(out_planes)
+            )
+
+    def forward(self, x):
+        residual = x
+        out = self.relu(self.bn1(self.conv1(x)))
+        out = self.bn2(self.conv2(out))
+        out += self.shortcut(residual)
+        out = self.relu(out)
+        return out
+
+
+
+class ResNeXt18_Tiny(nn.Module):
+    def __init__(self, num_classes=10, cardinality=8):
+        super().__init__()
+        self.in_planes = 64
+        
+        # CIFAR stem
+        self.conv1 = nn.Conv2d(3, 64, 3, 1, 1, bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.relu = nn.ReLU(inplace=True)
+        
+        # ResNet18 structure: 2-2-2-2
+        self.layer1 = self._make_layer(64,  2, stride=1, cardinality=cardinality)
+        self.layer2 = self._make_layer(128, 2, stride=2, cardinality=cardinality)
+        self.layer3 = self._make_layer(256, 2, stride=2, cardinality=cardinality)
+        self.layer4 = self._make_layer(512, 2, stride=2, cardinality=cardinality)
+        
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fc = nn.Linear(512, num_classes)
+
+    def _make_layer(self, out_planes, blocks, stride, cardinality):
+        layers = []
+        layers.append(ResNeXtBasicBlock(self.in_planes, out_planes, stride, cardinality))
+        self.in_planes = out_planes
+        
+        for _ in range(1, blocks):
+            layers.append(ResNeXtBasicBlock(self.in_planes, out_planes, 1, cardinality))
+        
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        x = self.relu(self.bn1(self.conv1(x)))
+        
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        
+        x = self.avgpool(x)
+        x = x.view(x.size(0), -1)
+        x = self.fc(x)
+        return x
+ 
+
+
+def resnext18_tiny(num_classes=10):
+    return ResNeXt18_Tiny(num_classes=num_classes, cardinality=8)
+
+
+if __name__ == "__main__":
+
+    model_32  = resnext18_tiny(num_classes=10)
+    print("32x32  model params:", sum(p.numel() for p in model_32.parameters()) / 1e6, "M")
+    import torch
+    x32  = torch.randn(2, 3, 32, 32)
+    print("32  output shape:", model_32(x32).shape)

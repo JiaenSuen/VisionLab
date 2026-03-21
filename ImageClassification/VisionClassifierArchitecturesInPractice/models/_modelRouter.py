@@ -9,7 +9,7 @@ from .InceptionV4tiny   import build_inception4_tiny
 from .HighwayNet        import build_HighwayNet
 from .ResNet            import build_ResNet18,build_ResNet34
 from .WideResNet        import build_WideResNet18,build_WideResNet34
-from .ResNeXt           import resnext29_8x64d_cifar,resnext50_32x4d
+from .ResNeXt           import resnext50_32x4d,resnext18_tiny
 
 from .InceptionResNetV2 import build_inception_resnet_v2
 from .InceptionResNetV2tiny import build_inception_resnet_v2_tiny
@@ -44,7 +44,7 @@ modelRouter = {
     "wide-resnet18": build_WideResNet18,
     "wide-resnet34": build_WideResNet34,
 
-    "resnext-29" : resnext29_8x64d_cifar,
+    "resnext-18" : resnext18_tiny,
     "resnext-50" : resnext50_32x4d,
 
 }
