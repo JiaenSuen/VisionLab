@@ -133,18 +133,18 @@ class ResNet(nn.Module):
 
 
 
-def ResNet18(num_classes=1000, img_channels=3, widen_factor=1):
+def WideResNet18(num_classes=1000, img_channels=3, widen_factor=1):
     return ResNet(BasicBlock, [2, 2, 2, 2], img_channels, num_classes, widen_factor)
 
-def ResNet34(num_classes=1000, img_channels=3, widen_factor=1):
+def WideResNet34(num_classes=1000, img_channels=3, widen_factor=1):
     return ResNet(BasicBlock, [3, 4, 6, 3], img_channels, num_classes, widen_factor)
 
-def ResNet50(num_classes=1000, img_channels=3, widen_factor=1):
+def WideResNet50(num_classes=1000, img_channels=3, widen_factor=1):
     return ResNet(Bottleneck, [3, 4, 6, 3], img_channels, num_classes, widen_factor)
 
-def ResNet101(num_classes=1000, img_channels=3, widen_factor=1):
+def WideResNet101(num_classes=1000, img_channels=3, widen_factor=1):
     return ResNet(Bottleneck, [3, 4, 23, 3], img_channels, num_classes, widen_factor)
 
-def ResNet152(num_classes=1000, img_channels=3, widen_factor=1):
+def WideResNet152(num_classes=1000, img_channels=3, widen_factor=1):
     return ResNet(Bottleneck, [3, 8, 36, 3], img_channels, num_classes, widen_factor)
 
