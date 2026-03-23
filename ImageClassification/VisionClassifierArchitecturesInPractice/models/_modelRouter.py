@@ -12,8 +12,9 @@ from .ResNetV2          import ResNetV2_18,ResNetV2_34
 from .WideResNet        import build_WideResNet18,build_WideResNet34
 from .ResNeXt           import resnext50_32x4d,resnext18_tiny
 
-from .InceptionResNetV2 import build_inception_resnet_v2
+from .InceptionResNetV2     import build_inception_resnet_v2
 from .InceptionResNetV2tiny import build_inception_resnet_v2_tiny
+from .XceptionTiny          import xception_tiny
 
 from .zTorchAPI import (
     build_googlenet_pt,
@@ -41,6 +42,7 @@ modelRouter = {
     "inception-resnet-v2" : build_inception_resnet_v2,
     "inception-resnet-v2-tiny" : build_inception_resnet_v2_tiny,
 
+    "xception-tiny" : xception_tiny,
 
     "wide-resnet18": build_WideResNet18,
     "wide-resnet34": build_WideResNet34,
