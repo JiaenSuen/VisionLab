@@ -50,7 +50,8 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
  
 
 ### CIFAR-10 (with no Data Augmentation)
-CIFAR-10: 60,000 32x32 color images in 10 classes (50,000 train, 10,000 test) .
+CIFAR-10: 60,000 32x32 color images in 10 classes (50,000 train, 10,000 test) .<br>
+The generalization ability is best when there is no augmentation. <br>  
 Record Accuracy , Epochs , *GFLOPs Per Image*  <br><br>
 (P)   :   PyTorch Pretrained Model API<br>
 The following models are included : <br>  
