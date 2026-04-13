@@ -1,0 +1,3 @@
+Test Acc : 0.974;
+Valid Acc : 0.972;
+Time Cost : 1197.2884924411774;
