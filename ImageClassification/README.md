@@ -10,8 +10,8 @@ This directory contains various image classification projects, including modern 
 |--------|------|-------------|--------|
 | Vision Classifier Architectures In Practice | Deep Learning | CNN / Transformer architecture experiments and comparison | [link](VisionClassifierArchitecturesInPractice/) |
 | Gabor Feature + Machine Learning | Traditional + ML | Gabor feature extraction with machine learning classifiers | [link](ExperimentalSeries/GaborFeatureML/) |
-| Models | Pretrained Models | Saved models and training configurations | [link](@Models/) |
-
+| CNN Fine-Tune Experiment | Fine-Tune | Understanding different fine-tuning strategies | [link](ExperimentalSeries/CNN-Transfer-Learning-Fine-Tuning/) |
+| Models | Models | Model Implementation | [link](@Models/) |
 ---
 
 ## Project Overview
