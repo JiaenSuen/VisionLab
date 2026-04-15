@@ -8,9 +8,9 @@ This directory contains various image classification projects, including modern 
 
 | Project | Type | Description | Folder |
 |--------|------|-------------|--------|
-| Vision Classifier Architectures In Practice | Deep Learning | CNN / Transformer architecture experiments and comparison | `VisionClassifierArchitecturesInPractice/` |
-| Gabor Feature + Machine Learning | Traditional + ML | Gabor feature extraction with machine learning classifiers | `ExperimentalSeries/GaborFeatureML/` |
-| Models | Pretrained Models | Saved models and training configurations | `@Models/` |
+| Vision Classifier Architectures In Practice | Deep Learning | CNN / Transformer architecture experiments and comparison | [link](VisionClassifierArchitecturesInPractice/) |
+| Gabor Feature + Machine Learning | Traditional + ML | Gabor feature extraction with machine learning classifiers | [link](ExperimentalSeries/GaborFeatureML/) |
+| Models | Pretrained Models | Saved models and training configurations | [link](@Models/) |
 
 ---
 
