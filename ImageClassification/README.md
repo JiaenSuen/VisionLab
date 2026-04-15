@@ -39,9 +39,9 @@ This directory contains various image classification projects, including modern 
 ---
 
 ### Models
-- Pretrained weights
-- Training logs
-- Configuration files
+- Thesis Study
+- Model Implementation
+- PyTorch Code
 
-**Folder:** `@Models/`
+**Folder:**  [`@Models/` ](@Models/)
 
