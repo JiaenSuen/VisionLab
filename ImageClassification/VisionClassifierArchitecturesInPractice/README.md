@@ -73,7 +73,7 @@ The following models are included : <br>
 | SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
 | -                         | -              | -             | -         |-             | -
-| InceptionMamba-Small      | 96.80%         | 71.92%        | 20        |0.0342        | 0.1224
+| InceptionMamba-Small      | 99.58%         | 73.60%        | 10        |0.0342        | 0.1165
 | -                         | -              | -             | -         |-             | -
 | GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 0.0379
 | ResNet18 (P)              | 99.49%         | 86.01%        | 100       |0.2817        | 0.0391
