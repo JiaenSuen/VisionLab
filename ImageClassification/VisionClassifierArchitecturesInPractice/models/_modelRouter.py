@@ -16,6 +16,9 @@ from .InceptionResNetV2     import build_inception_resnet_v2
 from .InceptionResNetV2tiny import build_inception_resnet_v2_tiny
 from .XceptionTiny          import xception_tiny
 
+
+from .InceptionMamba import build_InceptionMamba_Tiny
+
 from .zTorchAPI import (
     build_googlenet_pt,
     build_resnet18pt,
@@ -53,5 +56,8 @@ modelRouter = {
     "resnet18v2" : ResNetV2_18,
     "resnet34v2" : ResNetV2_34,
 
+
+
+    "inception_mamba_tiny" : build_InceptionMamba_Tiny,
 }
 Existing_model_names =   list(modelRouter.keys())
