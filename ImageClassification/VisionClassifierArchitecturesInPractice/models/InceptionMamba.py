@@ -1,515 +1,731 @@
-def build_InceptionMamba_Tiny(
-    num_classes: int,
-    img_channels: int = 3,
-    use_mamba: bool = True,
-    drop_path_rate: float = 0.05,
-):
+# InceptionMamba.py
+# Windows + PyTorch 2.5.1+cu121 compatible
+#
+# Optional dependency:
+#   pip install mambapy
+#
+# This file keeps only the 224x224 InceptionMamba-Tiny configuration.
 
-    return InceptionMambaClassifier(
-        num_classes=num_classes,
-        in_chans=img_channels,
-        dims=(32, 64, 128, 256),
-        depths=(1, 1, 2, 1),
-        drop_path_rate=drop_path_rate,
-        use_mamba=use_mamba,
-    )
+from __future__ import annotations
 
-
-def build_InceptionMamba_Small(
-    num_classes: int,
-    img_channels: int = 3,
-    use_mamba: bool = True,
-    drop_path_rate: float = 0.1,
-):
-    return InceptionMambaClassifier(
-        num_classes=num_classes,
-        in_chans=img_channels,
-        dims=(48, 96, 192, 384),
-        depths=(2, 2, 4, 2),
-        drop_path_rate=drop_path_rate,
-        use_mamba=use_mamba,
-    )
-
-
-def build_InceptionMamba_Base(
-    num_classes: int,
-    img_channels: int = 3,
-    use_mamba: bool = True,
-    drop_path_rate: float = 0.2,
-):
-    return InceptionMambaClassifier(
-        num_classes=num_classes,
-        in_chans=img_channels,
-        dims=(64, 128, 256, 512),
-        depths=(2, 2, 6, 2),
-        drop_path_rate=drop_path_rate,
-        use_mamba=use_mamba,
-    )
-
-
-
-
-
-
-
-
-
-
-
-
-
-# inception_mamba_small.py
-# Windows / PyTorch 2.5.1+cu121 compatible
-# pip install mambapy einops
+from typing import List, Tuple, Literal
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
+# Optional mambapy backend
 try:
     from mambapy.mamba import Mamba, MambaConfig
-    HAS_MAMBAPY = True
+    HAS_MAMBA_PY = True
 except Exception:
-    HAS_MAMBAPY = False
+    Mamba = None
+    MambaConfig = None
+    HAS_MAMBA_PY = False
+
+
+# Build function for your training framework
+def build_InceptionMamba_Tiny(num_classes: int, img_channels: int = 3):
+    """
+    224x224 InceptionMamba-Tiny.
+
+    This is the only exported build function kept for the clean paper-Tiny version.
+    """
+    return inception_mamba_tiny_224(
+        num_classes=num_classes,
+        in_chans=img_channels,
+    )
+
+
+# Basic layers
+class LayerNorm2d(nn.Module):
+    """
+    Channel-first LayerNorm for NCHW tensors.
+    """
+    def __init__(self, dim: int, eps: float = 1e-6):
+        super().__init__()
+        self.weight = nn.Parameter(torch.ones(dim))
+        self.bias = nn.Parameter(torch.zeros(dim))
+        self.eps = eps
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        mean = x.mean(dim=1, keepdim=True)
+        var = (x - mean).pow(2).mean(dim=1, keepdim=True)
+        x = (x - mean) / torch.sqrt(var + self.eps)
+        return x * self.weight[:, None, None] + self.bias[:, None, None]
 
 
 class DropPath(nn.Module):
+    """
+    Stochastic depth.
+    """
     def __init__(self, drop_prob: float = 0.0):
         super().__init__()
         self.drop_prob = float(drop_prob)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         if self.drop_prob == 0.0 or not self.training:
             return x
 
         keep_prob = 1.0 - self.drop_prob
         shape = (x.shape[0],) + (1,) * (x.ndim - 1)
+
         random_tensor = keep_prob + torch.rand(
-            shape, dtype=x.dtype, device=x.device
+            shape,
+            dtype=x.dtype,
+            device=x.device,
         )
         random_tensor.floor_()
+
         return x.div(keep_prob) * random_tensor
 
 
-class LayerNorm2d(nn.Module):
-    """Channel-first LayerNorm for NCHW."""
-    def __init__(self, channels: int, eps: float = 1e-6):
-        super().__init__()
-        self.norm = nn.LayerNorm(channels, eps=eps)
-
-    def forward(self, x):
-        # NCHW -> NHWC -> NCHW
-        x = x.permute(0, 2, 3, 1)
-        x = self.norm(x)
-        x = x.permute(0, 3, 1, 2)
-        return x
-
-
-class ConvBNAct(nn.Module):
-    def __init__(
-        self,
-        in_ch: int,
-        out_ch: int,
-        kernel_size: int = 3,
-        stride: int = 1,
-        groups: int = 1,
-        act: bool = True,
-    ):
-        super().__init__()
-        padding = kernel_size // 2
-        self.net = nn.Sequential(
-            nn.Conv2d(
-                in_ch,
-                out_ch,
-                kernel_size,
-                stride=stride,
-                padding=padding,
-                groups=groups,
-                bias=False,
-            ),
-            nn.BatchNorm2d(out_ch),
-            nn.GELU() if act else nn.Identity(),
-        )
-
-    def forward(self, x):
-        return self.net(x)
-
-
-class LargeBandDWConv(nn.Module):
+# ConvMixer: 3x3 + 3x11/11x3 + identity
+class InceptionBandConvMixer(nn.Module):
     """
-    InceptionMamba-style local mixer.
-    Similar to the large band depthwise convolution in the paper:
-    - square depthwise conv
-    - horizontal band depthwise conv
-    - vertical band depthwise conv
-    - identity branch
-    Input/Output: N, C, H, W
-    """
+    InceptionMamba ConvMixer.
 
+    Channel split:
+      square branch: 1/8 C -> depthwise 3x3
+      band branch:   1/8 C -> depthwise 3x11 + depthwise 11x3
+      identity:      remaining channels
+    """
     def __init__(
         self,
         dim: int,
         square_kernel: int = 3,
         band_kernel: int = 11,
-        branch_ratio: float = 0.25,
+        branch_ratio: float = 1.0 / 8.0,
     ):
         super().__init__()
-        branch_ch = max(1, int(dim * branch_ratio))
 
-        # Some channels are reserved for identity processing, while the remaining channels are distributed across three DW conv branches.
-        conv_ch = branch_ch * 3
-        if conv_ch > dim:
-            raise ValueError("The branch_ratio is too large, causing the conv branch channel to exceed dim.")
+        square_ch = max(1, int(dim * branch_ratio))
+        band_ch = max(1, int(dim * branch_ratio))
+        identity_ch = dim - square_ch - band_ch
 
-        self.id_ch = dim - conv_ch
-        self.branch_ch = branch_ch
+        if identity_ch < 0:
+            raise ValueError(f"dim={dim} is too small for branch split.")
+
+        self.square_ch = square_ch
+        self.band_ch = band_ch
+        self.identity_ch = identity_ch
 
         self.dw_square = nn.Conv2d(
-            branch_ch,
-            branch_ch,
+            square_ch,
+            square_ch,
             kernel_size=square_kernel,
+            stride=1,
             padding=square_kernel // 2,
-            groups=branch_ch,
+            groups=square_ch,
             bias=True,
         )
 
-        self.dw_h = nn.Conv2d(
-            branch_ch,
-            branch_ch,
-            kernel_size=(1, band_kernel),
-            padding=(0, band_kernel // 2),
-            groups=branch_ch,
+        self.dw_band_h = nn.Conv2d(
+            band_ch,
+            band_ch,
+            kernel_size=(3, band_kernel),
+            stride=1,
+            padding=(1, band_kernel // 2),
+            groups=band_ch,
             bias=True,
         )
 
-        self.dw_v = nn.Conv2d(
-            branch_ch,
-            branch_ch,
-            kernel_size=(band_kernel, 1),
-            padding=(band_kernel // 2, 0),
-            groups=branch_ch,
+        self.dw_band_v = nn.Conv2d(
+            band_ch,
+            band_ch,
+            kernel_size=(band_kernel, 3),
+            stride=1,
+            padding=(band_kernel // 2, 1),
+            groups=band_ch,
             bias=True,
         )
 
-        self.proj = nn.Conv2d(dim, dim, kernel_size=1, bias=True)
-
-    def forward(self, x):
-        x_id, x_sq, x_h, x_v = torch.split(
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        xs, xb, xi = torch.split(
             x,
-            [self.id_ch, self.branch_ch, self.branch_ch, self.branch_ch],
+            [self.square_ch, self.band_ch, self.identity_ch],
             dim=1,
         )
 
-        out = torch.cat(
-            [
-                x_id,
-                self.dw_square(x_sq),
-                self.dw_h(x_h),
-                self.dw_v(x_v),
-            ],
-            dim=1,
-        )
+        ys = self.dw_square(xs)
+        yb = self.dw_band_h(xb) + self.dw_band_v(xb)
 
-        return self.proj(out)
+        return torch.cat([ys, yb, xi], dim=1)
 
 
-class FallbackGlobalMixer(nn.Module):
+# Mamba sequence mixer
+class FallbackSequenceMixer(nn.Module):
     """
-    The fallback without mambapy.
-    This isn't a proper Mamba implementation; it's just to ensure the program can run the shape test on Windows.
+    Fallback only. This is not true Mamba.
+    Used only when mambapy is not installed, so the file can still run.
     """
-
     def __init__(self, dim: int):
         super().__init__()
-        self.net = nn.Sequential(
-            nn.LayerNorm(dim),
-            nn.Linear(dim, dim * 2),
+        self.norm = nn.LayerNorm(dim)
+        self.gate = nn.Linear(dim, dim)
+        self.mix = nn.Sequential(
+            nn.Conv1d(dim, dim, kernel_size=7, padding=3, groups=dim),
             nn.GELU(),
-            nn.Linear(dim * 2, dim),
+            nn.Conv1d(dim, dim, kernel_size=1),
         )
 
-    def forward(self, x):
-        return self.net(x)
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # x: [B, L, C]
+        z = self.norm(x)
+        g = torch.sigmoid(self.gate(z))
+        y = self.mix(z.transpose(1, 2)).transpose(1, 2)
+        return y * g
 
 
-class MambaBottleneck2d(nn.Module):
+class MambaSequenceMixer(nn.Module):
     """
-    2D feature map -> sequence -> Mamba -> 2D feature map
-    Input: N, C, H, W
-    Convert to: N, H*W, hidden_dim
-    Output: N, C, H, W
-    """
+    Wrap mambapy Mamba as:
+      input:  [B, L, C]
+      output: [B, L, C]
 
+    Note:
+      mambapy is pure PyTorch and can be memory-heavy.
+      The default here uses reduced state settings for Windows/8GB compatibility.
+    """
     def __init__(
         self,
         dim: int,
-        bottleneck_ratio: float = 0.25,
-        use_mamba: bool = True,
+        d_state: int = 8,
+        expand_factor: int = 1,
+        d_conv: int = 3,
     ):
         super().__init__()
-        hidden_dim = max(16, int(dim * bottleneck_ratio))
 
-        self.in_proj = nn.Conv2d(dim, hidden_dim, kernel_size=1, bias=False)
-        self.out_proj = nn.Conv2d(hidden_dim, dim, kernel_size=1, bias=False)
-        self.norm = nn.LayerNorm(hidden_dim)
+        if HAS_MAMBA_PY:
+            try:
+                config = MambaConfig(
+                    d_model=dim,
+                    n_layers=1,
+                    d_state=d_state,
+                    expand_factor=expand_factor,
+                    d_conv=d_conv,
+                )
+            except TypeError:
+                config = MambaConfig(
+                    d_model=dim,
+                    n_layers=1,
+                )
 
-        self.using_real_mamba = bool(use_mamba and HAS_MAMBAPY)
-
-        if self.using_real_mamba:
-            config = MambaConfig(
-                d_model=hidden_dim,
-                n_layers=1,
-            )
             self.mixer = Mamba(config)
+            self.backend = "mambapy"
         else:
-            self.mixer = FallbackGlobalMixer(hidden_dim)
+            self.mixer = FallbackSequenceMixer(dim)
+            self.backend = "fallback"
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.mixer(x)
+
+
+# SS2D-like spatial Mamba
+class SpatialMamba2D(nn.Module):
+    """
+    SS2D-like spatial scan using a shared 1D Mamba.
+
+    scan_mode:
+      "cross4":
+          row-major
+          reverse row-major
+          column-major
+          reverse column-major
+
+      "single":
+          row-major only, useful when GPU memory is limited.
+
+    For a clean paper-style Tiny model, "cross4" is the default.
+    If you hit CUDA OOM on Windows/mambapy, change the factory to scan_mode="single".
+    """
+    def __init__(
+        self,
+        dim: int,
+        scan_mode: Literal["single", "cross4"] = "cross4",
+        mamba_d_state: int = 8,
+        mamba_expand_factor: int = 1,
+        mamba_d_conv: int = 3,
+    ):
+        super().__init__()
+
+        if scan_mode not in ("single", "cross4"):
+            raise ValueError("scan_mode must be 'single' or 'cross4'.")
+
+        self.scan_mode = scan_mode
+
+        self.seq_mixer = MambaSequenceMixer(
+            dim=dim,
+            d_state=mamba_d_state,
+            expand_factor=mamba_expand_factor,
+            d_conv=mamba_d_conv,
+        )
+
+    def _scan_hw(self, x: torch.Tensor) -> torch.Tensor:
+        # [B, C, H, W] -> [B, H*W, C] -> [B, C, H, W]
         b, c, h, w = x.shape
 
-        x = self.in_proj(x)                       # B, D, H, W
-        x = x.flatten(2).transpose(1, 2)          # B, L, D
-        x = self.norm(x)
-        x = self.mixer(x)                         # B, L, D
-        x = x.transpose(1, 2).reshape(b, -1, h, w)
-        x = self.out_proj(x)
+        seq = x.flatten(2).transpose(1, 2).contiguous()
+        out = self.seq_mixer(seq)
+        out = out.transpose(1, 2).contiguous().reshape(b, c, h, w)
 
+        return out
+
+    def _scan_wh(self, x: torch.Tensor) -> torch.Tensor:
+        # Column-major scan by transposing H/W.
+        b, c, h, w = x.shape
+
+        xt = x.transpose(2, 3).contiguous()
+        seq = xt.flatten(2).transpose(1, 2).contiguous()
+
+        out = self.seq_mixer(seq)
+
+        out = out.transpose(1, 2).contiguous().reshape(b, c, w, h)
+        out = out.transpose(2, 3).contiguous()
+
+        return out
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        if self.scan_mode == "single":
+            return self._scan_hw(x)
+
+        y1 = self._scan_hw(x)
+
+        xr = torch.flip(x, dims=[2, 3])
+        y2 = torch.flip(self._scan_hw(xr), dims=[2, 3])
+
+        y3 = self._scan_wh(x)
+
+        xtr = torch.flip(x, dims=[2, 3])
+        y4 = torch.flip(self._scan_wh(xtr), dims=[2, 3])
+
+        return (y1 + y2 + y3 + y4) * 0.25
+
+
+# GlobalMixer with bottleneck Mamba
+class BottleneckMambaGlobalMixer(nn.Module):
+    """
+    GlobalMixer:
+      1x1 C -> C/2
+      Spatial Mamba
+      1x1 C/2 -> C
+    """
+    def __init__(
+        self,
+        dim: int,
+        bottleneck_ratio: float = 0.5,
+        scan_mode: Literal["single", "cross4"] = "cross4",
+        mamba_d_state: int = 8,
+        mamba_expand_factor: int = 1,
+        mamba_d_conv: int = 3,
+    ):
+        super().__init__()
+
+        hidden_dim = max(1, int(dim * bottleneck_ratio))
+
+        self.reduce = nn.Conv2d(
+            dim,
+            hidden_dim,
+            kernel_size=1,
+            bias=True,
+        )
+
+        self.ss2d = SpatialMamba2D(
+            dim=hidden_dim,
+            scan_mode=scan_mode,
+            mamba_d_state=mamba_d_state,
+            mamba_expand_factor=mamba_expand_factor,
+            mamba_d_conv=mamba_d_conv,
+        )
+
+        self.expand = nn.Conv2d(
+            hidden_dim,
+            dim,
+            kernel_size=1,
+            bias=True,
+        )
+
+    @property
+    def backend(self) -> str:
+        return self.ss2d.seq_mixer.backend
+
+    @property
+    def scan_mode(self) -> str:
+        return self.ss2d.scan_mode
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.reduce(x)
+        x = self.ss2d(x)
+        x = self.expand(x)
         return x
 
 
+# InceptionMamba block
 class InceptionMambaBlock(nn.Module):
     """
-    InceptionMamba-style block:
-    local large-band DW conv mixer + Mamba bottleneck global mixer + MLP
+    InceptionMamba block:
+      ConvMixer -> GlobalMixer -> Norm -> MLP -> residual
     """
-
     def __init__(
         self,
         dim: int,
         mlp_ratio: float = 4.0,
+        conv_branch_ratio: float = 1.0 / 8.0,
+        bottleneck_ratio: float = 0.5,
         drop_path: float = 0.0,
-        band_kernel: int = 11,
-        bottleneck_ratio: float = 0.25,
-        use_mamba: bool = True,
+        layer_scale_init_value: float = 1e-6,
+        scan_mode: Literal["single", "cross4"] = "cross4",
+        mamba_d_state: int = 8,
+        mamba_expand_factor: int = 1,
+        mamba_d_conv: int = 3,
     ):
         super().__init__()
 
-        self.norm1 = LayerNorm2d(dim)
-        self.local_mixer = LargeBandDWConv(
+        self.conv_mixer = InceptionBandConvMixer(
             dim=dim,
             square_kernel=3,
-            band_kernel=band_kernel,
-            branch_ratio=0.25,
+            band_kernel=11,
+            branch_ratio=conv_branch_ratio,
         )
 
-        self.norm2 = LayerNorm2d(dim)
-        self.global_mixer = MambaBottleneck2d(
+        self.global_mixer = BottleneckMambaGlobalMixer(
             dim=dim,
             bottleneck_ratio=bottleneck_ratio,
-            use_mamba=use_mamba,
+            scan_mode=scan_mode,
+            mamba_d_state=mamba_d_state,
+            mamba_expand_factor=mamba_expand_factor,
+            mamba_d_conv=mamba_d_conv,
         )
 
-        self.norm3 = LayerNorm2d(dim)
-        hidden = int(dim * mlp_ratio)
+        self.norm = LayerNorm2d(dim)
+
+        hidden_dim = int(dim * mlp_ratio)
+
         self.mlp = nn.Sequential(
-            nn.Conv2d(dim, hidden, kernel_size=1),
+            nn.Conv2d(dim, hidden_dim, kernel_size=1, bias=True),
             nn.GELU(),
-            nn.Conv2d(hidden, dim, kernel_size=1),
+            nn.Conv2d(hidden_dim, dim, kernel_size=1, bias=True),
+        )
+
+        self.gamma = nn.Parameter(
+            layer_scale_init_value * torch.ones(dim),
+            requires_grad=True,
         )
 
         self.drop_path = DropPath(drop_path)
 
-    def forward(self, x):
-        x = x + self.drop_path(self.local_mixer(self.norm1(x)))
-        x = x + self.drop_path(self.global_mixer(self.norm2(x)))
-        x = x + self.drop_path(self.mlp(self.norm3(x)))
-        return x
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        shortcut = x
+
+        x = self.conv_mixer(x)
+        x = self.global_mixer(x)
+        x = self.norm(x)
+        x = self.mlp(x)
+        x = x * self.gamma[:, None, None]
+
+        return shortcut + self.drop_path(x)
 
 
-class DownsampleLayer(nn.Module):
-    def __init__(self, in_ch: int, out_ch: int, first: bool = False):
+# Patch embedding / downsampling
+class PatchEmbed224(nn.Module):
+    """
+    224x224 version.
+
+    Produces stage-1 feature map of H/4 x W/4.
+    """
+    def __init__(self, in_chans: int, embed_dim: int):
         super().__init__()
 
-        if first:
-            # 224 -> 56
-            self.net = nn.Sequential(
-                ConvBNAct(in_ch, out_ch // 2, kernel_size=3, stride=2),
-                ConvBNAct(out_ch // 2, out_ch, kernel_size=3, stride=2),
-            )
-        else:
-            # H, W -> H/2, W/2
-            self.net = nn.Sequential(
-                LayerNorm2d(in_ch),
-                nn.Conv2d(in_ch, out_ch, kernel_size=2, stride=2),
-            )
+        mid_dim = embed_dim // 2
 
-    def forward(self, x):
-        return self.net(x)
+        self.proj = nn.Sequential(
+            nn.Conv2d(
+                in_chans,
+                mid_dim,
+                kernel_size=3,
+                stride=2,
+                padding=1,
+                bias=True,
+            ),
+            LayerNorm2d(mid_dim),
+            nn.GELU(),
+            nn.Conv2d(
+                mid_dim,
+                embed_dim,
+                kernel_size=3,
+                stride=2,
+                padding=1,
+                bias=True,
+            ),
+            LayerNorm2d(embed_dim),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.proj(x)
 
 
+class Downsample(nn.Module):
+    """
+    3x3 stride-2 downsampling.
+    """
+    def __init__(self, in_dim: int, out_dim: int):
+        super().__init__()
+
+        self.down = nn.Sequential(
+            LayerNorm2d(in_dim),
+            nn.Conv2d(
+                in_dim,
+                out_dim,
+                kernel_size=3,
+                stride=2,
+                padding=1,
+                bias=True,
+            ),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.down(x)
+
+
+# Backbone
 class InceptionMambaBackbone(nn.Module):
     """
-    Feature layer.
-    With a default input of 224x224, the output stages are:
-    - stage 1: B, 32, 56, 56
-    - stage 2: B, 64, 28, 28
-    - stage 3: B, 128, 14, 14
-    - stage 4: B, 256, 7, 7
-    This multi-scale output is convenient for connecting to object detection, semantic segmentation, or image caption encoders.
-    """
+    InceptionMamba-Tiny backbone.
 
+    forward_features(x, return_all=True) returns:
+      [stage1, stage2, stage3, stage4]
+
+    For 224x224 input:
+      stage1: [B, 72, 56, 56]
+      stage2: [B, 144, 28, 28]
+      stage3: [B, 288, 14, 14]
+      stage4: [B, 576, 7, 7]
+    """
     def __init__(
         self,
         in_chans: int = 3,
-        dims=(32, 64, 128, 256),
-        depths=(2, 2, 4, 2),
-        drop_path_rate: float = 0.05,
-        use_mamba: bool = True,
+        depths: Tuple[int, int, int, int] = (3, 3, 12, 3),
+        dims: Tuple[int, int, int, int] = (72, 144, 288, 576),
+        drop_path_rate: float = 0.1,
+        mlp_ratio: float = 4.0,
+        conv_branch_ratio: float = 1.0 / 8.0,
+        bottleneck_ratio: float = 0.5,
+        scan_mode: Literal["single", "cross4"] = "cross4",
+        mamba_d_state: int = 8,
+        mamba_expand_factor: int = 1,
+        mamba_d_conv: int = 3,
+        layer_scale_init_value: float = 1e-6,
     ):
         super().__init__()
 
-        assert len(dims) == 4
-        assert len(depths) == 4
-
-        self.dims = dims
         self.depths = depths
+        self.dims = dims
+        self.out_channels = dims
 
-        self.downsamples = nn.ModuleList()
-        self.downsamples.append(
-            DownsampleLayer(in_chans, dims[0], first=True)
-        )
-
-        for i in range(3):
-            self.downsamples.append(
-                DownsampleLayer(dims[i], dims[i + 1], first=False)
-            )
+        self.patch_embed = PatchEmbed224(in_chans, dims[0])
 
         total_blocks = sum(depths)
         dp_rates = torch.linspace(0, drop_path_rate, total_blocks).tolist()
 
         self.stages = nn.ModuleList()
+        self.downsamples = nn.ModuleList()
+
         cur = 0
-        for stage_idx in range(4):
+
+        for i in range(4):
             blocks = []
-            for _ in range(depths[stage_idx]):
+
+            for _ in range(depths[i]):
                 blocks.append(
                     InceptionMambaBlock(
-                        dim=dims[stage_idx],
-                        mlp_ratio=4.0,
+                        dim=dims[i],
+                        mlp_ratio=mlp_ratio,
+                        conv_branch_ratio=conv_branch_ratio,
+                        bottleneck_ratio=bottleneck_ratio,
                         drop_path=dp_rates[cur],
-                        band_kernel=11,
-                        bottleneck_ratio=0.25,
-                        use_mamba=use_mamba,
+                        layer_scale_init_value=layer_scale_init_value,
+                        scan_mode=scan_mode,
+                        mamba_d_state=mamba_d_state,
+                        mamba_expand_factor=mamba_expand_factor,
+                        mamba_d_conv=mamba_d_conv,
                     )
                 )
                 cur += 1
 
             self.stages.append(nn.Sequential(*blocks))
 
-        self.out_channels = list(dims)
+            if i < 3:
+                self.downsamples.append(
+                    Downsample(
+                        in_dim=dims[i],
+                        out_dim=dims[i + 1],
+                    )
+                )
 
-    def forward(self, x, return_stages: bool = True):
-        features = []
+        self.apply(self._init_weights)
 
-        for down, stage in zip(self.downsamples, self.stages):
-            x = down(x)
-            x = stage(x)
+    @staticmethod
+    def _init_weights(m: nn.Module):
+        if isinstance(m, nn.Conv2d):
+            nn.init.trunc_normal_(m.weight, std=0.02)
+            if m.bias is not None:
+                nn.init.zeros_(m.bias)
+
+        elif isinstance(m, nn.Linear):
+            nn.init.trunc_normal_(m.weight, std=0.02)
+            if m.bias is not None:
+                nn.init.zeros_(m.bias)
+
+    @property
+    def mamba_backend(self) -> str:
+        return self.stages[0][0].global_mixer.backend
+
+    @property
+    def scan_mode(self) -> str:
+        return self.stages[0][0].global_mixer.scan_mode
+
+    def forward_features(
+        self,
+        x: torch.Tensor,
+        return_all: bool = True,
+    ):
+        features: List[torch.Tensor] = []
+
+        x = self.patch_embed(x)
+
+        for i in range(4):
+            x = self.stages[i](x)
             features.append(x)
 
-        if return_stages:
+            if i < 3:
+                x = self.downsamples[i](x)
+
+        if return_all:
             return features
 
-        return features[-1]
+        return x
+
+    def forward(self, x: torch.Tensor):
+        return self.forward_features(x, return_all=True)
 
 
+# Classifier
 class InceptionMambaClassifier(nn.Module):
     """
-    Classification model = backbone + classification head
+    InceptionMamba-Tiny classifier:
+      backbone + global average pooling + LayerNorm + Linear head
     """
-
     def __init__(
         self,
         num_classes: int = 1000,
         in_chans: int = 3,
-        dims=(32, 64, 128, 256),
-        depths=(2, 2, 4, 2),
-        drop_path_rate: float = 0.05,
-        use_mamba: bool = True,
+        scan_mode: Literal["single", "cross4"] = "cross4",
     ):
         super().__init__()
 
         self.backbone = InceptionMambaBackbone(
             in_chans=in_chans,
-            dims=dims,
-            depths=depths,
-            drop_path_rate=drop_path_rate,
-            use_mamba=use_mamba,
+            depths=(3, 3, 12, 3),
+            dims=(72, 144, 288, 576),
+            drop_path_rate=0.1,
+            mlp_ratio=4.0,
+            conv_branch_ratio=1.0 / 8.0,
+            bottleneck_ratio=0.5,
+            scan_mode=scan_mode,
+            mamba_d_state=8,
+            mamba_expand_factor=1,
+            mamba_d_conv=3,
+            layer_scale_init_value=1e-6,
         )
 
-        self.norm = nn.LayerNorm(dims[-1])
-        self.head = nn.Linear(dims[-1], num_classes)
+        self.norm = nn.LayerNorm(576)
+        self.head = nn.Linear(576, num_classes)
 
-    def forward_features(self, x, return_stages: bool = False):
-        feats = self.backbone(x, return_stages=True)
+    def forward_features(
+        self,
+        x: torch.Tensor,
+        return_all: bool = False,
+    ):
+        feats = self.backbone.forward_features(x, return_all=True)
 
-        if return_stages:
+        if return_all:
             return feats
 
-        x = feats[-1]
-        x = x.mean(dim=(2, 3))       # global average pooling
+        x = feats[-1].mean(dim=(2, 3))
         x = self.norm(x)
+
         return x
 
-    def forward_head(self, x):
-        return self.head(x)
-
-    def forward(self, x):
-        x = self.forward_features(x, return_stages=False)
-        x = self.forward_head(x)
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.forward_features(x, return_all=False)
+        x = self.head(x)
         return x
 
 
-def count_params(model: nn.Module):
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+# Factory
+def inception_mamba_tiny_224(
+    num_classes: int = 1000,
+    in_chans: int = 3,
+    scan_mode: Literal["single", "cross4"] = "cross4",
+) -> InceptionMambaClassifier:
+    """
+    224x224 InceptionMamba-Tiny.
+
+    Args:
+        num_classes:
+            Number of output classes.
+        in_chans:
+            Input image channels.
+        scan_mode:
+            "cross4" is closer to SS2D-style four-direction scan.
+            "single" is much more memory-safe on Windows + mambapy.
+    """
+    return InceptionMambaClassifier(
+        num_classes=num_classes,
+        in_chans=in_chans,
+        scan_mode=scan_mode,
+    )
 
 
+def count_parameters(model: nn.Module) -> float:
+    return sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e6
+
+
+# Random test
 if __name__ == "__main__":
-    torch.manual_seed(42)
+    torch.backends.cudnn.benchmark = True
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
-    print(f"PyTorch: {torch.__version__}")
     print(f"Device: {device}")
-    print(f"mambapy available: {HAS_MAMBAPY}")
+    print(f"mambapy available: {HAS_MAMBA_PY}")
 
-    model = InceptionMambaClassifier(
-        num_classes=10,
-        dims=(32, 64, 128, 256),
-        depths=(1, 1, 2, 1),   # Small beta version; the official version can be changed to (2, 2, 4, 2)
-        drop_path_rate=0.05,
-        use_mamba=True,
+    # For maximum paper-style behavior, use scan_mode="cross4".
+    # If CUDA OOM occurs on 8GB GPU, change it to scan_mode="single".
+    model = inception_mamba_tiny_224(
+        num_classes=1000,
+        in_chans=3,
+        scan_mode="cross4",
     ).to(device)
 
     model.eval()
 
-    x = torch.randn(2, 3, 224, 224, device=device)
+    x = torch.randn(1, 3, 224, 224, device=device)
 
     with torch.no_grad():
-        logits = model(x)
-        feats = model.forward_features(x, return_stages=True)
+        y = model(x)
+        feats = model.forward_features(x, return_all=True)
 
-    print(f"Params: {count_params(model) / 1e6:.3f} M")
+    print("\n[InceptionMamba-Tiny 224x224]")
+    print(f"Mamba backend: {model.backbone.mamba_backend}")
+    print(f"Scan mode: {model.backbone.scan_mode}")
+    print(f"Params: {count_parameters(model):.2f} M")
     print(f"Input:  {tuple(x.shape)}")
-    print(f"Logits: {tuple(logits.shape)}")
+    print(f"Output: {tuple(y.shape)}")
 
-    for i, f in enumerate(feats, start=1):
+    for i, f in enumerate(feats, 1):
         print(f"Stage {i}: {tuple(f.shape)}")
 
-    assert logits.shape == (2, 10)
-    assert feats[0].shape[2:] == (56, 56)
-    assert feats[1].shape[2:] == (28, 28)
-    assert feats[2].shape[2:] == (14, 14)
-    assert feats[3].shape[2:] == (7, 7)
+    assert y.shape == (1, 1000)
 
-    print("Random forward test passed.")
+    print("\nRandom test passed.")

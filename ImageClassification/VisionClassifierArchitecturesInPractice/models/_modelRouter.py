@@ -1,23 +1,23 @@
 
-from .GoogLeNet         import build_googlenet
-from .InceptionV2       import build_inception2
-from .InceptionV3       import build_inception3
-from .InceptionV3tiny   import build_inception3_tiny
-from .InceptionV4       import build_inception4
-from .InceptionV4tiny   import build_inception4_tiny
+from .InceptionSeries.GoogLeNet         import build_googlenet
+from .InceptionSeries.InceptionV2       import build_inception2
+from .InceptionSeries.InceptionV3       import build_inception3
+from .InceptionSeries.InceptionV3tiny   import build_inception3_tiny
+from .InceptionSeries.InceptionV4       import build_inception4
+from .InceptionSeries.InceptionV4tiny   import build_inception4_tiny
 
-from .HighwayNet        import build_HighwayNet
-from .ResNet            import build_ResNet18,build_ResNet34
-from .ResNetV2          import ResNetV2_18,ResNetV2_34
-from .WideResNet        import build_WideResNet18,build_WideResNet34
-from .ResNeXt           import resnext50_32x4d,resnext18_tiny
+from .ShortcutSeries.HighwayNet        import build_HighwayNet
+from .ShortcutSeries.ResNet            import build_ResNet18,build_ResNet34
+from .ShortcutSeries.ResNetV2          import ResNetV2_18,ResNetV2_34
+from .ShortcutSeries.WideResNet        import build_WideResNet18,build_WideResNet34
+from .ShortcutSeries.ResNeXt           import resnext50_32x4d,resnext18_tiny
 
-from .InceptionResNetV2     import build_inception_resnet_v2
-from .InceptionResNetV2tiny import build_inception_resnet_v2_tiny
-from .XceptionTiny          import xception_tiny
+from .InceptionSeries.InceptionResNetV2     import build_inception_resnet_v2
+from .InceptionSeries.InceptionResNetV2tiny import build_inception_resnet_v2_tiny
+from .InceptionSeries.XceptionTiny          import xception_tiny
 
 
-from .InceptionMamba import build_InceptionMamba_Small
+from .InceptionMamba import build_InceptionMamba_Tiny
 
 from .zTorchAPI import (
     build_googlenet_pt,
@@ -57,6 +57,7 @@ modelRouter = {
     "resnet34v2" : ResNetV2_34,
 
 
-    "inception_mamba_small" : build_InceptionMamba_Small,
+    "inception_mamba_tiny"   : build_InceptionMamba_Tiny,
+
 }
 Existing_model_names =   list(modelRouter.keys())
