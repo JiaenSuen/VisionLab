@@ -27,4 +27,6 @@ The goal of this repository is to **bridge the gap between theoretical research 
 
 ---
 
+**Download Method : https://download-directory.github.io/**
+
 ## Repository Structure
