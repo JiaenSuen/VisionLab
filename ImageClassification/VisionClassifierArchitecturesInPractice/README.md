@@ -81,6 +81,12 @@ The following models are included : <br>
 Current Best (with no pretrained) :  InceptionV4-tiny, ResNeXt18
 
 
+### ImageNette2-320 (with no Data Augmentation)
+| Model                     | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time (ms) |  
+| ------------------------- | -------------  | ------------- | --------- |------------- | ------------------- | 
+| ResNet18                  | 76.53          | 70.50         | 10        | 3.6271       | 0.6765
+| InceptionMamba-Like       | 71.38          | 64.48         | 10        | 10.902       | 10.559
+
 
 
 ## Addendum : Models Research

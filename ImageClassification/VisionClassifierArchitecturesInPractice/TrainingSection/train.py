@@ -30,7 +30,7 @@ def Train(modelName="", datasetName="",device="cuda",epochs=100):
 
     # Training Params
     learning_rate = 1e-3
-    batch_size = 256
+    batch_size = 8
     num_epochs = epochs
 
     # Model
