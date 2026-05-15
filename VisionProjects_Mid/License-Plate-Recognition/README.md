@@ -30,7 +30,7 @@ Input Image
 
 ## Development Period
 
-May 10 st ~ May 24 st, 2025
+**May 10 st ~ May 24 st, 2025**
 
 ## Author
 
