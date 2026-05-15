@@ -1,19 +1,37 @@
 # License-Plate-Recognition
 
-License Plate Recognition is an automated system designed to detect and extract license plates from input images, recognize the characters on the plates, and output the vehicle registration number. The project combines Haar feature-based object detection with a Convolutional Neural Network (CNN) for character recognition, providing an end-to-end solution for license plate analysis.  
+A computer vision project for automatic license plate detection and recognition.  
+This project integrates traditional Haar Cascade detection, YOLOv11 object detection, and Tesseract OCR to build an end-to-end license plate recognition pipeline.
 
-The system works in two major phases :  
+![Pipeline Demo](_Report/demo.png)
 
-* Object Detection
-* Text Recognition
+## Project Overview
 
-This project serves as a foundational exploration into computer vision techniques applied in real-world scenarios such as traffic monitoring, automated parking systems, and smart surveillance.  
+The goal of this project is to detect license plates from vehicle images, crop the license plate region, and recognize the text content automatically.
 
 
-#### Development Period
+The project explores two major license plate detection approaches:
+
+- **Haar Cascade Classifier**
+- **YOLOv11 Object Detection**
+
+After detecting the license plate region, the cropped image is processed and passed into **Tesseract OCR** for text recognition.
+
+The complete workflow is:
+
+```text
+Input Image
+→ License Plate Detection
+→ Plate ROI Cropping
+→ Image Enhancement / Perspective Correction
+→ OCR Recognition
+→ Final Output
+```
+
+## Development Period
 
 May 10 st ~ May 24 st, 2025
 
-#### Author
+## Author
 
-Jiaen Suen
+**Jiaen Suen**
