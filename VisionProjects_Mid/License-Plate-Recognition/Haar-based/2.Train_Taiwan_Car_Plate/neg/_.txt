@@ -1,0 +1,2 @@
+kaggle scence dataset or any datasets
+use make_neg.py create pos.txt file

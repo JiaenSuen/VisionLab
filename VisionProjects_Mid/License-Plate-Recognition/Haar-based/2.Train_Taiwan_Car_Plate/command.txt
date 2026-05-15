@@ -1,0 +1,1 @@
+opencv_traincascade -data data -vec full.vec -bg neg.txt -numStages 15 -numPos 3200 -numNeg 8000 -w 24 -h 24 -mode ALL -precalcValBufSize 1024 -precalcIdxBufSize 1024

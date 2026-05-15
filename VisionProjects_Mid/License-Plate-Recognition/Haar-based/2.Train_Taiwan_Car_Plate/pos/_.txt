@@ -1,0 +1,5 @@
+tlprr dataset download VOC xml format
+use  convert_form.py pos transform dataset format to haar format
+make_pos.py create pos.txt file
+cmd command :
+	opencv_createsamples -info pos.txt -vec positives.vec -w 24 -h 24 
