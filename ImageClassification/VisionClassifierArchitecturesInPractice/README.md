@@ -86,7 +86,17 @@ Current Best (with no pretrained) :  InceptionV4-tiny, ResNeXt18
 | ------------------------- | -------------  | ------------- | --------- |------------- | ------------------- | 
 | ResNet18                  | 76.53          | 70.50         | 10        | 3.6271       | 0.6765
 | InceptionMamba-Like       | 71.38          | 64.48         | 10        | 10.902       | 10.559
+| ConvNeXt2_Tiny            | 42.93          | 37.78         | 10        | 8.9383       | 3.5409
 
+
+
+
+
+### Food101 (with no Data Augmentation)
+| Model                     | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time (ms) |  
+| ------------------------- | -------------  | ------------- | --------- |------------- | ------------------- | 
+| ResNet18                  | 91.49          | 48.72         | 10        | 3.6271       | 0.6916
+| RepVit-M1.1               | 43.63          | 40.11         | 10        | 2.6822       | 1.2821
 
 
 ## Addendum : Models Research
