@@ -17,6 +17,7 @@ IMAGENET_STD = (0.229, 0.224, 0.225)
 # Food-101 224x224
 
 NUM_CLASSES_OF_FOOD101 = 101
+DATASET_NAME = "Food101"
 class Food101_224Dataset:
     """
     Food-101 224x224 dataset.

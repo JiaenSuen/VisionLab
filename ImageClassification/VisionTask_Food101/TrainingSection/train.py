@@ -6,7 +6,7 @@ import torch.nn.functional as F
 
 from models.utils import check_accuracy,save_model,load_model
 from models._modelRouter import modelRouter,Existing_model_names
-from TrainingSection.dataset import Food101_224Dataset,NUM_CLASSES_OF_FOOD101
+from TrainingSection.dataset import Food101_224Dataset,NUM_CLASSES_OF_FOOD101,DATASET_NAME
 from tqdm import tqdm
 
 
@@ -68,7 +68,7 @@ def Train(modelName="",device="cuda",epochs=100):
     print(f"Epoch {epoch+1}/{num_epochs} completed, Average Loss: {final_avg_loss:.4f}")
 
     check_accuracy(train_loader, model)
-    save_model(model, f"trainedRelease/Food101_{modelName}.pth")
+    save_model(model, f"trainedRelease/{DATASET_NAME}_{modelName}.pth")
     pass
 
 

@@ -12,7 +12,7 @@ import os
 from models.ShortcutSeries.ResNet import *
 from models.utils import check_accuracy,save_model,load_model
 from models._modelRouter import modelRouter,Existing_model_names
-from TrainingSection.dataset import Food101_224Dataset,NUM_CLASSES_OF_FOOD101
+from TrainingSection.dataset import Food101_224Dataset,NUM_CLASSES_OF_FOOD101,DATASET_NAME
 from models._modelRouter import modelRouter
 
 def Test(modelName="",device="cuda"):
@@ -22,14 +22,14 @@ def Test(modelName="",device="cuda"):
  
     
     
-    if not os.path.exists(f"trainedRelease/Food101_{modelName}.pth"):
-        print(f"Trained model file trainedRelease/Food101_{modelName}.pth not found. Please train the model first.")
+    if not os.path.exists(f"trainedRelease/{DATASET_NAME}_{modelName}.pth"):
+        print(f"Trained model file trainedRelease/{DATASET_NAME}_{modelName}.pth not found. Please train the model first.")
         return
     
     
 
     model = modelRouter[modelName](num_classes=NUM_CLASSES_OF_FOOD101) 
-    model = load_model(model, f"trainedRelease/Food101_{modelName}.pth")
+    model = load_model(model, f"trainedRelease/{DATASET_NAME}_{modelName}.pth")
 
 
     test_loader = Food101_224Dataset.GetTestLoader(batch_size=256)

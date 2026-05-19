@@ -20,21 +20,6 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 |.          |.              |ResNeXt        |.         |.              |.             |.               |
 |.          |.              |SqueezeNet     |.         |.              |.             |.               |
 
-### Vision-Transformer /  CNN-Transformer
-| 2020 | 2021 |2022 |2023 |2024 |2025|
-| ---| ---  | --- | --- |--- |--- |
-|ViT|Swin|ConvNeXt|ConvNeXt V2|MobileViT|Hybrid ViT-CNN|
-|MLP-Mixer|EfficientNetV2|DaViT|DINOv2|EfficientViT|DINOv3
- 
-
- 
-
-### Mamba-based
-* Vision Mamba / SSM
-* MambaVision
-* Hybrid Conv + SSM
-* Res-VMamba
-* C-RADIOv4
 
 
  
@@ -43,7 +28,10 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 | Model                     | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time (ms) |  
 | ------------------------- | -------------  | ------------- | --------- |------------- | ------------------- | 
 | ResNet18                  | 99.17          | 85.30         | 100       | 3.6271       | 0.6731
-| E-ConvNeXt-mini           | 98.42          | 77.81         | 100       | 1.2301       | 0.5630
+| E-ConvNeXt-mini           | 99.82          | 88.31         | 100       | 1.2301       | 0.5630
+
+
+
 
 
 ## Addendum : Models Research

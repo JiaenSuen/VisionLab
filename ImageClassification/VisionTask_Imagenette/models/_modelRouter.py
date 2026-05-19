@@ -18,7 +18,6 @@ from .InceptionSeries.XceptionTiny          import xception_tiny
 
 
 
-from .ConvNeXtV2_Tiny import build_ConvNeXtV2_Tiny
 from .InceptionMamba import build_InceptionMamba_Tiny
 from .RepViT import build_RepViT_M1_1
 from .EConvNeXt import build_EConvNeXt_Mini
@@ -61,7 +60,7 @@ modelRouter = {
     "resnet18v2" : ResNetV2_18,
     "resnet34v2" : ResNetV2_34,
 
-    "convnext2_tiny" : build_ConvNeXtV2_Tiny,
+
     "inception_mamba_tiny"   : build_InceptionMamba_Tiny,
     "rep_vit_m1_1" : build_RepViT_M1_1,
     "e-convnext-mini" : build_EConvNeXt_Mini,
