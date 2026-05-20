@@ -4,7 +4,7 @@ from models._modelRouter import Existing_model_names
 
 
 if __name__ == "__main__":
-    
+    2
     print("Starting Training and Testing Process")
     print("-------------------------------------")
     print(f"Available Models : {Existing_model_names}")

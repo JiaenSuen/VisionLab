@@ -56,7 +56,7 @@ def get_training_config(model_name: str, epochs: int):
     elif family == "convnext":
         config.update({
             "batch_size": 32,
-            "test_batch_size": 64,
+            "test_batch_size": 128,
             "optimizer": "adamw",
             "lr": 1e-3,
             "weight_decay": 0.05,
