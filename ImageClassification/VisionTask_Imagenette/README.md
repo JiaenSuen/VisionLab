@@ -27,8 +27,8 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 ### ImageNette
 | Model                     | Train Accuracy | Test Accuracy | Loss     | Epoches   |  GFLOPs      | Inference Time (ms) |  
 | ------------------------- | -------------  | ------------- | -------- |---------- |------------- | ------------------- | 
-| ResNet18                  | 99.93          | 88.61         | 0.0029   |100        | 3.6271       | 0.6731
-| E-ConvNeXt-mini           | 99.82          | 88.31         |          |100        | 1.2301       | 0.5630
+| ResNet18                  | 99.93          | 88.61         | 0.0029   |100        | 7.2543       | 0.6731
+| E-ConvNeXt-mini           | 99.82          | 88.31         |          |100        | 2.4593       | 0.5630
 
 
 
