@@ -43,7 +43,7 @@ def get_training_config(model_name: str, epochs: int):
 
     if family == "resnet":
         config.update({
-            "batch_size": 64,
+            "batch_size": 32,
             "test_batch_size": 128,
             "optimizer": "sgd",
             "lr": 0.05,
