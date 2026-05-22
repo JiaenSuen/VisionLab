@@ -43,7 +43,7 @@ Rather than aiming for state-of-the-art performance, the goal is to understand a
 | Model                     | Train Accuracy | Test Accuracy | Epoches   |  GFLOPs      | Inference Time (ms) |  
 | ------------------------- | -------------  | ------------- | --------- |------------- | ------------------- | 
 | ResNet18                  | 93.65          | 65.65         | 30        | 3.6271       | 0.6916
-| E-ConvNeXt-mini           | 91.03          | 75.23         | 10        | 1.2301       | 0.5642
+| E-ConvNeXt-mini           | 91.03          | 75.23         | 20        | 1.2301       | 0.5642
 
 
 ## Addendum : Models Research
