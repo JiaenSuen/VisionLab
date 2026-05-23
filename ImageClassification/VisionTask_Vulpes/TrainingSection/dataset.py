@@ -14,7 +14,6 @@ def _count_classes_from_train(root="dataset"):
     train_dir = os.path.join(root, "train")
 
     if not os.path.isdir(train_dir):
-        # 這裡不要直接 raise，避免某些程式 import dataset 檔案時資料夾還沒準備好
         return None
 
     class_names = sorted([
@@ -29,7 +28,7 @@ def _count_classes_from_train(root="dataset"):
 
 
 # 給舊的 interface / model factory 使用
-# 如果你的 interface 會讀 NUM_CLASSES，這裡就不能是 0。
+# 如果 interface 會讀 NUM_CLASSES，這裡不能是 0。
 NUM_CLASSES = _count_classes_from_train("dataset")
 
 
@@ -44,10 +43,6 @@ class FoxSpeciesDataset:
         red_fox/
         arctic_fox/
         ...
-      val/
-        red_fox/
-        arctic_fox/
-        ...
       test/
         red_fox/
         arctic_fox/
@@ -58,10 +53,17 @@ class FoxSpeciesDataset:
     - val split uses dataset/test
     - test split uses dataset/test
 
-    This means dataset/test is used as both validation and testing set.
+    Note:
+    Since validation and testing both use dataset/test, the reported test result
+    is not an independent held-out estimate if dataset/test is used for model
+    selection or hyperparameter tuning.
     """
 
     ROOT = "dataset"
+
+    TRAIN_SPLIT = "train"
+    VAL_SPLIT = "test"
+    TEST_SPLIT = "test"
 
     default_train_transform = transforms.Compose([
         transforms.RandomResizedCrop(224, scale=(0.7, 1.0)),
@@ -78,8 +80,12 @@ class FoxSpeciesDataset:
     ])
 
     @staticmethod
-    def _list_classes(split):
-        split_dir = os.path.join(FoxSpeciesDataset.ROOT, split)
+    def _split_dir(split_name):
+        return os.path.join(FoxSpeciesDataset.ROOT, split_name)
+
+    @staticmethod
+    def _list_classes(split_name):
+        split_dir = FoxSpeciesDataset._split_dir(split_name)
 
         if not os.path.isdir(split_dir):
             raise FileNotFoundError(f"Split directory not found: {split_dir}")
@@ -101,23 +107,19 @@ class FoxSpeciesDataset:
                 f"Dataset root not found: {FoxSpeciesDataset.ROOT}"
             )
 
-        train_dir = os.path.join(FoxSpeciesDataset.ROOT, "train")
-        test_dir = os.path.join(FoxSpeciesDataset.ROOT, "test")
+        train_dir = FoxSpeciesDataset._split_dir(FoxSpeciesDataset.TRAIN_SPLIT)
+        test_dir = FoxSpeciesDataset._split_dir(FoxSpeciesDataset.TEST_SPLIT)
 
         if not os.path.isdir(train_dir):
-            raise FileNotFoundError(
-                f"Train directory not found: {train_dir}"
-            )
+            raise FileNotFoundError(f"Train directory not found: {train_dir}")
 
         if not os.path.isdir(test_dir):
-            raise FileNotFoundError(
-                f"Test directory not found: {test_dir}"
-            )
+            raise FileNotFoundError(f"Test directory not found: {test_dir}")
 
     @staticmethod
     def _check_class_consistency():
-        train_classes = FoxSpeciesDataset._list_classes("train")
-        test_classes = FoxSpeciesDataset._list_classes("test")
+        train_classes = FoxSpeciesDataset._list_classes(FoxSpeciesDataset.TRAIN_SPLIT)
+        test_classes = FoxSpeciesDataset._list_classes(FoxSpeciesDataset.TEST_SPLIT)
 
         if train_classes != test_classes:
             raise RuntimeError(
@@ -131,10 +133,12 @@ class FoxSpeciesDataset:
     @staticmethod
     def _resolve_split_dir(split):
         """
-        MVP setting:
+        Resolves logical split name to physical folder.
+
+        Logical split:
         - train -> dataset/train
-        - val / valid / validation -> dataset/test
-        - test -> dataset/test
+        - val   -> dataset/test
+        - test  -> dataset/test
         """
         FoxSpeciesDataset._check_dataset_root()
         FoxSpeciesDataset._check_class_consistency()
@@ -142,13 +146,18 @@ class FoxSpeciesDataset:
         split = split.lower()
 
         if split == "train":
-            return os.path.join(FoxSpeciesDataset.ROOT, "train")
+            physical_split = FoxSpeciesDataset.TRAIN_SPLIT
 
-        elif split in ["val", "valid", "validation", "test"]:
-            return os.path.join(FoxSpeciesDataset.ROOT, "test")
+        elif split in ["val", "valid", "validation"]:
+            physical_split = FoxSpeciesDataset.VAL_SPLIT
+
+        elif split == "test":
+            physical_split = FoxSpeciesDataset.TEST_SPLIT
 
         else:
             raise ValueError(f"Unsupported split: {split}")
+
+        return FoxSpeciesDataset._split_dir(physical_split)
 
     @staticmethod
     def _make_dataset(split, transformFunc):
@@ -195,15 +204,13 @@ class FoxSpeciesDataset:
 
         train_dataset.train = True
 
-        train_loader = DataLoader(
+        return DataLoader(
             dataset=train_dataset,
             batch_size=batch_size,
             shuffle=True,
             num_workers=num_workers,
             pin_memory=pin_memory,
         )
-
-        return train_loader
 
     @staticmethod
     def GetValLoader(
@@ -214,7 +221,7 @@ class FoxSpeciesDataset:
         pin_memory=True,
     ):
         """
-        In current MVP setting, validation uses dataset/test.
+        Validation uses dataset/test in the current MVP setting.
         """
         if transformFunc is None:
             transformFunc = transforms.Compose([
@@ -231,15 +238,13 @@ class FoxSpeciesDataset:
 
         val_dataset.train = False
 
-        val_loader = DataLoader(
+        return DataLoader(
             dataset=val_dataset,
             batch_size=batch_size,
             shuffle=False,
             num_workers=num_workers,
             pin_memory=pin_memory,
         )
-
-        return val_loader
 
     @staticmethod
     def GetTestLoader(
@@ -250,7 +255,7 @@ class FoxSpeciesDataset:
         pin_memory=True,
     ):
         """
-        Test also uses dataset/test.
+        Test uses dataset/test.
         """
         if transformFunc is None:
             transformFunc = transforms.Compose([
@@ -267,7 +272,7 @@ class FoxSpeciesDataset:
 
         test_dataset.train = False
 
-        test_loader = DataLoader(
+        return DataLoader(
             dataset=test_dataset,
             batch_size=batch_size,
             shuffle=False,
@@ -275,14 +280,12 @@ class FoxSpeciesDataset:
             pin_memory=pin_memory,
         )
 
-        return test_loader
-
     @staticmethod
     def GetClassNames():
         """
         Return class names from dataset/train.
         """
-        return FoxSpeciesDataset._list_classes("train")
+        return FoxSpeciesDataset._list_classes(FoxSpeciesDataset.TRAIN_SPLIT)
 
     @staticmethod
     def GetNumClasses():
@@ -292,32 +295,53 @@ class FoxSpeciesDataset:
         return len(FoxSpeciesDataset.GetClassNames())
 
     @staticmethod
-    def PrintDatasetInfo():
-        train_dataset = FoxSpeciesDataset._make_dataset(
-            split="train",
-            transformFunc=transforms.Compose([
-                transforms.Resize((224, 224)),
-                transforms.ToTensor(),
-            ]),
-        )
+    def GetDatasetStats():
+        """
+        Return basic dataset statistics.
+        """
+        stats = {}
 
-        test_dataset = FoxSpeciesDataset._make_dataset(
-            split="test",
-            transformFunc=transforms.Compose([
-                transforms.Resize((224, 224)),
-                transforms.ToTensor(),
-            ]),
-        )
+        for logical_split in ["train", "val", "test"]:
+            dataset = FoxSpeciesDataset._make_dataset(
+                split=logical_split,
+                transformFunc=transforms.Compose([
+                    transforms.Resize((224, 224)),
+                    transforms.ToTensor(),
+                ]),
+            )
+
+            stats[logical_split] = {
+                "num_images": len(dataset),
+                "classes": dataset.classes,
+                "class_to_idx": dataset.class_to_idx,
+                "physical_dir": FoxSpeciesDataset._resolve_split_dir(logical_split),
+            }
+
+        return stats
+
+    @staticmethod
+    def PrintDatasetInfo():
+        stats = FoxSpeciesDataset.GetDatasetStats()
 
         print(f"Dataset name: {DATASET_NAME}")
         print(f"Root: {FoxSpeciesDataset.ROOT}")
         print(f"NUM_CLASSES: {FoxSpeciesDataset.GetNumClasses()}")
-        print(f"Classes ({len(train_dataset.classes)}):")
-        for idx, cls_name in enumerate(train_dataset.classes):
+        print(f"Classes ({len(FoxSpeciesDataset.GetClassNames())}):")
+
+        for idx, cls_name in enumerate(FoxSpeciesDataset.GetClassNames()):
             print(f"  {idx}: {cls_name}")
 
-        print(f"Train class_to_idx: {train_dataset.class_to_idx}")
-        print(f"Test class_to_idx:  {test_dataset.class_to_idx}")
-        print(f"Train images: {len(train_dataset)}")
-        print(f"Val images: {len(test_dataset)}  # using dataset/test")
-        print(f"Test images: {len(test_dataset)} # using dataset/test")
+        print("\nSplit mapping:")
+        print(f"  train -> {stats['train']['physical_dir']}")
+        print(f"  val   -> {stats['val']['physical_dir']}")
+        print(f"  test  -> {stats['test']['physical_dir']}")
+
+        print("\nClass mapping:")
+        print(f"  Train class_to_idx: {stats['train']['class_to_idx']}")
+        print(f"  Val class_to_idx:   {stats['val']['class_to_idx']}")
+        print(f"  Test class_to_idx:  {stats['test']['class_to_idx']}")
+
+        print("\nImage counts:")
+        print(f"  Train images: {stats['train']['num_images']}")
+        print(f"  Val images:   {stats['val']['num_images']}  # using dataset/test")
+        print(f"  Test images:  {stats['test']['num_images']} # using dataset/test")
