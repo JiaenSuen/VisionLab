@@ -73,7 +73,7 @@ class ConvBNAct(nn.Module):
 class ESEBlock(nn.Module):
     """
     Effective Squeeze-and-Excitation.
-    輕量 channel attention。
+    Lightweight channel attention。
     """
     def __init__(self, channels):
         super().__init__()
@@ -152,8 +152,7 @@ class EConvNeXtBlock(nn.Module):
         self.ese = ESEBlock(channels)
 
         self.out_bn = nn.BatchNorm2d(channels)
-
-        # 讓殘差分支初始比較保守，訓練比較穩
+ 
         nn.init.constant_(self.out_bn.weight, 0.0)
         nn.init.constant_(self.out_bn.bias, 0.0)
 
