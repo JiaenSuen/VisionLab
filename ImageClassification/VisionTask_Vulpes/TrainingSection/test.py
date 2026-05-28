@@ -22,6 +22,14 @@ def Test(modelName="", device="cuda"):
         print(f"Best trained model file {model_path} not found. Please train the model first.")
         return
 
+    
+    model = modelRouter[modelName](num_classes=NUM_CLASSES)
+    model = load_model(model, model_path, device=device)
+    print(f"Model Params : {sum(p.numel() for p in model.parameters())}")
+
+
+
+
     config = get_training_config(modelName, epochs=1)
 
     test_loader = FoxSpeciesDataset.GetTestLoader(
@@ -46,11 +54,6 @@ def Test(modelName="", device="cuda"):
 
     
 
-
-
-
-    model = modelRouter[modelName](num_classes=NUM_CLASSES)
-    model = load_model(model, model_path, device=device)
 
 
 
