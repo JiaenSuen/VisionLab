@@ -1,0 +1,10 @@
+Stage 1 Training Time: 2213.78 sec
+Epoch 10 → Overall: 0.9191
+
+Stage02
+Epoch  9 → Overall: 0.4944 | Old: 0.2974 | New: 0.7257
+Epoch 10 → Overall: 0.5867 | Old: 0.4645 | New: 0.7303
+新類別樣本數: 9627
+Stage 02 Training Time: 2319.29 sec
+Debug → Weight Aligning applied (scale factor = 0.7165)
+After Weight Aligning → Overall: 0.6936 | Old: 0.7337 | New: 0.6465
