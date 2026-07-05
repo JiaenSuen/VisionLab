@@ -300,70 +300,8 @@ Projects are labeled according to their purpose rather than only their size.
 | **Planned**     | Project structure exists, but implementation has not started |
 
 ---
-
-<a id="repository-guide"></a>
-
-## Repository Guide
-
-A typical project directory may contain:
-
-```text
-project-name/
-├── README.md
-├── requirements.txt
-├── configs/
-├── data/
-├── notebooks/
-├── src/
-├── scripts/
-├── results/
-└── assets/
-```
-
-Individual projects may use different structures depending on their scope.
-
-Each documented project should ideally include:
-
-* A concise project objective
-* Dataset and preprocessing details
-* Model or method description
-* Experimental setup
-* Results or qualitative outputs
-* Key observations
-* Reproduction instructions
-* Known limitations
-
----
-
-## Recommended Project README Format
-
-```markdown
-# Project Title
-
-## Overview
-Briefly explain the task and motivation.
-
-## Objective
-State the concept, hypothesis, or technique being explored.
-
-## Method
-Describe the dataset, architecture, training process, and evaluation metrics.
-
-## Results
-Present metrics, visualizations, or representative outputs.
-
-## Key Takeaways
-Summarize the most important observations from the experiment.
-
-## Limitations
-Document known limitations or unsuccessful approaches.
-
-## Usage
-Provide concise installation and execution instructions.
-```
-
----
-
+ 
+ 
 ## Getting Started
 
 Clone the complete repository:
