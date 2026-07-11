@@ -72,7 +72,7 @@ The following models are included : <br>
 | Xception                  | 98.66%         | 73.06%        | 50        |0.0288        | 0.1081
 | SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
-| MobileNetV1               | 94.52%         | 78.84%        | 20        |0.0243        | 0.0268
+| MobileNetV1               | 98.60%         | 81.54%        | 100       |0.0927        | 0.0540
 | -                         | -              | -             | -         |-             | -
 | -                         | -              | -             | -         |-             | -
 | GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 0.0379

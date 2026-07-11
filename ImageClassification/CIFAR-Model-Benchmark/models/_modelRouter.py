@@ -18,11 +18,11 @@ from .InceptionSeries.XceptionTiny          import xception_tiny
 
 
 
-from .ConvNeXtV2_Tiny import build_ConvNeXtV2_Tiny
-from .InceptionMamba import build_InceptionMamba_Tiny
-from .RepViT import build_RepViT_M1_1
+from .New.ConvNeXtV2_Tiny import build_ConvNeXtV2_Tiny
+from .New.InceptionMamba import build_InceptionMamba_Tiny
+from .New.RepViT import build_RepViT_M1_1
 
-from .MobileNet_v1 import build_mobilenet_cifar
+from .MobileSeries.MobileNet_v1 import build_mobilenet_cifar
 
 
 
