@@ -1,0 +1,10 @@
+_base_: common.yaml
+
+experiment_name: lraspp_experiment
+
+model:
+  name: lraspp_mobilenet_v3_large
+  pretrained: true
+
+output_dir: outputs/lraspp_experiment
+

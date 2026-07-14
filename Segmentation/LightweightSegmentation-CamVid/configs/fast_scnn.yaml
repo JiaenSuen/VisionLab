@@ -1,0 +1,10 @@
+_base_: common.yaml
+
+experiment_name: fast_scnn_experiment
+
+model:
+  name: fast_scnn
+  pretrained: false
+
+output_dir: outputs/fast_scnn_experiment
+
