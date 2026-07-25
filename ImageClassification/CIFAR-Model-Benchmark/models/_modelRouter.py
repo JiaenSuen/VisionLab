@@ -23,7 +23,7 @@ from .New.InceptionMamba import build_InceptionMamba_Tiny
 from .New.RepViT import build_RepViT_M1_1
 
 from .MobileSeries.MobileNet_v1 import build_mobilenet_cifar
-
+from .MobileSeries.SqueezeNet import SqueezeNetCIFAR10
 
 
 from .zTorchAPI import (
@@ -69,5 +69,6 @@ modelRouter = {
 
 
     "mobilenet_v1" : build_mobilenet_cifar,
+    "squeeze_net"  : SqueezeNetCIFAR10,
 }
 Existing_model_names =   list(modelRouter.keys())

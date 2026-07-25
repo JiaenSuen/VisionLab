@@ -70,7 +70,7 @@ The following models are included : <br>
 | WideResNet18              | 99.57%         | 77.10%        | 100       |0.0740        | 0.0179
 | ResNeXt18                 | 100.0%         | 85.67%        | 100       |0.5824        | 0.1331
 | Xception                  | 98.66%         | 73.06%        | 50        |0.0288        | 0.1081
-| SqueezeNet                | XX.XX%         | XX.XX%        | 100       |0.0000        |
+| SqueezeNet                | 10.00%         | 10.00%        | 100       |0.4044        | 0.1837
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
 | MobileNetV1               | 98.60%         | 81.54%        | 100       |0.0927        | 0.0540
 | -                         | -              | -             | -         |-             | -
