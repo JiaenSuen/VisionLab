@@ -22,9 +22,9 @@ from .New.ConvNeXtV2_Tiny import build_ConvNeXtV2_Tiny
 from .New.InceptionMamba import build_InceptionMamba_Tiny
 from .New.RepViT import build_RepViT_M1_1
 
-from .MobileSeries.MobileNet_v1 import build_mobilenet_cifar
+from .MobileSeries.MobileNetV1 import build_mobilenet_v1_cifar
 from .MobileSeries.SqueezeNet import SqueezeNetCIFAR10
-
+from .MobileSeries.ShuffleNetV1 import build_shufflenet_v1
 
 from .zTorchAPI import (
     build_googlenet_pt,
@@ -68,7 +68,9 @@ modelRouter = {
     "rep_vit_m1_1" : build_RepViT_M1_1,
 
 
-    "mobilenet_v1" : build_mobilenet_cifar,
+    "mobilenet_v1" : build_mobilenet_v1_cifar,
     "squeeze_net"  : SqueezeNetCIFAR10,
+    "shufflenet_v1": build_shufflenet_v1,
+    
 }
 Existing_model_names =   list(modelRouter.keys())

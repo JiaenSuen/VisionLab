@@ -222,9 +222,9 @@ def _smoke_test(
     print("  Inference   : OK")
 
 
-def build_mobilenet(num_classes):
+def build_mobilenet_v1(num_classes):
     return MobileNetV1(num_classes=num_classes, width_mult=1.0)
-def build_mobilenet_cifar(num_classes):
+def build_mobilenet_v1_cifar(num_classes):
     return MobileNetV1CIFAR(num_classes=num_classes, width_mult=1.0)
 
 

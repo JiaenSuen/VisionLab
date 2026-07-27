@@ -73,6 +73,7 @@ The following models are included : <br>
 | SqueezeNet                | 10.00%         | 10.00%        | 100       |0.4044        | 0.1837
 | DenseNet121               | XX.XX%         | XX.XX%        | 0         |0.0000        |
 | MobileNetV1               | 98.60%         | 81.54%        | 100       |0.0927        | 0.0540
+| ShuffleNetV1              | 98.36%         | 84.35%        | 100       |0.0856        | 0.1823
 | -                         | -              | -             | -         |-             | -
 | -                         | -              | -             | -         |-             | -
 | GoogLeNet (P)             | 99.63%         | 82.87%        | 100       |0.0611        | 0.0379
