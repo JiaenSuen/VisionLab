@@ -1,0 +1,7 @@
+image,preprocess,reference,prediction,exact_match,cer
+1.jpg,raw,A234567890,,0,1.0000
+1.jpg,gray,A234567890,A234567890,1,0.0000
+1.jpg,otsu,A234567890,A234567890,1,0.0000
+2.png,raw,BTS4ever J-hope,BTSAeverJ-hope,0,0.1333
+2.png,gray,BTS4ever J-hope,BTS4ever J-hope,1,0.0000
+2.png,otsu,BTS4ever J-hope,BTSdever J-hope,0,0.0667
