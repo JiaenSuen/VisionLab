@@ -29,7 +29,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "image",
         nargs="?",
-        default="examples/1.jpg",
+        default="examples/PERU_ID_04.bmp",
         help="Path to the input image (default: examples/1.jpg)",
     )
     parser.add_argument("--output", default="outputs", help="Output directory")
