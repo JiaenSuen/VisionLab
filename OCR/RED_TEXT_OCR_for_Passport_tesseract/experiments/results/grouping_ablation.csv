@@ -1,0 +1,7 @@
+image,strategy,component_boxes,effective_gap,sequence_groups,largest_group_width
+1.jpg,fixed_8,17,8,3,129
+1.jpg,fixed_10,17,10,3,129
+1.jpg,adaptive,17,10,3,129
+2.png,fixed_8,15,8,5,76
+2.png,fixed_10,15,10,3,142
+2.png,adaptive,15,10,3,142

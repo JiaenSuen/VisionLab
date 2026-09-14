@@ -1,0 +1,5 @@
+# Module Analysis: `modules/tesseract_ocr.py`
+
+The Tesseract module is intentionally downstream of localization and grouping. It does not alter the red mask, connected components, or grouping topology. `prepare_tesseract_crop()` controls only the recognizer representation and currently supports raw color, grayscale, and Otsu-binary inputs. `recognize_grouped_text()` maps grouped regions and expanded crop boxes to OCR strings while retaining geometry and status metadata. `annotate_ocr_results()` produces the final full-document visualization.
+
+The module defaults to grayscale 4x cubic upsampling and Tesseract PSM 7 because the target proposal is a single text line. An alphanumeric whitelist reduces irrelevant output classes, and a configurable group-aspect filter suppresses short red labels in the current document layout. These are explicit application priors rather than hidden assumptions. The module also supports a custom Tesseract executable path so the project can run on Windows installations where `tesseract.exe` is not already on `PATH`.
