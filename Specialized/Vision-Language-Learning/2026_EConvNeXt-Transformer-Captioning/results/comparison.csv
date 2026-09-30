@@ -1,0 +1,3 @@
+model,parameters_m,bleu1,bleu4,meteor,cider
+ResNet-Attention LSTM,14.055,0.5735,0.1872,0.3572,0.4091
+E-ConvNeXt-Light Transformer,9.429,0.5746,0.1717,0.3304,0.3522

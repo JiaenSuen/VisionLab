@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Datasets
+/data/
+*.jpg
+*.jpeg
+*.png
+
+# Training artifacts
+/runs/
+/Record/
+*.pt
+*.pth
+*.pth.tar
+*.ckpt
+
+# Logs / caches
+*.log
+.cache/
