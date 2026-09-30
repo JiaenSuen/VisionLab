@@ -1,10 +1,10 @@
 # E-ConvNeXt + YOLOv10-Style Object Detector
 
-A compact PyTorch research implementation that combines an **E-ConvNeXt backbone** with a lightweight **YOLOv10-style PAFPN and dual assignment head** for object detection experiments on Pascal VOC / YOLO-format annotations.
+A PyTorch research implementation that combines an **E-ConvNeXt backbone** with a lightweight **YOLOv10-style PAFPN and dual assignment head** for object detection experiments on Pascal VOC / YOLO-format annotations.
 
-This directory is designed to live as a **self-contained subproject inside a larger deep-learning repository**. It includes the model, loss, data pipeline, training/evaluation code, single-image inference, and a compact record of the reference VOC0712 experiment.
+It includes the model, loss, data pipeline, training/evaluation code, single-image inference, and a compact record of the reference VOC0712 experiment.
 
-> **Note**  
+
 > This is an independent research implementation inspired by YOLOv10-style one-to-many / one-to-one training. It is not the official YOLOv10 implementation.
 
 ## Highlights
