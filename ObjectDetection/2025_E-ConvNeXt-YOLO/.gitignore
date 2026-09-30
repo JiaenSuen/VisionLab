@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Datasets
+data/
+datasets/
+
+# Training outputs and checkpoints
+record/
+runs/
+outputs/
+weights/
+checkpoints/
+*.pth
+*.pt
+*.pth.tar
+
+# Temporary files
+*.log
+*.tmp
+_smoke*
+
+
+
+EConvNeXtMini_YOLOv10n_VOC_best.pth.tar

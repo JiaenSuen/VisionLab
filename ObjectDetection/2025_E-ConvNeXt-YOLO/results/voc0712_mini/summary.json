@@ -1,0 +1,14 @@
+{
+  "experiment": "EConvNeXtMini_YOLOv10n_VOC",
+  "dataset": "VOC0712",
+  "train_images": 16551,
+  "test_images": 4952,
+  "num_classes": 20,
+  "image_size": 448,
+  "parameters_millions": 5.658888,
+  "epochs": 100,
+  "best_full_map50": 0.577877,
+  "best_epoch": 80,
+  "final_full_map50": 0.571324,
+  "training_from_scratch": true
+}

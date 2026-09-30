@@ -1,0 +1,68 @@
+E-ConvNeXt + YOLOv10n-style VOC Experiment
+================================================================
+Generated at: 2026-06-02 20:21:27
+
+Architecture: E-ConvNeXt backbone + YOLOv10-style PAFPN + dual objectness-free head.
+Loss: one-to-many + one-to-one anchor-free CIoU and quality focal BCE.
+
+accum_steps: 2
+amp: True
+backbone_weights: 
+base_lr: 0.0003
+batch_size: 8
+best_model_file: record\EConvNeXtMini_YOLOv10n_VOC\best.pth.tar
+channels_last: True
+close_aug_epochs: 20
+compile: False
+drop_path_rate: 0.05
+ema_decay: 0.9998
+epochs: 100
+eval_branch: one2one
+eval_use_ema: True
+full_eval_every: 20
+full_eval_start: 20
+full_max_detections: 300
+image_size: 448
+img_dir: data/images/
+label_dir: data/labels/
+last_model_file: record\EConvNeXtMini_YOLOv10n_VOC\last.pth.tar
+log_every: 10
+map_conf: 0.0001
+map_iou: 0.5
+max_grad_norm: 5.0
+metrics_csv: record\EConvNeXtMini_YOLOv10n_VOC\training_metrics.csv
+min_lr: 1e-05
+model_name: EConvNeXtMini_YOLOv10n_VOC
+nms_iou: 0.45
+num_classes: 20
+num_workers: 4
+one2one_gain: 0.5
+pin_memory: True
+pre_nms_topk: 2500
+quick_eval_batches: 30
+quick_eval_every: 5
+quick_eval_start: 5
+quick_max_detections: 100
+record_dir: record\EConvNeXtMini_YOLOv10n_VOC
+record_root: record
+resume: 
+save_every: 10
+seed: 123
+test_csv: data/test.csv
+test_metrics_csv: record\EConvNeXtMini_YOLOv10n_VOC\test_metrics.csv
+torch_threads: 0
+train_csv: data/train.csv
+variant: mini
+warmup_epochs: 3.0
+warmup_start_lr: 1e-05
+weight_decay: 0.0003
+
+Training images: 16551, boxes: 40058
+Testing images: 4952, boxes: 12032
+
+Final summary:
+last_epoch: 100
+best_full_mAP: 0.577877
+best_epoch: 80
+last_train_loss: 2.664901
+elapsed_hours: 27.189
