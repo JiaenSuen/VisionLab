@@ -1,389 +1,202 @@
-<div align="center">
-
-<img src="assets/visionlab-banner.png" alt="VisionLab Banner" width="100%">
-
 # VisionLab
 
-### A Curated Collection of Computer Vision Experiments and Technical Studies
 
-<p>
-  Small-scale experiments, model reproductions, and proof-of-concept implementations built primarily with PyTorch.
+
+
+<p align="center">
+  <img src="assets/visionlab-cover.png" alt="VisionLab cover" width="100%">
 </p>
 
-<p>
-  <a href="#featured-experiments">Featured Experiments</a> •
-  <a href="#research-areas">Research Areas</a> •
-  <a href="#project-directory">Project Directory</a> •
-  <a href="#repository-guide">Repository Guide</a>
-</p>
 
-![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square\&logo=python\&logoColor=white)
-![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?style=flat-square\&logo=pytorch\&logoColor=white)
-![Computer Vision](https://img.shields.io/badge/Focus-Computer%20Vision-6C63FF?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-2EA44F?style=flat-square)
+> A curated inventory of computer vision experiments, model reproductions, technical studies, and applied prototypes.
 
-</div>
-
----
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white)](#getting-started)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](#technology-stack)
+[![Computer Vision](https://img.shields.io/badge/Focus-Computer%20Vision-6C63FF?style=flat-square)](#repository-inventory)
+[![License](https://img.shields.io/badge/License-MIT-2EA44F?style=flat-square)](LICENSE)
 
 ## Overview
 
-**VisionLab** is a curated repository for documenting small-scale computer vision experiments, technical studies, model reproductions, and early-stage prototypes.
+VisionLab is an experimental workspace for documenting small-scale computer vision studies, established-model reproductions, controlled benchmarks, and early-stage prototypes. Most projects are implemented in PyTorch and are intentionally compact in scope, with an emphasis on understanding model behavior, architectural ideas, training strategies, and practical vision pipelines.
 
-The repository is designed as an experimental workspace for exploring computer vision concepts through implementation. Projects are intentionally compact in scope and focus on understanding model behavior, reproducing established methods, testing architectural ideas, and developing practical vision pipelines.
+The repository covers:
+
+- Image classification and visual recognition
+- Object detection and image segmentation
+- Optical character recognition
+- Vision-language learning
+- CNN, Vision Transformer, and state-space architectures
+- 3D vision and multi-view geometry
+- Efficient and lightweight vision models
+- Applied computer vision systems
 
 Larger research projects, publication-related work, and complete systems are maintained as standalone repositories.
 
-### Primary Focus
+## Repository Inventory
 
-* Image classification and visual recognition
-* Object detection and image segmentation
-* Optical character recognition
-* Vision-language learning
-* CNN and Vision Transformer architectures
-* 3D vision and multi-view geometry
-* Efficient and lightweight vision models
-* Applied computer vision systems
+| Collection | Scope |
+| --- | --- |
+| [`ImageClassification/`](ImageClassification/) | Model implementations, architecture benchmarks, transfer learning, and dataset-specific studies |
+| [`ObjectDetection/`](ObjectDetection/) | Detector reproductions, architectural studies, pretrained inference, and shared utilities |
+| [`OCR/`](OCR/) | CRNN-based sequence recognition and Tesseract-based document OCR pipelines |
+| [`Segmentation/`](Segmentation/) | Semantic and instance segmentation experiments |
+| [`Specialized/`](Specialized/) | Class-incremental learning, tracking, and vision-language research |
+| [`APIs/`](APIs/) | Reusable local inference APIs for vision models |
+| [`VisionProjects-Mid/`](VisionProjects-Mid/) | Medium-scope applied vision systems |
+| [`VisionProjects-Tiny/`](VisionProjects-Tiny/) | Compact proofs of concept and implementation exercises |
+| [`@Research-Robotics/`](@Research-Robotics/) | Research robotics workspace |
 
----
+### Image Classification
 
-<a id="featured-experiments"></a>
+#### Benchmarks and task studies
 
-## Featured Experiments
+| Project | Research focus |
+| --- | --- |
+| [CIFAR Model Benchmark](ImageClassification/CIFAR-Model-Benchmark/) | Controlled, from-scratch comparison of CNN, Transformer, and state-space image classifiers |
+| [Food-101 Classification](ImageClassification/VisionTask_Food101/) | Architecture experiments on the Food-101 dataset |
+| [Imagenette Classification](ImageClassification/VisionTask_Imagenette/) | Architecture experiments and model research on Imagenette |
+| [Vulpes Classification](ImageClassification/VisionTask_Vulpes/) | Fox-image classification experiments with ResNet and E-ConvNeXt variants |
 
-A selection of representative experiments from this repository.
+#### Experimental series
 
-| Project                             | Area                 | Type            | What It Demonstrates                                  | Status      |
-| ----------------------------------- | -------------------- | --------------- | ----------------------------------------------------- | ----------- |
-| **[Project Name](path/to/project)** | Image Classification | Reproduction    | Implementation and evaluation of [model or technique] | Complete    |
-| **[Project Name](path/to/project)** | Object Detection     | Experiment      | Comparison of [method A] and [method B]               | Complete    |
-| **[Project Name](path/to/project)** | Vision-Language      | Prototype       | Lightweight encoder-decoder design for [task]         | In Progress |
-| **[Project Name](path/to/project)** | 3D Vision            | Technical Study | Exploration of [geometry or reconstruction method]    | Complete    |
+| Project | Research focus |
+| --- | --- |
+| [CNN Transfer Learning and Fine-Tuning](ImageClassification/ExperimentalSeries/CNN-Transfer-Learning-Fine-Tuning/) | Comparison of transfer-learning and fine-tuning strategies |
+| [Gabor Feature Machine Learning](ImageClassification/ExperimentalSeries/GaborFeatureML/) | Traditional feature extraction with Gabor filters, edge features, and machine-learning classifiers |
+| [LeNet on MNIST](ImageClassification/ExperimentalSeries/LeNet_MNIST/) | LeNet training and evaluation on MNIST |
 
-> The projects above are recommended starting points. The complete collection is available in the project directory below.
+#### Model implementation archive
 
----
-
-<a id="research-areas"></a>
-
-## Research Areas
-
-<table>
-<tr>
-<td width="50%" valign="top">
-
-### Visual Recognition
-
-Experiments involving image classification, representation learning, transfer learning, and visual feature extraction.
-
-**Topics**
-
-* Convolutional neural networks
-* Vision Transformers
-* Transfer learning
-* Data augmentation
-* Model evaluation
-
-[Explore Visual Recognition →](ImageClassification/)
-
-</td>
-<td width="50%" valign="top">
+| Period | Implementations |
+| --- | --- |
+| 1998–2013 | [LeNet](ImageClassification/@Models/1998_LeNet/) · [AlexNet](ImageClassification/@Models/2012_AlexNet/) · [Network in Network](ImageClassification/@Models/2013_NiN/) |
+| 2014 | [Inception V1](ImageClassification/@Models/2014_InceptionV1/) · [VGG](ImageClassification/@Models/2014_VGG/) |
+| 2015 | [Highway Network](ImageClassification/@Models/2015_HighwayNetwork/) · [Inception V2](ImageClassification/@Models/2015_InceptionV2/) · [Inception V3](ImageClassification/@Models/2015_InceptionV3/) · [ResNet](ImageClassification/@Models/2015_ResNet/) |
+| 2016 | [Inception-ResNet V2](ImageClassification/@Models/2016_Inception-ResNet-v2/) · [Inception V4](ImageClassification/@Models/2016_InceptionV4/) · [ResNet V2](ImageClassification/@Models/2016_ResNetV2/) · [ResNeXt](ImageClassification/@Models/2016_ResNeXt/) · [SqueezeNet](ImageClassification/@Models/2016_SqueezeNet/) · [Wide ResNet](ImageClassification/@Models/2016_WideResNet/) · [Xception](ImageClassification/@Models/2016_Xception/) |
+| 2017 | [MobileNet V1](ImageClassification/@Models/2017_MobileNet-V1/) · [ShuffleNet V1](ImageClassification/@Models/2017_ShuffleNet-V1/) |
+| 2020–2025 | [Vision Transformer](ImageClassification/@Models/2020_VisionTransformer/) · [Vision Mamba](ImageClassification/@Models/2024_VisionMamba/) · [E-ConvNeXt](ImageClassification/@Models/2025_E-ConvNeXt/) |
+| Shared | [Model utilities](ImageClassification/@Models/Utils/) |
 
 ### Object Detection
 
-Studies involving object localization, detection pipelines, bounding-box regression, and evaluation metrics.
+| Project | Research focus |
+| --- | --- |
+| [R-CNN](ObjectDetection/2013_R-CNN/) | Region-proposal-based detection study |
+| [Fast R-CNN](ObjectDetection/2014_FastRCNN/) | Fast R-CNN architecture study |
+| [SPPNet](ObjectDetection/2014_SPPNet/) | Spatial pyramid pooling study |
+| [Faster R-CNN](ObjectDetection/2015_FasterRCNN/) | Region proposal network study |
+| [YOLOv1](ObjectDetection/2015_YOLOv1/) | First-generation YOLO study |
+| [SSD](ObjectDetection/2016_SSD/) | Single Shot MultiBox Detector study |
+| [YOLOv3](ObjectDetection/2018_YOLOv3/) | PyTorch YOLOv3 implementation |
+| [YOLOv5-Nano](ObjectDetection/2020_YOLOv5-Nano/) | Independent, plain-PyTorch YOLOv5-Nano-style reproduction |
+| [E-ConvNeXt + YOLO](ObjectDetection/2025_E-ConvNeXt-YOLO/) | E-ConvNeXt backbone with a lightweight YOLOv10-style PAFPN and dual-assignment head |
+| [Pretrained YOLO](ObjectDetection/YOLO_pretrained/) | Pretrained YOLO inference experiments |
+| [Detector Utilities](ObjectDetection/_DetectorUtils/) | Shared detection and visualization utilities |
 
-**Topics**
+### Optical Character Recognition
 
-* One-stage detectors
-* Two-stage detectors
-* Anchor-based methods
-* Detection metrics
-* Custom datasets
+| Project | Research focus |
+| --- | --- |
+| [CRNN CAPTCHA Recognition](OCR/2015_CRNN/) | End-to-end CNN–BiLSTM–CTC sequence recognition in PyTorch |
+| [ID Card Red-Text OCR](OCR/RED_TEXT_OCR_for_IDCard_tesseract/) | Detection, preprocessing, and Tesseract OCR for red text on identity cards |
+| [Passport and Document-Card Red-Text OCR](OCR/RED_TEXT_OCR_for_Passport_tesseract/) | Red-text segmentation and OCR with support for vertical document text |
 
-[Explore Object Detection →](ObjectDetection/)
+### Segmentation
 
-</td>
-</tr>
+| Project | Research focus |
+| --- | --- |
+| [FCN](Segmentation/2014_FCN/) | Fully convolutional network reference material |
+| [Lightweight Segmentation on CamVid](Segmentation/LightweightSegmentation-CamVid/) | Fine-tuning LR-ASPP with MobileNetV3-Large for 11-class semantic segmentation |
+| [Pretrained Mask R-CNN](Segmentation/_PretrainedModel/MaskRCNN_Pretrained/) | Pretrained instance-segmentation inference example |
 
-<tr>
-<td width="50%" valign="top">
+### Specialized Research
 
-### Image Segmentation
+| Project | Research focus |
+| --- | --- |
+| [Replay KLWA](Specialized/Class-Incremental-Learning/ReplayKLWA--A-Feasible-Few-Replay-CIL/) | Few-replay and exemplar-free class-incremental learning |
+| [E-ConvNeXt + Light Transformer Captioning](Specialized/Vision-Language-Learning/2026_EConvNeXt-Transformer-Captioning/) | Multi-scale visual encoding and autoregressive Transformer decoding for Flickr8k and Flickr30k |
+| [Tracking](Specialized/Tracking/) | Visual tracking workspace |
 
-Pixel-level visual understanding experiments for semantic, instance, or binary segmentation tasks.
+### APIs and Applied Projects
 
-**Topics**
-
-* Encoder-decoder networks
-* U-Net architectures
-* Semantic segmentation
-* Mask evaluation
-* Visualization pipelines
-
-[Explore Segmentation →](Segmentation/)
-
-</td>
-<td width="50%" valign="top">
-
-### Vision-Language Learning
-
-Small-scale experiments combining visual representations with natural-language generation or understanding.
-
-**Topics**
-
-* Image captioning
-* Visual encoders
-* Transformer decoders
-* Multimodal embeddings
-* Sequence generation
-
-[Explore Vision-Language Projects →](TinyImageCaptioning/)
-
-</td>
-</tr>
-
-<tr>
-<td width="50%" valign="top">
-
-### 3D Vision and Geometry
-
-Experiments related to spatial reasoning, camera geometry, depth, reconstruction, and multi-view systems.
-
-**Topics**
-
-* Camera calibration
-* Epipolar geometry
-* Depth estimation
-* Multi-view reconstruction
-* Point-cloud processing
-
-[Explore 3D Vision →](path/to/3d-vision/)
-
-</td>
-<td width="50%" valign="top">
-
-### Applied Vision Systems
-
-Proof-of-concept systems combining computer vision models with practical data-processing or application pipelines.
-
-**Topics**
-
-* OCR
-* Image preprocessing
-* Real-time inference
-* Domain-specific vision
-* End-to-end prototypes
-
-[Explore Applied Systems →](Specialized/)
-
-</td>
-</tr>
-</table>
-
----
-
-<a id="project-directory"></a>
-
-## Project Directory
-
-The repository is organized by computer vision task and experimental purpose.
-
-<details open>
-<summary><strong>Image Classification</strong></summary>
-
-<br>
-
-| Project                                             | Description                         | Type         | Status      |
-| --------------------------------------------------- | ----------------------------------- | ------------ | ----------- |
-| [Project Name](ImageClassification/project-folder/) | Short description of the experiment | Reproduction | Complete    |
-| [Project Name](ImageClassification/project-folder/) | Short description of the experiment | Benchmark    | Complete    |
-| [Project Name](ImageClassification/project-folder/) | Short description of the experiment | Prototype    | In Progress |
-
-</details>
-
-<details>
-<summary><strong>Object Detection</strong></summary>
-
-<br>
-
-| Project                                         | Description                         | Type         | Status   |
-| ----------------------------------------------- | ----------------------------------- | ------------ | -------- |
-| [Project Name](ObjectDetection/project-folder/) | Short description of the experiment | Experiment   | Complete |
-| [Project Name](ObjectDetection/project-folder/) | Short description of the experiment | Reproduction | Complete |
-
-</details>
-
-<details>
-<summary><strong>Image Segmentation</strong></summary>
-
-<br>
-
-| Project                                      | Description                         | Type            | Status      |
-| -------------------------------------------- | ----------------------------------- | --------------- | ----------- |
-| [Project Name](Segmentation/project-folder/) | Short description of the experiment | Technical Study | Complete    |
-| [Project Name](Segmentation/project-folder/) | Short description of the experiment | Prototype       | In Progress |
-
-</details>
-
-<details>
-<summary><strong>Vision-Language Learning</strong></summary>
-
-<br>
-
-| Project                                             | Description                         | Type       | Status      |
-| --------------------------------------------------- | ----------------------------------- | ---------- | ----------- |
-| [Project Name](TinyImageCaptioning/project-folder/) | Short description of the experiment | Prototype  | In Progress |
-| [Project Name](TinyImageCaptioning/project-folder/) | Short description of the experiment | Experiment | Complete    |
-
-</details>
-
-<details>
-<summary><strong>3D Vision and Multi-view Geometry</strong></summary>
-
-<br>
-
-| Project                          | Description                         | Type            | Status   |
-| -------------------------------- | ----------------------------------- | --------------- | -------- |
-| [Project Name](path/to/project/) | Short description of the experiment | Technical Study | Complete |
-| [Project Name](path/to/project/) | Short description of the experiment | Reproduction    | Complete |
-
-</details>
-
-<details>
-<summary><strong>Applied and Specialized Projects</strong></summary>
-
-<br>
-
-| Project                                     | Description                         | Type           | Status      |
-| ------------------------------------------- | ----------------------------------- | -------------- | ----------- |
-| [Project Name](Specialized/project-folder/) | Short description of the experiment | Prototype      | Complete    |
-| [Project Name](Specialized/project-folder/) | Short description of the experiment | Applied System | In Progress |
-
-</details>
-
-<details>
-<summary><strong>Additional Experiments</strong></summary>
-
-<br>
-
-| Collection                                  | Description                                               |
-| ------------------------------------------- | --------------------------------------------------------- |
-| [Experimental Studies](VisionProjects_Mid/) | Structured experiments and medium-scope technical studies |
-| [Sandbox Experiments](VisionProjects_Tiny/) | Compact proofs of concept and implementation exercises    |
-
-</details>
-
----
+| Project | Research focus |
+| --- | --- |
+| [Grounding DINO Tiny Local API](APIs/API_GroundingDinoTiny/) | Reusable local Grounding DINO Tiny inference for paths, PIL images, and OpenCV frames |
+| [LocateAnything Local API](APIs/API_LocateAnything/) | Project-local NVIDIA LocateAnything model storage and inference API |
+| [License Plate Recognition](VisionProjects-Mid/License-Plate-Recognition/) | Haar Cascade and YOLOv11 plate detection with Tesseract OCR |
+| [Smart Helmet Detector](VisionProjects-Mid/SmartHelmetDetector%5Bsecond%20iteration%5D/) | Second-iteration smart-helmet detection workspace |
+| [Image Search Engine](VisionProjects-Tiny/ImageSearchEngine/) | Compact image-retrieval proof of concept |
+| [Vision Communication Routing](VisionProjects-Tiny/VisionCommunicationRouting/) | Hackathon project for sensor-fusion-based vision communication routing and fire detection |
 
 ## Project Classification
 
-Projects are labeled according to their purpose rather than only their size.
+Projects are classified by purpose rather than size alone.
 
-| Label               | Meaning                                                          |
-| ------------------- | ---------------------------------------------------------------- |
-| **Reproduction**    | Implementation or reproduction of an established model or paper  |
-| **Experiment**      | Controlled exploration of a model, dataset, or training strategy |
-| **Benchmark**       | Comparison of multiple methods, settings, or architectures       |
-| **Technical Study** | Focused investigation of a computer vision concept               |
-| **Prototype**       | Early-stage proof of concept for a larger idea                   |
-| **Applied System**  | Practical computer vision pipeline or application                |
-| **Coursework**      | Project originally developed for a course or academic assignment |
+| Label | Meaning |
+| --- | --- |
+| **Reproduction** | Implementation or reproduction of an established model or paper |
+| **Experiment** | Controlled exploration of a model, dataset, or training strategy |
+| **Benchmark** | Comparison of multiple methods, settings, or architectures |
+| **Technical Study** | Focused investigation of a computer vision concept |
+| **Prototype** | Early-stage proof of concept for a larger idea |
+| **Applied System** | Practical computer vision pipeline or application |
+| **Coursework** | Project originally developed for a course or academic assignment |
 
-### Status Labels
+When a project uses status labels, they have the following meanings:
 
-| Status          | Meaning                                                      |
-| --------------- | ------------------------------------------------------------ |
-| **Complete**    | Implementation and documentation are available               |
-| **In Progress** | Development or experimentation is ongoing                    |
-| **Archived**    | Retained for reference but no longer actively maintained     |
-| **Planned**     | Project structure exists, but implementation has not started |
+| Status | Meaning |
+| --- | --- |
+| **Complete** | Implementation and documentation are available |
+| **In Progress** | Development or experimentation is ongoing |
+| **Archived** | Retained for reference but no longer actively maintained |
+| **Planned** | Project structure exists, but implementation has not started |
 
----
- 
- 
 ## Getting Started
 
-Clone the complete repository:
+Clone the repository:
 
 ```bash
 git clone https://github.com/JiaenSuen/VisionLab.git
 cd VisionLab
 ```
 
-Install dependencies within the selected project directory:
+Each project manages its own dependencies and usage instructions. Enter the selected project directory, review its local README, and install its requirements when available:
 
 ```bash
-cd path/to/project
+cd ObjectDetection/2020_YOLOv5-Nano
 pip install -r requirements.txt
 ```
 
-Run the project according to its local README documentation.
+To retrieve a single project without cloning the complete repository, copy its GitHub directory URL into [Download Directory](https://download-directory.github.io/).
 
-### Downloading an Individual Directory
+## Technology Stack
 
-To download a specific project without cloning the full repository, you may use:
+Common tools used across the repository include:
 
-[Download Directory](https://download-directory.github.io/)
+- Python
+- PyTorch and Torchvision
+- OpenCV
+- NumPy and Pandas
+- Matplotlib
+- Scikit-learn
+- Hugging Face Transformers
+- Jupyter Notebook
 
-Copy the URL of the desired GitHub directory and paste it into the tool.
+Dependencies vary by project. Refer to the relevant project directory for its environment configuration.
 
----
+## Reproducibility Notes
 
-## Technologies
+- Projects vary in scope, maturity, and documentation depth.
+- Results may differ with dataset versions, hardware, random seeds, and training configurations.
+- Some projects are educational reproductions and are not presented as original research contributions.
+- External datasets, pretrained models, papers, and third-party implementations remain subject to their respective licenses and terms of use.
 
-Common technologies used across the repository include:
+## Author
 
-* Python
-* PyTorch
-* Torchvision
-* OpenCV
-* NumPy
-* Pandas
-* Matplotlib
-* Scikit-learn
-* Hugging Face Transformers
-* Jupyter Notebook
+**Jiaen Suen** — computer science student interested in computer vision, deep learning, efficient neural networks, and practical AI systems.
 
-Dependencies vary between projects. Refer to each project directory for the appropriate environment configuration.
-
----
-
-## Notes
-
-* Projects in this repository vary in scope and maturity.
-* Results may differ depending on dataset versions, hardware, random seeds, and training configurations.
-* Some projects are educational reproductions and are not intended to represent original research contributions.
-* Publication-related and large-scale research projects are maintained in separate repositories.
-
----
-
-## About the Author
-
-**Jiaen Suen**
-
-Computer science student interested in computer vision, deep learning, efficient neural networks, and practical AI systems.
-
-* GitHub: [@JiaenSuen](https://github.com/JiaenSuen)
-* Email: [Add professional email]
-* Website: [Add personal website]
-* Curriculum Vitae: [Add CV link]
-* Google Scholar: [Add Google Scholar link]
-
----
+- GitHub: [@JiaenSuen](https://github.com/JiaenSuen)
 
 ## License
 
 This repository is licensed under the [MIT License](LICENSE).
-
-Unless otherwise stated, external datasets, pretrained models, papers, and third-party implementations remain subject to their respective licenses and terms of use.
-
----
-
-<div align="center">
-
-### Explore, Implement, Evaluate, and Learn
-
-Small experiments can provide meaningful insights when their objectives, methods, and observations are clearly documented.
-
-</div>
